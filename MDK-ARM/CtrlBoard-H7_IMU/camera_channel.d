@@ -1,0 +1,10 @@
+ctrlboard-h7_imu\camera_channel.o: ..\User\Communication\channel\camera\camera_channel.c
+ctrlboard-h7_imu\camera_channel.o: ..\User\Communication\channel\camera\camera_channel.h
+ctrlboard-h7_imu\camera_channel.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
+ctrlboard-h7_imu\camera_channel.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdint.h
+ctrlboard-h7_imu\camera_channel.o: ..\User\Communication\channel\camera\../../core/comm.h
+ctrlboard-h7_imu\camera_channel.o: ..\User\Communication\channel\camera\../../core/config.h
+ctrlboard-h7_imu\camera_channel.o: ..\User\Communication\channel\camera\../../core/comm_utils.h
+ctrlboard-h7_imu\camera_channel.o: ..\User\Communication\channel\camera\camera_config.h
+ctrlboard-h7_imu\camera_channel.o: ..\User\Communication\channel\camera\../../core/platform.h
+ctrlboard-h7_imu\camera_channel.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stddef.h
