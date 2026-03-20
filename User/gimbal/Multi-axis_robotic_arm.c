@@ -371,6 +371,7 @@ __attribute__((used)) void gimbal_set_control(gimbal_control_t *set_control)
 		#if GRAVITY_COMPENSATION_ENABLE
 			set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * GAR_GAIN1;
 			set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * GAR_GAIN2;
+			set_control->multi_arm_cmd[3][2] = tauqe_calculated[3] * GAR_GAIN3;
 			set_control->multi_arm_cmd[4][2] = tauqe_calculated[4] * GAR_GAIN4;	//重力补偿增益
 		#endif
 		set_control->multi_arm_cmd[7][1] = set_control->multi_arm_set[7][1];
@@ -394,6 +395,7 @@ __attribute__((used)) void gimbal_set_control(gimbal_control_t *set_control)
 			//重力补偿增益
 				set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * GAR_GAIN1;
 				set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * GAR_GAIN2;
+				set_control->multi_arm_cmd[3][2] = tauqe_calculated[3] * GAR_GAIN3;
 				set_control->multi_arm_cmd[4][2] = tauqe_calculated[4] * GAR_GAIN4;
 			
 			#endif
@@ -409,8 +411,10 @@ __attribute__((used)) void gimbal_set_control(gimbal_control_t *set_control)
 				set_control->multi_arm_cmd[i][1] = set_control->multi_arm_set[i][1];
 				set_control->multi_arm_cmd[i][0] = clampf(set_control->multi_arm_set[i][0], set_control->joint_motor[i].min_angle, set_control->joint_motor[i].max_angle);
 			}
+			//重力补偿增益
 			set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * GAR_GAIN1;
 			set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * GAR_GAIN2;
+			set_control->multi_arm_cmd[3][2] = tauqe_calculated[3] * GAR_GAIN3;
 			set_control->multi_arm_cmd[4][2] = tauqe_calculated[4] * GAR_GAIN4;
 		}
     }
@@ -730,9 +734,9 @@ void gra_theta_calcu(gimbal_control_t *pos_angle, float *position_calcu)
 		position_calcu[0] = pos_angle->joint_motor[0].motor_measure->pos + J0_ZERO_ANGLE;  // J0关节
 		position_calcu[1] = -(PI/2 + pos_angle->joint_motor[1].motor_measure->pos - J1_ZERO_ANGLE);  // J1关节
 		position_calcu[2] = -PI/2 - (pos_angle->joint_motor[2].motor_measure->pos - J2_ZERO_ANGLE)/1.4446f;  // J2关节
-		position_calcu[3] = pos_angle->joint_motor[3].motor_measure->pos - J3_ZERO_ANGLE;  // J3关节
+		position_calcu[3] = -(pos_angle->joint_motor[3].motor_measure->pos - J3_ZERO_ANGLE);  // J3关节
 		position_calcu[4] = -pos_angle->joint_motor[4].motor_measure->pos + J4_ZERO_ANGLE;  // J4关节
-		position_calcu[5] = -pos_angle->joint_motor[5].motor_measure->pos + J5_ZERO_ANGLE;  // J5关节
+		position_calcu[5] = pos_angle->joint_motor[5].motor_measure->pos + J5_ZERO_ANGLE;  // J5关节
 }
 
 
