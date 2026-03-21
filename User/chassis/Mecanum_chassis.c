@@ -144,6 +144,7 @@ __attribute__((used))void chassis_mode_change_control_transit(chassis_move_t *ch
     else if ((chassis_move_transit->last_chassis_mode != CHASSIS_VECTOR_FOLLOW_CHASSIS_YAW) && chassis_move_transit->chassis_mode == CHASSIS_VECTOR_FOLLOW_CHASSIS_YAW)
     {
         chassis_move_transit->chassis_yaw_set = chassis_move_transit->chassis_yaw;
+		PID_clear(&chassis_move_transit->chassis_angle_pid);   // 清空积分
     }
     //change to no follow angle
     //切入不跟随云台模式
@@ -221,7 +222,7 @@ __attribute__((used))void chassis_set_contorl(chassis_move_t *chassis_move_contr
     fp32 vx_set = 0.0f, vy_set = 0.0f;
     //get three control set-point, 获取三个控制设置值
     chassis_behaviour_control_set(&vx_set, &vy_set, &chassis_angle_set, chassis_move_control);
-		chassis_angle_set = - chassis_angle_set;
+//		chassis_angle_set = - chassis_angle_set;
     //follow gimbal mode
     //跟随云台模式
     if (chassis_move_control->chassis_mode == CHASSIS_VECTOR_FOLLOW_GIMBAL_YAW)
@@ -282,11 +283,11 @@ __attribute__((used))void chassis_set_contorl(chassis_move_t *chassis_move_contr
         chassis_move_control->chassis_cmd_slow_set_vx.out = 0.0f;
         chassis_move_control->chassis_cmd_slow_set_vy.out = 0.0f;
     }
-    else if(chassis_move_control->chassis_mode == CHASSIS_VECTOR_FOLLOW_GIMBAL_YAW){
-        chassis_move_control->wz_set = -PID_Calc(&chassis_move_control->chassis_angle_pid, chassis_angle_set, yaw_motor_relative_angle);
-        chassis_move_control->vx_set = fp32_constrain(vx_set, chassis_move_control->vx_min_speed, chassis_move_control->vx_max_speed);
-        chassis_move_control->vy_set = fp32_constrain(vy_set, chassis_move_control->vy_min_speed, chassis_move_control->vy_max_speed);
-    }
+//    else if(chassis_move_control->chassis_mode == CHASSIS_VECTOR_FOLLOW_GIMBAL_YAW){
+//        chassis_move_control->wz_set = -PID_Calc(&chassis_move_control->chassis_angle_pid, chassis_angle_set, yaw_motor_relative_angle);
+//        chassis_move_control->vx_set = fp32_constrain(vx_set, chassis_move_control->vx_min_speed, chassis_move_control->vx_max_speed);
+//        chassis_move_control->vy_set = fp32_constrain(vy_set, chassis_move_control->vy_min_speed, chassis_move_control->vy_max_speed);
+//    }
 
 }
 

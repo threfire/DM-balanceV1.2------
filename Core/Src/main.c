@@ -160,7 +160,8 @@ int main(void)
 		FDCAN3_Config();
 	// 鍚敤涓插彛鎺ユ敹锛堜腑鏂ā寮忥�?
 	HAL_UART_Receive_IT(&huart7, usart7_buf, USART_RX_BUF_LENGHT * 2);
-	HAL_UART_Receive_IT(&huart10, usart10_buf, USART10_RX_BUF_LENGHT);
+	
+	HAL_UARTEx_ReceiveToIdle_DMA(&huart10, usart10_buf, USART10_RX_BUF_LENGHT);
 
 	// 鍚敤涓插彛鎺ユ敹锛圖MA妯�?�紡�??
 	HAL_UARTEx_ReceiveToIdle_DMA(&huart5, remote_buff, SBUS_RX_BUF_NUM);

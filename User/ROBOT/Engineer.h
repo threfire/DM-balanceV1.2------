@@ -83,12 +83,13 @@
 #define CHASSIS_WZ_CHANNEL            2
 #define CHASSIS_MODE_CHANNEL          0
 #define CHASSIS_FOLLOW_CHANNEL        1
-#define CHASSIS_VX_RC_SEN             0.004f
-#define CHASSIS_VY_RC_SEN             0.004f
-#define CHASSIS_ANGLE_Z_RC_SEN        0.000002f
+#define CHASSIS_VX_RC_SEN             0.003f
+#define CHASSIS_VY_RC_SEN             0.003f
+#define CHASSIS_ANGLE_Z_RC_SEN        0.000005f
 #define CHASSIS_WZ_RC_SEN             0.004f
 #define CHASSIS_ACCEL_X_NUM           0.1666666667f
 #define CHASSIS_ACCEL_Y_NUM           0.3333333333f
+#define CHASSIS_KEY_TURN_ANGLE_RATE   (2.0f)
 #define CHASSIS_RC_DEADLINE           25
 #define MOTOR_SPEED_TO_CHASSIS_SPEED_VX 0.25f
 #define MOTOR_SPEED_TO_CHASSIS_SPEED_VY 0.25f
@@ -110,8 +111,8 @@
 #define M3508_MOTOR_RPM_TO_VECTOR     0.000415809748903494517209f
 #define CHASSIS_MOTOR_RPM_TO_VECTOR_SEN M3508_MOTOR_RPM_TO_VECTOR
 #define MAX_WHEEL_SPEED               4.0f
-#define NORMAL_MAX_CHASSIS_SPEED_X    2.5f
-#define NORMAL_MAX_CHASSIS_SPEED_Y    2.5f
+#define NORMAL_MAX_CHASSIS_SPEED_X    1.5f
+#define NORMAL_MAX_CHASSIS_SPEED_Y    1.5f
 #define CHASSIS_WZ_MAX_SPEED			2.5f
 #define CHASSIS_WZ_SET_SCALE          0.1f
 #define SWING_NO_MOVE_ANGLE           0.7f

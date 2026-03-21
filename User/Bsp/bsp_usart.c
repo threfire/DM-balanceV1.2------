@@ -254,14 +254,14 @@ void USART10_Transmit(uint8_t *pData, uint16_t Size){
 }
 
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-	 
-    if (huart->Instance == USART10) {
-		parse_data(usart10_buf, USART10_RX_BUF_LENGHT);
-        HAL_UART_Receive_IT(&huart10, usart10_buf, USART10_RX_BUF_LENGHT );
-    }
-}
+//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+//{
+//	 
+//    if (huart->Instance == USART10) {
+//		parse_data(usart10_buf, USART10_RX_BUF_LENGHT);
+//        HAL_UART_Receive_IT(&huart10, usart10_buf, USART10_RX_BUF_LENGHT );
+//    }
+//}
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef * huart, uint16_t Size)
 {
@@ -297,8 +297,11 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef * huart, uint16_t Size)
 
 	}
 
-	if(huart->Instance == USART10){
-		 
+	if(huart->Instance == USART10)
+	{
+		parse_data(usart10_buf, Size);   // 处理接收到的数据
+        // 重启 DMA 
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart10, usart10_buf, USART10_RX_BUF_LENGHT);
 
 	}
 	
@@ -319,7 +322,8 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef * huart)
 
 	}
 	if(huart->Instance == USART10){
-		
+		HAL_UARTEx_ReceiveToIdle_DMA(&huart10, usart10_buf, USART10_RX_BUF_LENGHT);
+		memset(usart10_buf, 0, USART10_RX_BUF_LENGHT);
 	}
 }
 

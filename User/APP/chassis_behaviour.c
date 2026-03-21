@@ -326,7 +326,7 @@ void chassis_behaviour_mode_set(chassis_move_t *chassis_move_mode)
         //以上参数均可选择
         //chassis_behaviour_mode = CHASSIS_INFANTRY_FOLLOW_GIMBAL_YAW;
 				//可以自己实现底盘移动方向与云台坐标系一致，在底盘里面的输入源选择云台yaw电机编码器
-				chassis_behaviour_mode = CHASSIS_NO_FOLLOW_YAW;
+				chassis_behaviour_mode = CHASSIS_ENGINEER_FOLLOW_CHASSIS_YAW;
     }
 	else if(switch_is_down(chassis_move_mode->chassis_RC->rc.s[CHASSIS_MODE_CHANNEL]) && !switch_is_down(chassis_move_mode->chassis_RC->rc.s[CHASSIS_FOLLOW_CHANNEL])){
 		chassis_behaviour_mode = CHASSIS_NO_FOLLOW_YAW;
@@ -634,9 +634,35 @@ static void chassis_engineer_follow_chassis_yaw_control(fp32 *vx_set, fp32 *vy_s
         return;
     }
 
+    // 先获取平移速度（与摇杆无关）
     chassis_rc_to_control_vector(vx_set, vy_set, chassis_move_rc_to_vector);
-		*angle_set = rad_format(chassis_move_rc_to_vector->chassis_yaw_set - CHASSIS_ANGLE_Z_RC_SEN * chassis_move_rc_to_vector->chassis_RC->rc.ch[CHASSIS_WZ_CHANNEL]) ;
-		
+
+    fp32 delta_angle = 0.0f;
+
+    // 键盘优先级高于摇杆：有按键按下时，只使用键盘控制
+    if (chassis_move_rc_to_vector->chassis_RC->key.v & CHASSIS_TURNLEFT_KEY)
+    {
+        // 左转：正方向增量（逆时针）
+        // 增量 = 角速度(rad/s) * 控制周期(s)
+        delta_angle = CHASSIS_KEY_TURN_ANGLE_RATE * (CHASSIS_CONTROL_TIME_MS / 1000.0f);
+    }
+    else if (chassis_move_rc_to_vector->chassis_RC->key.v & CHASSIS_TURNRIGHT_KEY)
+    {
+        // 右转：负方向增量（顺时针）
+        delta_angle = -CHASSIS_KEY_TURN_ANGLE_RATE * (CHASSIS_CONTROL_TIME_MS / 1000.0f);
+    }
+    else
+    {
+        // 无键盘按键时，使用摇杆控制
+        int16_t wz_channel = chassis_move_rc_to_vector->chassis_RC->rc.ch[CHASSIS_WZ_CHANNEL];
+        int16_t wz_processed = 0;
+        rc_deadband_limit(wz_channel, wz_processed, CHASSIS_RC_DEADLINE);
+        delta_angle = -wz_processed * CHASSIS_ANGLE_Z_RC_SEN;   // 符号与摇杆方向一致
+    }
+
+    // 累加目标角度并归一化到 [-π, π]
+    chassis_move_rc_to_vector->chassis_yaw_set = rad_format(chassis_move_rc_to_vector->chassis_yaw_set + delta_angle);
+    *angle_set = chassis_move_rc_to_vector->chassis_yaw_set;
 }
 
 /**

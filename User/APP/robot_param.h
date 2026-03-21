@@ -66,7 +66,7 @@
 #define ROBOT_CHASSIS    	Mecanum_wheel
 #define ROBOT_GIMBAL      multi_axis_robotic_arm
 #define ROBOT_FRICTION    friction_none
-#define ROBOT_BOARD      	gimbal_board 
+#define ROBOT_BOARD      	chassis_board 
 #define ROBOT_CAP         Cap_off
 
 //把底盘、云台、发射机构等通用参数藏到各个兵种的私有头文件里去
