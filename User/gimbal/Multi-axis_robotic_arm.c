@@ -42,7 +42,7 @@
 #include "can_bsp.h"
 #include "arm_math.h"
 #include "tim.h"
-
+#include "kinematics.h"
 // MIT command IDs (slave IDs) for each joint; adjust to wiring
 #ifndef ARM_MIT_CMD_ID0
 #define ARM_MIT_CMD_ID0 0x00
@@ -79,28 +79,51 @@ static const uint16_t arm_cmd_id_table[ARM_JOINT_NUM] = {
     ARM_MIT_CMD_ID3, ARM_MIT_CMD_ID4, ARM_MIT_CMD_ID5,
 	ARM_MIT_CMD_ID6, ARM_MIT_CMD_ID7};
 static const fp32 motor_limit_table[ARM_JOINT_NUM][3] = {
-	J0_MIN_ANLE, J0_MAX_ANGLE, J0_ZERO_ANGLE,
-	J1_MIN_ANLE, J1_MAX_ANGLE, J1_ZERO_ANGLE,
-	J2_MIN_ANLE, J2_MAX_ANGLE, J2_ZERO_ANGLE,
-	J3_MIN_ANLE, J3_MAX_ANGLE, J3_ZERO_ANGLE,
-	J4_MIN_ANLE, J4_MAX_ANGLE, J4_ZERO_ANGLE,
-	J5_MIN_ANLE, J5_MAX_ANGLE, J5_ZERO_ANGLE,
-	J6_MIN_ANLE, J6_MAX_ANGLE, J6_ZERO_ANGLE,
-	J7_MIN_ANLE, J7_MAX_ANGLE, J7_ZERO_ANGLE,
+    {J0_MIN_ANLE, J0_MAX_ANGLE, J0_ZERO_ANGLE},
+    {J1_MIN_ANLE, J1_MAX_ANGLE, J1_ZERO_ANGLE},
+    {J2_MIN_ANLE, J2_MAX_ANGLE, J2_ZERO_ANGLE},
+    {J3_MIN_ANLE, J3_MAX_ANGLE, J3_ZERO_ANGLE},
+    {J4_MIN_ANLE, J4_MAX_ANGLE, J4_ZERO_ANGLE},
+    {J5_MIN_ANLE, J5_MAX_ANGLE, J5_ZERO_ANGLE},
+    {J6_MIN_ANLE, J6_MAX_ANGLE, J6_ZERO_ANGLE},
+    {J7_MIN_ANLE, J7_MAX_ANGLE, J7_ZERO_ANGLE},
 };
 
 fp32 q_angle[ARM_JOINT_NUM];
 uint8_t MOTER_InitAngleright;
+//舵机ccr
 uint16_t pwm_ccr_set = 1700;
 uint32_t last_sec_recv, total_los;
+//重力补偿用变量
 float position_calcu[8];
 float tauqe_calculated[6];
-float theta_calculated[6];
+float theta_calculated[6];//变换得到的计算用运动学角
+//运动学正逆解变量（等测试好以后换成静态）
+float g_theta_kin_cur[6];
+float g_theta_kin_des[6];
+float g_T_tool_cur[16];
+float g_T_tool_goal[16];
+
+uint8_t g_have_tool_goal = 0;
+uint8_t g_semi_auto_latched = 0;
+uint8_t g_semi_auto_ik_valid = 0;
+float g_motor_pos_des[6];
+
 static inline float clampf(float v, float lo, float hi)
 {
     if (v < lo) return lo;
     if (v > hi) return hi;
     return v;
+}
+
+static void kin_theta_to_motor_pos(const float theta_kin[6], float motor_pos[6])
+{
+    motor_pos[0] = theta_kin[0] - PI / 2.0f + J0_ZERO_ANGLE;
+    motor_pos[1] = J1_ZERO_ANGLE - PI / 2.0f - theta_kin[1];
+    motor_pos[2] = J2_ZERO_ANGLE - 1.4446f * (theta_kin[2] + PI / 2.0f);
+    motor_pos[3] = J3_ZERO_ANGLE - theta_kin[3];
+    motor_pos[4] = J4_ZERO_ANGLE - theta_kin[4];
+    motor_pos[5] = J5_ZERO_ANGLE + theta_kin[5];
 }
 
 //自定义遥控器或DT7输入的数据
@@ -128,10 +151,17 @@ __attribute__((used)) void gimbal_feedback_update(gimbal_control_t *feedback_upd
         q_angle[i] = feedback_update->joint_motor[i].motor_measure->pos - feedback_update->joint_motor[i].zero_offset;
 		if(i == 2){q_angle[i] = q_angle[i]/1.4446f;}
     }
-	//从顶部开始计算重力补偿力矩,7,6,5,3,0号电机不需要补偿
-	//计算当前臂重力补偿 l * mg * cos
-	#if GRAVITY_COMPENSATION_ENABLE
+	
+	//计算当前重力补偿
 	gra_theta_calcu(feedback_update, theta_calculated);
+	/* 当前6轴运动学关节角 */
+    for (uint8_t i = 0; i < 6; i++)
+    {
+        g_theta_kin_cur[i] = theta_calculated[i];
+    }
+
+    /* 正运动学：当前工具末端位姿 */
+    compute_tool_pose(g_theta_kin_cur, g_T_tool_cur);
 	//是否夹取能量单元判断
 	if(motor_data.claw & (feedback_update->joint_motor[6].motor_measure->tor <= -15.0f)  )
 	{
@@ -141,8 +171,8 @@ __attribute__((used)) void gimbal_feedback_update(gimbal_control_t *feedback_upd
 		feedback_update->Isgrasped = 0;
 	}
 	gravity_compensation(theta_calculated,tauqe_calculated);
-				
-	#endif
+	//逆运动学
+//	compute_desired_joint_angles(g_T_tool_cur, g_theta_kin_cur, g_theta_kin_des);			
     //遥控器掉线检测
     if((HAL_GetTick() - feedback_update->gimbal_rc_ctrl->last_fdb) > TIMEOUT)
     {
@@ -294,6 +324,36 @@ __attribute__((used)) void gimbal_set_mode(gimbal_control_t *set_mode)
     {
         set_mode->init_flag = 1;
     }
+	//半自动模式判断
+	#if ARM_SEMI_AUTO_ENABLE
+    {
+        static uint8_t last_ctrl_key = 0;
+        uint8_t ctrl_key_now = ((set_mode->gimbal_rc_ctrl->key.v & ARM_SEMI_AUTO_KEY) != 0U);
+
+        /* 只有在 SELF 档下，CTRL 才允许切换半自动 */
+        if (ARM_JOINT_BEHAVIOUR != ARM_SELF && ARM_JOINT_BEHAVIOUR != ARM_SEMI_AUTO)
+        {
+            g_semi_auto_latched = 0U;
+        }
+
+        /* CTRL 上升沿：翻转半自动状态 */
+        if (ctrl_key_now && !last_ctrl_key)
+        {
+            if (ARM_JOINT_BEHAVIOUR == ARM_SELF || ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)
+            {
+                g_semi_auto_latched = !g_semi_auto_latched;
+            }
+        }
+
+        last_ctrl_key = ctrl_key_now;
+
+        /* 锁存有效时，覆盖为半自动模式 */
+        if (g_semi_auto_latched)
+        {
+            ARM_JOINT_BEHAVIOUR = ARM_SEMI_AUTO;
+        }
+    }
+	#endif
     //获取不同模式的控制值
     arm_update_control(set_mode);
 }
@@ -330,6 +390,28 @@ __attribute__((used)) void gimbal_mode_change_control_transit(gimbal_control_t *
             gimbal_mode_change->multi_arm_set[i][1] = 0.0f;
         }
     }
+	if(last_ARM_JOINT_BEHAVIOUR != ARM_SEMI_AUTO && ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)
+    {
+        for(uint8_t i = 0; i < ARM_JOINT_NUM; i++)
+        {
+            gimbal_mode_change->multi_arm_set[i][0] = 0.0f;
+            gimbal_mode_change->multi_arm_set[i][1] = 0.0f;
+        }
+
+        /* 进入半自动时，锁存当前工具位姿为目标位姿 */
+        for (uint8_t i = 0; i < 16; i++)
+        {
+            g_T_tool_goal[i] = g_T_tool_cur[i];
+        }
+        g_have_tool_goal = 1U;
+        g_semi_auto_ik_valid = 0U;
+    }
+	if(last_ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO && ARM_JOINT_BEHAVIOUR != ARM_SEMI_AUTO)
+	{
+		g_have_tool_goal = 0U;
+		g_semi_auto_ik_valid = 0U;
+	}
+	
 	last_ARM_JOINT_BEHAVIOUR = ARM_JOINT_BEHAVIOUR;
 	
 }
@@ -411,14 +493,32 @@ __attribute__((used)) void gimbal_set_control(gimbal_control_t *set_control)
 				set_control->multi_arm_cmd[i][1] = set_control->multi_arm_set[i][1];
 				set_control->multi_arm_cmd[i][0] = clampf(set_control->multi_arm_set[i][0], set_control->joint_motor[i].min_angle, set_control->joint_motor[i].max_angle);
 			}
+			#if GRAVITY_COMPENSATION_ENABLE
 			//重力补偿增益
 			set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * GAR_GAIN1;
 			set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * GAR_GAIN2;
 			set_control->multi_arm_cmd[3][2] = tauqe_calculated[3] * GAR_GAIN3;
 			set_control->multi_arm_cmd[4][2] = tauqe_calculated[4] * GAR_GAIN4;
+			#endif
 		}
     }
-	
+	else if(ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)
+    {
+        for(uint8_t i = 0; i < ARM_JOINT_NUM; i++)
+        {
+            set_control->multi_arm_cmd[i][1] = set_control->multi_arm_set[i][1];
+            set_control->multi_arm_cmd[i][0] = clampf(set_control->multi_arm_set[i][0],
+                                                      set_control->joint_motor[i].min_angle,
+                                                      set_control->joint_motor[i].max_angle);
+        }
+		#if GRAVITY_COMPENSATION_ENABLE
+        /* 重力补偿继续存在 */
+        set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * GAR_GAIN1;
+        set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * GAR_GAIN2;
+        set_control->multi_arm_cmd[3][2] = tauqe_calculated[3] * GAR_GAIN3;
+        set_control->multi_arm_cmd[4][2] = tauqe_calculated[4] * GAR_GAIN4;
+		#endif
+    }
 	if(set_control->gimbal_rc_ctrl->key.v & KEY_PRESSED_OFFSET_V)
 	{
 		pwm_ccr_set += 1;
@@ -508,8 +608,6 @@ __attribute__((used)) void gimbal_send_cmd(gimbal_control_t *control_send)
 	}
 	 else if(ARM_JOINT_BEHAVIOUR == ARM_SELF)
     {
-		if(!motor_data.online)//掉线直接重补保持
-		{
 			CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[7], control_send->multi_arm_cmd[7][0], control_send->multi_arm_cmd[7][1], control_send->joint_pid[7].Kp, control_send->joint_pid[7].Kd, control_send->multi_arm_cmd[7][2]);
 			CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[0], control_send->multi_arm_cmd[0][0], control_send->multi_arm_cmd[0][1], control_send->joint_pid[0].Kp, control_send->joint_pid[0].Kd, control_send->multi_arm_cmd[0][2]);
 			CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[1], control_send->multi_arm_cmd[1][0], control_send->multi_arm_cmd[1][1], control_send->joint_pid[1].Kp, control_send->joint_pid[1].Kd, control_send->multi_arm_cmd[1][2]);
@@ -519,20 +617,18 @@ __attribute__((used)) void gimbal_send_cmd(gimbal_control_t *control_send)
 			CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[4], control_send->multi_arm_cmd[4][0], control_send->multi_arm_cmd[4][1], control_send->joint_pid[4].Kp, control_send->joint_pid[4].Kd, control_send->multi_arm_cmd[4][2]);
 			CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[5], control_send->multi_arm_cmd[5][0], control_send->multi_arm_cmd[5][1], control_send->joint_pid[5].Kp, control_send->joint_pid[5].Kd, control_send->multi_arm_cmd[5][2]);
 			CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[6], control_send->multi_arm_cmd[6][0], control_send->multi_arm_cmd[6][1], control_send->joint_pid[6].Kp, control_send->joint_pid[6].Kd, control_send->multi_arm_cmd[6][2]);
-		}
-		else//在线映射自控
-		{
-			
+	}
+	else if(ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)
+	{
 			CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[7], control_send->multi_arm_cmd[7][0], control_send->multi_arm_cmd[7][1], control_send->joint_pid[7].Kp, control_send->joint_pid[7].Kd, control_send->multi_arm_cmd[7][2]);
 			CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[0], control_send->multi_arm_cmd[0][0], control_send->multi_arm_cmd[0][1], control_send->joint_pid[0].Kp, control_send->joint_pid[0].Kd, control_send->multi_arm_cmd[0][2]);
 			CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[1], control_send->multi_arm_cmd[1][0], control_send->multi_arm_cmd[1][1], control_send->joint_pid[1].Kp, control_send->joint_pid[1].Kd, control_send->multi_arm_cmd[1][2]);
-            CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[2], control_send->multi_arm_cmd[2][0], control_send->multi_arm_cmd[2][1], control_send->joint_pid[2].Kp, control_send->joint_pid[2].Kd, control_send->multi_arm_cmd[2][2]);
+			CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[2], control_send->multi_arm_cmd[2][0], control_send->multi_arm_cmd[2][1], control_send->joint_pid[2].Kp, control_send->joint_pid[2].Kd, control_send->multi_arm_cmd[2][2]);
 			
 			CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[3], control_send->multi_arm_cmd[3][0], control_send->multi_arm_cmd[3][1], control_send->joint_pid[3].Kp, control_send->joint_pid[3].Kd, control_send->multi_arm_cmd[3][2]);
 			CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[4], control_send->multi_arm_cmd[4][0], control_send->multi_arm_cmd[4][1], control_send->joint_pid[4].Kp, control_send->joint_pid[4].Kd, control_send->multi_arm_cmd[4][2]);
 			CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[5], control_send->multi_arm_cmd[5][0], control_send->multi_arm_cmd[5][1], control_send->joint_pid[5].Kp, control_send->joint_pid[5].Kd, control_send->multi_arm_cmd[5][2]);
 			CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[6], control_send->multi_arm_cmd[6][0], control_send->multi_arm_cmd[6][1], control_send->joint_pid[6].Kp, control_send->joint_pid[6].Kd, control_send->multi_arm_cmd[6][2]);
-		}
 	}
 //				CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[1], 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
 //				CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[2], 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
@@ -645,6 +741,58 @@ void arm_update_control(gimbal_control_t *add_angle)
 
 		return;
 	}
+	else if(ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)
+	{
+		for(uint8_t i = 0; i < ARM_JOINT_NUM; i++)
+		{
+			add_angle->multi_arm_set[i][1] = 0.0f;   // 速度指令清零，保持阻尼
+		}
+
+		if (!g_have_tool_goal)
+		{
+			for (uint8_t i = 0; i < 16; i++)
+			{
+				g_T_tool_goal[i] = g_T_tool_cur[i];
+			}
+			g_have_tool_goal = 1U;
+		}
+
+		/* 按住 E：工具坐标系下沿 z 轴连续移动；松开：不再更新目标，保持最后姿态 */
+		if (add_angle->gimbal_rc_ctrl->key.v & CHASSIS_TURNRIGHT_KEY)
+		{
+			float T_next[16];
+			tool_relative_translate(g_T_tool_goal, 0.0f, 0.0f, ARM_SEMI_AUTO_Z_SPEED * GIMBAL_CONTROL_TIME / 1000.0f, T_next);
+
+			for (uint8_t i = 0; i < 16; i++)
+			{
+				g_T_tool_goal[i] = T_next[i];
+			}
+		}
+
+		g_semi_auto_ik_valid = compute_desired_joint_angles(g_T_tool_goal, g_theta_kin_cur, g_theta_kin_des);
+
+		if (g_semi_auto_ik_valid)
+		{
+			kin_theta_to_motor_pos(g_theta_kin_des, g_motor_pos_des);
+
+			for (uint8_t i = 0; i < 6; i++)
+			{
+				add_angle->multi_arm_set[i][0] = g_motor_pos_des[i];
+			}
+		}
+		else
+		{
+			/* 逆解失败时，保持当前关节位置，避免乱跳 */
+			for (uint8_t i = 0; i < 6; i++)
+			{
+				add_angle->multi_arm_set[i][0] = add_angle->joint_motor[i].motor_measure->pos;
+			}
+		}
+
+		/* 其余两个附加轴保持当前 */
+		add_angle->multi_arm_set[6][0] = add_angle->joint_motor[6].motor_measure->pos;
+		add_angle->multi_arm_set[7][0] = J7_ZERO_ANGLE;
+	}
     else if(ARM_JOINT_BEHAVIOUR == ARM_INIT)
     {
         for(uint8_t i = 0; i < ARM_JOINT_NUM; i++)
@@ -731,13 +879,12 @@ void Initial_position_safety_check(gimbal_control_t *position)
 }
 void gra_theta_calcu(gimbal_control_t *pos_angle, float *position_calcu)
 {
-		position_calcu[0] = pos_angle->joint_motor[0].motor_measure->pos + J0_ZERO_ANGLE;  // J0关节
+		position_calcu[0] = PI/2 + pos_angle->joint_motor[0].motor_measure->pos - J0_ZERO_ANGLE;  // J0关节
 		position_calcu[1] = -(PI/2 + pos_angle->joint_motor[1].motor_measure->pos - J1_ZERO_ANGLE);  // J1关节
 		position_calcu[2] = -PI/2 - (pos_angle->joint_motor[2].motor_measure->pos - J2_ZERO_ANGLE)/1.4446f;  // J2关节
 		position_calcu[3] = -(pos_angle->joint_motor[3].motor_measure->pos - J3_ZERO_ANGLE);  // J3关节
 		position_calcu[4] = -pos_angle->joint_motor[4].motor_measure->pos + J4_ZERO_ANGLE;  // J4关节
-		position_calcu[5] = pos_angle->joint_motor[5].motor_measure->pos + J5_ZERO_ANGLE;  // J5关节
+		position_calcu[5] = pos_angle->joint_motor[5].motor_measure->pos - J5_ZERO_ANGLE;  // J5关节
 }
-
 
 #endif  // ROBOT_GIMBAL == multi_axis_robotic_arm

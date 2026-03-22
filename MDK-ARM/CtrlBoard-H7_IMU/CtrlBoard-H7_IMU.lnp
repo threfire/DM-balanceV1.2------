@@ -71,6 +71,7 @@
 "ctrlboard-h7_imu\fifo.o"
 "ctrlboard-h7_imu\crc8_crc16.o"
 "ctrlboard-h7_imu\gravity.o"
+"ctrlboard-h7_imu\kinematics.o"
 "ctrlboard-h7_imu\mahony_filter.o"
 "ctrlboard-h7_imu\quaternionekf.o"
 "ctrlboard-h7_imu\kalman_filter.o"

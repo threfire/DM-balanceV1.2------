@@ -92,3 +92,4 @@ ctrlboard-h7_imu\multi-axis_robotic_arm.o: ../Middlewares/Third_Party/FreeRTOS/S
 ctrlboard-h7_imu\multi-axis_robotic_arm.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 ctrlboard-h7_imu\multi-axis_robotic_arm.o: ../User/Controller/crc8_crc16.h
 ctrlboard-h7_imu\multi-axis_robotic_arm.o: ../Core/Inc/tim.h
+ctrlboard-h7_imu\multi-axis_robotic_arm.o: ../User/Controller/kinematics.h

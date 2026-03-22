@@ -30,7 +30,7 @@
 #define J2_ZERO_ANGLE (-4.27f)
 #define J3_ZERO_ANGLE (3.14f)
 #define J4_ZERO_ANGLE (3.7f)
-#define J5_ZERO_ANGLE (4.64f)
+#define J5_ZERO_ANGLE (2.64f)
 #define J6_ZERO_ANGLE (2.4f)
 #define J7_ZERO_ANGLE (2.08f)
 //最大最小角度
@@ -45,7 +45,7 @@
 
 #define J0_MIN_ANLE (J0_ZERO_ANGLE-1.0f)
 #define J1_MIN_ANLE (J1_ZERO_ANGLE -1.4f)
-#define J2_MIN_ANLE (J2_ZERO_ANGLE + 1.0f)
+#define J2_MIN_ANLE (J2_ZERO_ANGLE + 1.2f)
 #define J3_MIN_ANLE (J3_ZERO_ANGLE-2.1f)
 #define J4_MIN_ANLE (J4_ZERO_ANGLE-1.5f)
 #define J5_MIN_ANLE (J5_ZERO_ANGLE-1.6f)
@@ -57,7 +57,7 @@
 #define J2_INIT_ANGLE (-0.15f)
 #define J3_INIT_ANGLE (3.14f)
 #define J4_INIT_ANGLE (3.80f)
-#define J5_INIT_ANGLE (4.64f)
+#define J5_INIT_ANGLE (2.64f)
 #define J6_INIT_ANGLE (2.45f)
 #define J7_INIT_ANGLE (2.08f)//大yaw
 
@@ -129,12 +129,16 @@
 //机械臂电机控制通道
 #define HORI_CHANNEL                2
 #define VERT_CHANNEL                3
+
+#define ARM_SEMI_AUTO_ENABLE        1
+#define ARM_SEMI_AUTO_Z_SPEED       0.030f   // m/s，按住E键时工具坐标系z轴移动速度
 typedef enum
 {
   ARM_NONE,
   ARM_HOLD,
   ARM_RC,
   ARM_SELF,
+  ARM_SEMI_AUTO,
   ARM_INIT
 }arm_joint_e;
 typedef __packed struct 

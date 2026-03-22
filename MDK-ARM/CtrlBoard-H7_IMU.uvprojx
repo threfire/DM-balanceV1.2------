@@ -1254,6 +1254,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\Controller\GRAVITY.c</FilePath>
             </File>
+            <File>
+              <FileName>kinematics.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\Controller\kinematics.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
