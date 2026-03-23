@@ -563,18 +563,18 @@ static void chassis_infantry_follow_gimbal_yaw_control(fp32 *vx_set, fp32 *vy_se
 
     //judge if swing
     //判断是否要摇摆
-    if (chassis_move_rc_to_vector->chassis_RC->key.v & SWING_KEY)
-    {
-        if (swing_flag == 0)
-        {
-            swing_flag = 1;
-            swing_time = 0.0f;
-        }
-    }
-    else
-    {
-        swing_flag = 0;
-    }
+//    if (chassis_move_rc_to_vector->chassis_RC->key.v & SWING_KEY)
+//    {
+//        if (swing_flag == 0)
+//        {
+//            swing_flag = 1;
+//            swing_time = 0.0f;
+//        }
+//    }
+//    else
+//    {
+//        swing_flag = 0;
+//    }
 
     //judge if keyboard is controlling the chassis, if yes, reduce the max_angle
     //判断键盘输入是不是在控制底盘运动，底盘在运动减小摇摆角度
@@ -657,7 +657,7 @@ static void chassis_engineer_follow_chassis_yaw_control(fp32 *vx_set, fp32 *vy_s
         int16_t wz_channel = chassis_move_rc_to_vector->chassis_RC->rc.ch[CHASSIS_WZ_CHANNEL];
         int16_t wz_processed = 0;
         rc_deadband_limit(wz_channel, wz_processed, CHASSIS_RC_DEADLINE);
-        delta_angle = -wz_processed * CHASSIS_ANGLE_Z_RC_SEN;   // 符号与摇杆方向一致
+        delta_angle = wz_processed * CHASSIS_ANGLE_Z_RC_SEN;   // 符号与摇杆方向一致
     }
 
     // 累加目标角度并归一化到 [-π, π]

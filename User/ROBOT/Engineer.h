@@ -6,7 +6,7 @@
 
 /* ================= 重力补偿 ================= */
 #define GRAVITY 9.81f  // 重力加速度 m/s²
-#define GRAVITY_COMPENSATION_ENABLE 0  // 使能重力补偿
+#define GRAVITY_COMPENSATION_ENABLE 1  // 使能重力补偿
 //单位：m
 #ifndef J0_length
 #define J0_length 0.5f
@@ -89,7 +89,7 @@
 #define CHASSIS_WZ_RC_SEN             0.004f
 #define CHASSIS_ACCEL_X_NUM           0.1666666667f
 #define CHASSIS_ACCEL_Y_NUM           0.3333333333f
-#define CHASSIS_KEY_TURN_ANGLE_RATE   (2.0f)
+#define CHASSIS_KEY_TURN_ANGLE_RATE   (1.5f)
 #define CHASSIS_RC_DEADLINE           25
 #define MOTOR_SPEED_TO_CHASSIS_SPEED_VX 0.25f
 #define MOTOR_SPEED_TO_CHASSIS_SPEED_VY 0.25f
@@ -112,8 +112,8 @@
 #define M3508_MOTOR_RPM_TO_VECTOR     0.000415809748903494517209f
 #define CHASSIS_MOTOR_RPM_TO_VECTOR_SEN M3508_MOTOR_RPM_TO_VECTOR
 #define MAX_WHEEL_SPEED               4.0f
-#define NORMAL_MAX_CHASSIS_SPEED_X    1.5f
-#define NORMAL_MAX_CHASSIS_SPEED_Y    1.5f
+#define NORMAL_MAX_CHASSIS_SPEED_X    1.2f
+#define NORMAL_MAX_CHASSIS_SPEED_Y    1.2f
 #define CHASSIS_WZ_MAX_SPEED			2.5f
 #define CHASSIS_WZ_SET_SCALE          0.1f
 #define SWING_NO_MOVE_ANGLE           0.7f

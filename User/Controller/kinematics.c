@@ -77,7 +77,7 @@ static float clampf_ik(float x, float lo, float hi)
 }
 
 /* 4x4¾ØÕó³Ë·¨£ºC = A * B£¬ÐÐÖ÷Ðò */
-static void mat_mul44(const float A[16], const float B[16], float C[16])
+void mat_mul44(const float A[16], const float B[16], float C[16])
 {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {

@@ -101,13 +101,17 @@ float theta_calculated[6];//变换得到的计算用运动学角
 //运动学正逆解变量（等测试好以后换成静态）
 float g_theta_kin_cur[6];
 float g_theta_kin_des[6];
+float g_theta_kin_des_test[6];
+float test_motor_pos[6];
+float g_theta_kin_ref[6];
 float g_T_tool_cur[16];
 float g_T_tool_goal[16];
-
+float g_motor_pos_des[6];
+uint8_t g_theta_ref_initialized = 0U;
 uint8_t g_have_tool_goal = 0;
 uint8_t g_semi_auto_latched = 0;
 uint8_t g_semi_auto_ik_valid = 0;
-float g_motor_pos_des[6];
+
 
 static inline float clampf(float v, float lo, float hi)
 {
@@ -172,7 +176,8 @@ __attribute__((used)) void gimbal_feedback_update(gimbal_control_t *feedback_upd
 	}
 	gravity_compensation(theta_calculated,tauqe_calculated);
 	//逆运动学
-//	compute_desired_joint_angles(g_T_tool_cur, g_theta_kin_cur, g_theta_kin_des);			
+//	compute_desired_joint_angles(g_T_tool_cur, g_theta_kin_cur, g_theta_kin_des_test);	
+//		kin_theta_to_motor_pos(g_theta_kin_des_test, test_motor_pos);
     //遥控器掉线检测
     if((HAL_GetTick() - feedback_update->gimbal_rc_ctrl->last_fdb) > TIMEOUT)
     {
@@ -392,11 +397,15 @@ __attribute__((used)) void gimbal_mode_change_control_transit(gimbal_control_t *
     }
 	if(last_ARM_JOINT_BEHAVIOUR != ARM_SEMI_AUTO && ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)
     {
-        for(uint8_t i = 0; i < ARM_JOINT_NUM; i++)
-        {
-            gimbal_mode_change->multi_arm_set[i][0] = 0.0f;
-            gimbal_mode_change->multi_arm_set[i][1] = 0.0f;
-        }
+        for (uint8_t i = 0; i < 6; i++)
+		{
+			gimbal_mode_change->multi_arm_set[i][0] = gimbal_mode_change->joint_motor[i].motor_measure->pos;
+			gimbal_mode_change->multi_arm_set[i][1] = 0.0f;
+		}
+		gimbal_mode_change->multi_arm_set[6][0] = gimbal_mode_change->joint_motor[6].motor_measure->pos;
+		gimbal_mode_change->multi_arm_set[6][1] = 0.0f;
+		gimbal_mode_change->multi_arm_set[7][0] = J7_ZERO_ANGLE;
+		gimbal_mode_change->multi_arm_set[7][1] = 0.0f;
 
         /* 进入半自动时，锁存当前工具位姿为目标位姿 */
         for (uint8_t i = 0; i < 16; i++)
@@ -405,11 +414,18 @@ __attribute__((used)) void gimbal_mode_change_control_transit(gimbal_control_t *
         }
         g_have_tool_goal = 1U;
         g_semi_auto_ik_valid = 0U;
+		//滤波器复位
+		for (uint8_t i = 0; i < 6; i++)
+		{
+			g_theta_kin_ref[i] = g_theta_kin_cur[i];
+		}
+		g_theta_ref_initialized = 1U;
     }
 	if(last_ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO && ARM_JOINT_BEHAVIOUR != ARM_SEMI_AUTO)
 	{
 		g_have_tool_goal = 0U;
 		g_semi_auto_ik_valid = 0U;
+		g_theta_ref_initialized = 0U;
 	}
 	
 	last_ARM_JOINT_BEHAVIOUR = ARM_JOINT_BEHAVIOUR;
@@ -719,7 +735,7 @@ void arm_update_control(gimbal_control_t *add_angle)
 		// 一阶低通滤波
 		static float filtered_pos[ARM_JOINT_NUM] = {0};
 		static uint8_t first_run = 1;
-		const float alpha = 0.8f;  // 滤波系数,越小越平滑
+		const float alpha = 0.6f;  // 滤波系数,越小越平滑
 
 		if (first_run) {
 			// 首次进入 SELF 模式时，直接用目标值初始化滤波器
@@ -741,11 +757,11 @@ void arm_update_control(gimbal_control_t *add_angle)
 
 		return;
 	}
-	else if(ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)
+	else if(ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)//半自动模式
 	{
 		for(uint8_t i = 0; i < ARM_JOINT_NUM; i++)
 		{
-			add_angle->multi_arm_set[i][1] = 0.0f;   // 速度指令清零，保持阻尼
+			add_angle->multi_arm_set[i][1] = 0.0f;   // 速度指令清零
 		}
 
 		if (!g_have_tool_goal)
@@ -757,23 +773,56 @@ void arm_update_control(gimbal_control_t *add_angle)
 			g_have_tool_goal = 1U;
 		}
 
-		/* 按住 E：工具坐标系下沿 z 轴连续移动；松开：不再更新目标，保持最后姿态 */
-		if (add_angle->gimbal_rc_ctrl->key.v & CHASSIS_TURNRIGHT_KEY)
+		/* R键上升沿：基座坐标系z轴正向单步移动，姿态保持不变 */
 		{
-			float T_next[16];
-			tool_relative_translate(g_T_tool_goal, 0.0f, 0.0f, ARM_SEMI_AUTO_Z_SPEED * GIMBAL_CONTROL_TIME / 1000.0f, T_next);
+			static uint8_t last_r_key = 0U;
+			uint8_t r_key_now = ((add_angle->gimbal_rc_ctrl->key.v & ENDTOOL_UP_KEY) != 0U);
 
-			for (uint8_t i = 0; i < 16; i++)
+			if (r_key_now && !last_r_key)
 			{
-				g_T_tool_goal[i] = T_next[i];
+				float T_rel[16] = {
+					1,0,0,0,
+					0,1,0,0,
+					0,0,1,0.05,
+					0,0,0,1
+				};
+				float T_next[16];
+				mat_mul44(T_rel, g_T_tool_goal, T_next);   // 注意：左乘
+				for (uint8_t i = 0; i < 16; i++)
+				{
+					g_T_tool_goal[i] = T_next[i];
+				}
 			}
+
+			last_r_key = r_key_now;
 		}
 
+		/* 目标工具位姿 -> 逆解关节角 */
 		g_semi_auto_ik_valid = compute_desired_joint_angles(g_T_tool_goal, g_theta_kin_cur, g_theta_kin_des);
 
 		if (g_semi_auto_ik_valid)
 		{
-			kin_theta_to_motor_pos(g_theta_kin_des, g_motor_pos_des);
+			/* 逆解结果出来后，立即在关节角空间做低通 */
+			if (!g_theta_ref_initialized)
+			{
+				for (uint8_t i = 0; i < 6; i++)
+				{
+					g_theta_kin_ref[i] = g_theta_kin_des[i];
+				}
+				g_theta_ref_initialized = 1U;
+			}
+			else
+			{
+				for (uint8_t i = 0; i < 6; i++)
+				{
+					g_theta_kin_ref[i] =
+						g_theta_kin_ref[i] +
+						ARM_SEMI_AUTO_THETA_ALPHA * (g_theta_kin_des[i] - g_theta_kin_ref[i]);
+				}
+			}
+
+			/* 滤波后的关节角 -> 电机位置 */
+			kin_theta_to_motor_pos(g_theta_kin_ref, g_motor_pos_des);
 
 			for (uint8_t i = 0; i < 6; i++)
 			{
@@ -782,16 +831,18 @@ void arm_update_control(gimbal_control_t *add_angle)
 		}
 		else
 		{
-			/* 逆解失败时，保持当前关节位置，避免乱跳 */
+			/* 逆解失败时保持当前关节，避免乱跳 */
 			for (uint8_t i = 0; i < 6; i++)
 			{
 				add_angle->multi_arm_set[i][0] = add_angle->joint_motor[i].motor_measure->pos;
 			}
 		}
 
-		/* 其余两个附加轴保持当前 */
+		/* 附加轴保持 */
 		add_angle->multi_arm_set[6][0] = add_angle->joint_motor[6].motor_measure->pos;
 		add_angle->multi_arm_set[7][0] = J7_ZERO_ANGLE;
+
+		return;
 	}
     else if(ARM_JOINT_BEHAVIOUR == ARM_INIT)
     {

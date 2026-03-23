@@ -35,6 +35,8 @@ uint8_t usart10_buf[ USART10_RX_BUF_LENGHT ];//设置缓冲区
 uint8_t prame[39];
 uint8_t rx_index = 0;
 uint8_t packet_complete = 0;
+uint8_t test_evt ;
+uint8_t test_size;
 //串口1发送函数
 void USART1_Transmit_DMA(uint8_t *pData, uint16_t Size)
 {
@@ -299,10 +301,14 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef * huart, uint16_t Size)
 
 	if(huart->Instance == USART10)
 	{
-		parse_data(usart10_buf, Size);   // 处理接收到的数据
-        // 重启 DMA 
-        HAL_UARTEx_ReceiveToIdle_DMA(&huart10, usart10_buf, USART10_RX_BUF_LENGHT);
-
+		 HAL_UART_RxEventTypeTypeDef evt = HAL_UARTEx_GetRxEventType(huart);
+			test_evt = evt;
+			test_size = Size;
+		if (evt == HAL_UART_RXEVENT_IDLE)
+		{
+			parse_data(usart10_buf, Size);   // 处理接收到的数据
+			HAL_UARTEx_ReceiveToIdle_DMA(&huart10, usart10_buf, USART10_RX_BUF_LENGHT);
+		}
 	}
 	
 }

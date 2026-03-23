@@ -19,7 +19,7 @@
 #include "main.h"
 
 #define USART_RX_BUF_LENGHT     512
-#define USART10_RX_BUF_LENGHT     1024
+#define USART10_RX_BUF_LENGHT     128
 #define REFEREE_FIFO_BUF_LENGTH 1024
 #define REF_PROTOCOL_FRAME_MAX_SIZE 192
 extern uint8_t usart6_buf[2][USART_RX_BUF_LENGHT];

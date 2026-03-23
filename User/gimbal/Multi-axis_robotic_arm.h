@@ -38,7 +38,7 @@
 #define J1_MAX_ANGLE (J1_ZERO_ANGLE +1.0f)
 #define J2_MAX_ANGLE (J2_ZERO_ANGLE+4.0f)
 #define J3_MAX_ANGLE (J3_ZERO_ANGLE+2.1f)
-#define J4_MAX_ANGLE (J4_ZERO_ANGLE+1.5f)
+#define J4_MAX_ANGLE (J4_ZERO_ANGLE+2.4f)
 #define J5_MAX_ANGLE (J5_ZERO_ANGLE+1.6f)
 #define J6_MAX_ANGLE (3.0f)
 #define J7_MAX_ANGLE (J7_ZERO_ANGLE +1.0f)
@@ -47,9 +47,9 @@
 #define J1_MIN_ANLE (J1_ZERO_ANGLE -1.4f)
 #define J2_MIN_ANLE (J2_ZERO_ANGLE + 1.2f)
 #define J3_MIN_ANLE (J3_ZERO_ANGLE-2.1f)
-#define J4_MIN_ANLE (J4_ZERO_ANGLE-1.5f)
+#define J4_MIN_ANLE (J4_ZERO_ANGLE-2.4f)
 #define J5_MIN_ANLE (J5_ZERO_ANGLE-1.6f)
-#define J6_MIN_ANLE (1.65f)
+#define J6_MIN_ANLE (1.30f)
 #define J7_MIN_ANLE (J7_ZERO_ANGLE -1.0f)
 //上电角度
 #define J0_INIT_ANGLE (0.15f)
@@ -62,9 +62,9 @@
 #define J7_INIT_ANGLE (2.08f)//大yaw
 
 #define GAR_GAIN0 10
-#define GAR_GAIN1 0.9
+#define GAR_GAIN1 1.0
 #define GAR_GAIN2 2.5
-#define GAR_GAIN3 10
+#define GAR_GAIN3 8
 #define GAR_GAIN4 13
 #define GAR_GAIN5 10
 #define GAR_GAIN6 10
@@ -83,7 +83,7 @@
 #define J3_KP (2.0f)
 #endif
 #ifndef J4_KP
-#define J4_KP (2.0f)
+#define J4_KP (2.4f)
 #endif
 #ifndef J5_KP
 #define J5_KP (0.9f)
@@ -105,13 +105,13 @@
 #define J2_KD (0.2f)
 #endif
 #ifndef J3_KD
-#define J3_KD (0.1f)
+#define J3_KD (0.12f)
 #endif
 #ifndef J4_KD
-#define J4_KD (0.1f)
+#define J4_KD (0.12f)
 #endif
 #ifndef J5_KD
-#define J5_KD (0.08f)
+#define J5_KD (0.1f)
 #endif
 #ifndef J6_KD
 #define J6_KD (0.4f)
@@ -131,7 +131,8 @@
 #define VERT_CHANNEL                3
 
 #define ARM_SEMI_AUTO_ENABLE        1
-#define ARM_SEMI_AUTO_Z_SPEED       0.030f   // m/s，按住E键时工具坐标系z轴移动速度
+#define ARM_SEMI_AUTO_STEP_Z        0.010f   // m，按下R时工具坐标系z轴正向单步移动距离
+#define ARM_SEMI_AUTO_THETA_ALPHA   0.4f    // 半自动逆解角低通系数，越小越平滑
 typedef enum
 {
   ARM_NONE,

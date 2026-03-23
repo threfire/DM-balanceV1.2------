@@ -8,7 +8,7 @@
 
 /* 工具末端相对于关节6坐标系的偏移（沿z轴正向） */
 #define TOOL_OFFSET_Z 0.18f   // 单位：米
-
+void mat_mul44(const float A[16], const float B[16], float C[16]);
 /**
  * 正运动学：计算从基座到指定关节的齐次变换矩阵
  * @param theta  关节角度数组（6个，单位：弧度）

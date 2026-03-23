@@ -27,7 +27,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
 #include "referee_usart_task.h"
-extern uint8_t usart10_buf[ USART10_RX_BUF_LENGHT ];
+
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -397,7 +397,6 @@ void USART10_IRQHandler(void)
   HAL_UART_IRQHandler(&huart10);
   /* USER CODE BEGIN USART10_IRQn 1 */
 	
-	HAL_UART_Receive_IT(&huart10, usart10_buf, USART10_RX_BUF_LENGHT );
   /* USER CODE END USART10_IRQn 1 */
 }
 
