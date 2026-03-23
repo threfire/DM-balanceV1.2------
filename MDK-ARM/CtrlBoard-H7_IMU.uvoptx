@@ -390,6 +390,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>test_size</ItemText>
         </Ww>
+        <Ww>
+          <count>46</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pwm_ccr_set,0x0A</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -1539,7 +1544,7 @@
       <GroupNumber>10</GroupNumber>
       <FileNumber>74</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\User\Controller\kinematics.c</PathWithFileName>

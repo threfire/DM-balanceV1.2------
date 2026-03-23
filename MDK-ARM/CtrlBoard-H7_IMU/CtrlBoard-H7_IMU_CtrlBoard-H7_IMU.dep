@@ -1,6 +1,6 @@
 Dependencies for Project 'CtrlBoard-H7_IMU', Target 'CtrlBoard-H7_IMU': (DO NOT MODIFY !)
 CompilerVersion: 5060528::V5.06 update 5 (build 528)::ARMCC
-F (../Core/Src/main.c)(0x69BDC7C3)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\main.o --omf_browse ctrlboard-h7_imu\main.crf --depend ctrlboard-h7_imu\main.d)
+F (../Core/Src/main.c)(0x69C138CE)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\main.o --omf_browse ctrlboard-h7_imu\main.crf --depend ctrlboard-h7_imu\main.d)
 I (../Core/Inc/main.h)(0x69BABA4B)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h)(0x690DC8D6)
 I (../Core/Inc/stm32h7xx_hal_conf.h)(0x694C258D)
@@ -96,8 +96,8 @@ I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/remote_control.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
 I (../User/Bsp/bsp_flash.h)(0x694C2654)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Bsp/bsp_usb.h)(0x694C2654)
 I (../USB_DEVICE/App/usbd_cdc_if.h)(0x694C2654)
 I (../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h)(0x690DC8D7)
@@ -250,8 +250,8 @@ I (../User/APP/chassis_power_control.h)(0x694C2654)
 I (../User/APP/chassis_task.h)(0x69BEC55F)
 I (../User/APP/gimbal_task.h)(0x69BBD421)
 I (../User/Algorithm/PID/pid.h)(0x694C2654)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../User/Algorithm/VMC/VMC_calc.h)(0x694C2654)
 I (../User/APP/calibrate_task.h)(0x694C2654)
@@ -639,7 +639,7 @@ I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h)(0x690DC8D6)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h)(0x690DC8D6)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h)(0x690DC8D6)
 I (../User/Bsp/bsp_dwt.h)(0x694C24DA)
-F (../Core/Src/tim.c)(0x69BABD86)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\tim.o --omf_browse ctrlboard-h7_imu\tim.crf --depend ctrlboard-h7_imu\tim.d)
+F (../Core/Src/tim.c)(0x69C0F5CC)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\tim.o --omf_browse ctrlboard-h7_imu\tim.crf --depend ctrlboard-h7_imu\tim.d)
 I (../Core/Inc/tim.h)(0x694C24B0)
 I (../Core/Inc/main.h)(0x69BABA4B)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h)(0x690DC8D6)
@@ -692,7 +692,7 @@ I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h)(0x690DC8D6)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h)(0x690DC8D6)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h)(0x690DC8D6)
 I (../User/Bsp/bsp_dwt.h)(0x694C24DA)
-F (../Core/Src/usart.c)(0x69BDC6D4)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\usart.o --omf_browse ctrlboard-h7_imu\usart.crf --depend ctrlboard-h7_imu\usart.d)
+F (../Core/Src/usart.c)(0x69C0F72A)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\usart.o --omf_browse ctrlboard-h7_imu\usart.crf --depend ctrlboard-h7_imu\usart.d)
 I (../Core/Inc/usart.h)(0x694C24B0)
 I (../Core/Inc/main.h)(0x69BABA4B)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h)(0x690DC8D6)
@@ -1049,8 +1049,8 @@ I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/remote_control.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (..\User\APP\robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (..\User\APP\robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -1340,8 +1340,8 @@ I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/remote_control.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
 I (..\User\APP\gimbal_task.h)(0x69BBD421)
-I (..\User\APP\robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (..\User\APP\robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (..\User\APP\chassis_power_control.h)(0x694C2654)
 I (..\User\APP\chassis_task.h)(0x69BEC55F)
 I (../User/Lib/user_lib.h)(0x694C2654)
@@ -1437,8 +1437,8 @@ I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/remote_control.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (..\User\APP\robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (..\User\APP\robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -1533,8 +1533,8 @@ I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/remote_control.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (..\User\APP\robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (..\User\APP\robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -1559,7 +1559,7 @@ I (D:\Keil5\ARM\ARMCC\include\float.h)(0x588B8344)
 I (../User/Algorithm/VMC/VMC_calc.h)(0x694C2654)
 I (..\User\APP\referee.h)(0x694C24DA)
 I (..\User\APP\detect_task.h)(0x694C2654)
-F (..\User\APP\chassis_behaviour.c)(0x69C0A6D9)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\chassis_behaviour.o --omf_browse ctrlboard-h7_imu\chassis_behaviour.crf --depend ctrlboard-h7_imu\chassis_behaviour.d)
+F (..\User\APP\chassis_behaviour.c)(0x69C105D4)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\chassis_behaviour.o --omf_browse ctrlboard-h7_imu\chassis_behaviour.crf --depend ctrlboard-h7_imu\chassis_behaviour.d)
 I (..\User\APP\chassis_behaviour.h)(0x694C2654)
 I (..\User\APP\struct_typedef.h)(0x694C24DA)
 I (..\User\APP\chassis_task.h)(0x69BEC55F)
@@ -1627,8 +1627,8 @@ I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/remote_control.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (..\User\APP\robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (..\User\APP\robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -1719,8 +1719,8 @@ I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/remote_control.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (..\User\APP\robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (..\User\APP\robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../Drivers/CMSIS/DSP/Include/arm_math.h)(0x690DC8D5)
 I (D:\Keil5\ARM\ARMCC\include\float.h)(0x588B8344)
 I (../User/Bsp/bsp_PWM.h)(0x69BAAF02)
@@ -1807,8 +1807,8 @@ I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/remote_control.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (..\User\APP\robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (..\User\APP\robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
 I (../Core/Inc/FreeRTOSConfig.h)(0x694C40B1)
@@ -1910,8 +1910,8 @@ I (..\User\APP\gimbal_task.h)(0x69BBD421)
 I (../User/Bsp/can_bsp.h)(0x695E22E1)
 I (../Core/Inc/fdcan.h)(0x694C24B0)
 I (../User/Algorithm/PID/pid.h)(0x694C2654)
-I (..\User\APP\robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (..\User\APP\robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (..\User\APP\gimbal_behaviour.h)(0x694C2654)
 I (..\User\APP\message_task.h)(0x694C2654)
 I (..\User\APP\shoot.h)(0x694C2654)
@@ -2037,8 +2037,8 @@ I (..\User\APP\gimbal_task.h)(0x69BBD421)
 I (../User/Bsp/can_bsp.h)(0x695E22E1)
 I (../Core/Inc/fdcan.h)(0x694C24B0)
 I (../User/Algorithm/PID/pid.h)(0x694C2654)
-I (..\User\APP\robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (..\User\APP\robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 F (..\User\APP\detect_task.c)(0x694C2654)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\detect_task.o --omf_browse ctrlboard-h7_imu\detect_task.crf --depend ctrlboard-h7_imu\detect_task.d)
 I (..\User\APP\detect_task.h)(0x694C2654)
 I (..\User\APP\struct_typedef.h)(0x694C24DA)
@@ -2129,11 +2129,11 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x690DC8D8)
 I (..\User\APP\detect_task.h)(0x694C2654)
-F (..\User\APP\robot_param.h)(0x69C0AD6D)()
+F (..\User\APP\robot_param.h)(0x69C1324B)()
 F (..\User\APP\robot_param.c)(0x694C2654)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\robot_param.o --omf_browse ctrlboard-h7_imu\robot_param.crf --depend ctrlboard-h7_imu\robot_param.d)
-I (..\User\APP\robot_param.h)(0x69C0AD6D)
+I (..\User\APP\robot_param.h)(0x69C1324B)
 I (..\User\APP\struct_typedef.h)(0x694C24DA)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 F (..\User\APP\observer.c)(0x694C2654)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\observer.o --omf_browse ctrlboard-h7_imu\observer.crf --depend ctrlboard-h7_imu\observer.d)
 I (..\User\APP\observer.h)(0x694C2654)
 I (D:\Keil5\ARM\ARMCC\include\stdint.h)(0x691DDF33)
@@ -2208,8 +2208,8 @@ I (D:\Keil5\ARM\ARMCC\include\stdio.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/remote_control.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (..\User\APP\robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (..\User\APP\robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -2310,8 +2310,8 @@ I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/remote_control.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (..\User\APP\robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (..\User\APP\robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (..\User\APP\INS_task.h)(0x694C2654)
 I (../User/Devices/BMI088/BMI088driver.h)(0x694C2654)
@@ -2400,8 +2400,8 @@ I (../User/Controller/fifo.h)(0x694C24DA)
 I (D:\Keil5\ARM\ARMCC\include\stdio.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -2420,7 +2420,7 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x690DC8D8
 I (../User/Algorithm/VMC/VMC_calc.h)(0x694C2654)
 I (../User/APP/chassis_behaviour.h)(0x694C2654)
 F (..\User\ROBOT\Engineer.c)(0x69BBDA9D)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\engineer.o --omf_browse ctrlboard-h7_imu\engineer.crf --depend ctrlboard-h7_imu\engineer.d)
-I (..\User\ROBOT\Engineer.h)(0x69C0A76E)
+I (..\User\ROBOT\Engineer.h)(0x69C16CA2)
 I (../User/APP/struct_typedef.h)(0x694C24DA)
 I (../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h)(0x690DC8D3)
 I (../Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h)(0x690DC8D2)
@@ -2485,7 +2485,7 @@ I (D:\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
+I (../User/APP/robot_param.h)(0x69C1324B)
 F (..\User\ROBOT\Hero.c)(0x694C24DA)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\hero.o --omf_browse ctrlboard-h7_imu\hero.crf --depend ctrlboard-h7_imu\hero.d)
 I (..\User\ROBOT\Hero.h)(0x694C2654)
 F (..\User\ROBOT\Infantry_robot.c)(0x694C2654)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\infantry_robot.o --omf_browse ctrlboard-h7_imu\infantry_robot.crf --depend ctrlboard-h7_imu\infantry_robot.d)
@@ -2554,8 +2554,8 @@ I (D:\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/APP/chassis_power_control.h)(0x694C2654)
 I (../User/APP/chassis_task.h)(0x69BEC55F)
 I (../User/Lib/user_lib.h)(0x694C2654)
@@ -2654,8 +2654,8 @@ I (D:\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -2746,8 +2746,8 @@ I (D:\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -2841,8 +2841,8 @@ I (D:\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -2933,8 +2933,8 @@ I (D:\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -2959,13 +2959,13 @@ I (D:\Keil5\ARM\ARMCC\include\float.h)(0x588B8344)
 I (../User/Algorithm/VMC/VMC_calc.h)(0x694C2654)
 I (../User/APP/chassis_behaviour.h)(0x694C2654)
 F (..\User\gimbal\double_yaw_pitch.c)(0x694C24DA)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\double_yaw_pitch.o --omf_browse ctrlboard-h7_imu\double_yaw_pitch.crf --depend ctrlboard-h7_imu\double_yaw_pitch.d)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/APP/struct_typedef.h)(0x694C24DA)
 F (..\User\gimbal\yaw_pitch_direct.c)(0x694C2654)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\yaw_pitch_direct.o --omf_browse ctrlboard-h7_imu\yaw_pitch_direct.crf --depend ctrlboard-h7_imu\yaw_pitch_direct.d)
 I (..\User\gimbal\yaw_pitch_direct.h)(0x694C2654)
 I (../User/APP/struct_typedef.h)(0x694C24DA)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/APP/gimbal_task.h)(0x69BBD421)
 I (../User/Bsp/can_bsp.h)(0x695E22E1)
 I (../Core/Inc/main.h)(0x69BABA4B)
@@ -3031,13 +3031,13 @@ I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
 I (../User/APP/gimbal_behaviour.h)(0x694C2654)
 F (..\User\gimbal\yaw_pitch_linkage.c)(0x694C24DA)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\yaw_pitch_linkage.o --omf_browse ctrlboard-h7_imu\yaw_pitch_linkage.crf --depend ctrlboard-h7_imu\yaw_pitch_linkage.d)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/APP/struct_typedef.h)(0x694C24DA)
-F (..\User\gimbal\Multi-axis_robotic_arm.c)(0x69C0A4C2)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\multi-axis_robotic_arm.o --omf_browse ctrlboard-h7_imu\multi-axis_robotic_arm.crf --depend ctrlboard-h7_imu\multi-axis_robotic_arm.d)
-I (..\User\gimbal\Multi-axis_robotic_arm.h)(0x69C0AEBE)
+F (..\User\gimbal\Multi-axis_robotic_arm.c)(0x69C16CA4)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\multi-axis_robotic_arm.o --omf_browse ctrlboard-h7_imu\multi-axis_robotic_arm.crf --depend ctrlboard-h7_imu\multi-axis_robotic_arm.d)
+I (..\User\gimbal\Multi-axis_robotic_arm.h)(0x69C16588)
 I (../User/APP/struct_typedef.h)(0x694C24DA)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/APP/gimbal_task.h)(0x69BBD421)
 I (../User/Bsp/can_bsp.h)(0x695E22E1)
 I (../Core/Inc/main.h)(0x69BABA4B)
@@ -3124,7 +3124,7 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h)(0x690DC8D8)
 I (../User/Controller/crc8_crc16.h)(0x694C2654)
 I (../Core/Inc/tim.h)(0x694C24B0)
-I (../User/Controller/kinematics.h)(0x69C08883)
+I (../User/Controller/kinematics.h)(0x69C16CB3)
 F (..\User\shoot\shoot_3508.c)(0x694C2654)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\shoot_3508.o --omf_browse ctrlboard-h7_imu\shoot_3508.crf --depend ctrlboard-h7_imu\shoot_3508.d)
 I (../User/APP/shoot.h)(0x694C2654)
 I (../User/APP/struct_typedef.h)(0x694C24DA)
@@ -3191,8 +3191,8 @@ I (D:\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -3275,8 +3275,8 @@ I (D:\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -3359,8 +3359,8 @@ I (D:\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/Lib/user_lib.h)(0x694C2654)
 I (../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h)(0x690DC8D8)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x690DC8D8)
@@ -3619,8 +3619,8 @@ I (../User/Bsp/bsp_usart.h)(0x694C3C07)
 I (../User/Controller/fifo.h)(0x694C24DA)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 F (..\User\Communication\example\device\platform_stm32.c)(0x694C2654)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\platform_stm32.o --omf_browse ctrlboard-h7_imu\platform_stm32.crf --depend ctrlboard-h7_imu\platform_stm32.d)
 I (..\User\Communication\example\device\../../core/platform.h)(0x694C2654)
 I (D:\Keil5\ARM\ARMCC\include\stdint.h)(0x691DDF33)
@@ -3819,8 +3819,8 @@ I (D:\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
 I (../User/APP/protocol.h)(0x694C2654)
 I (../User/APP/referee_usart_task.h)(0x69C09133)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
 I (../User/APP/gimbal_behaviour.h)(0x694C2654)
 I (../User/APP/message_task.h)(0x694C2654)
 I (../User/APP/shoot.h)(0x694C2654)
@@ -4078,9 +4078,9 @@ I (../User/APP/gimbal_task.h)(0x69BBD421)
 I (../User/Bsp/can_bsp.h)(0x695E22E1)
 I (../Core/Inc/fdcan.h)(0x694C24B0)
 I (../User/Algorithm/PID/pid.h)(0x694C2654)
-I (../User/APP/robot_param.h)(0x69C0AD6D)
-I (../User/ROBOT/Engineer.h)(0x69C0A76E)
-I (../User/gimbal/Multi-axis_robotic_arm.h)(0x69C0AEBE)
+I (../User/APP/robot_param.h)(0x69C1324B)
+I (../User/ROBOT/Engineer.h)(0x69C16CA2)
+I (../User/gimbal/Multi-axis_robotic_arm.h)(0x69C16588)
 I (../User/APP/gimbal_behaviour.h)(0x694C2654)
 I (../User/APP/INS_task.h)(0x694C2654)
 I (../User/Devices/BMI088/BMI088driver.h)(0x694C2654)
@@ -4566,8 +4566,8 @@ I (../Drivers/CMSIS/Include/cmsis_armcc.h)(0x690DC8D6)
 I (D:\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\math.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\float.h)(0x588B8344)
-F (..\User\Controller\kinematics.c)(0x69C08883)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\kinematics.o --omf_browse ctrlboard-h7_imu\kinematics.crf --depend ctrlboard-h7_imu\kinematics.d)
-I (..\User\Controller\kinematics.h)(0x69C08883)
+F (..\User\Controller\kinematics.c)(0x69C16CB3)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\kinematics.o --omf_browse ctrlboard-h7_imu\kinematics.crf --depend ctrlboard-h7_imu\kinematics.d)
+I (..\User\Controller\kinematics.h)(0x69C16CB3)
 I (D:\Keil5\ARM\ARMCC\include\math.h)(0x588B8344)
 F (..\User\Algorithm\mahony\mahony_filter.c)(0x694C2654)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\mahony_filter.o --omf_browse ctrlboard-h7_imu\mahony_filter.crf --depend ctrlboard-h7_imu\mahony_filter.d)
 I (..\User\Algorithm\mahony\mahony_filter.h)(0x694C2654)
@@ -4828,7 +4828,7 @@ I (../Drivers/CMSIS/DSP/Include/arm_math.h)(0x690DC8D5)
 I (D:\Keil5\ARM\ARMCC\include\string.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\float.h)(0x588B8344)
 I (D:\Keil5\ARM\ARMCC\include\stdlib.h)(0x588B8344)
-F (startup_stm32h723xx.s)(0x69BEBD50)(--cpu Cortex-M7.fp.dp -g --apcs=interwork --pd "__MICROLIB SETA 1" -I ../Core/Inc -I ../Drivers/CMSIS/Include-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include--pd "__UVISION_VERSION SETA 540" --pd "STM32H723xx SETA 1" --pd "_RTE_ SETA 1"--list startup_stm32h723xx.lst --xref -o ctrlboard-h7_imu\startup_stm32h723xx.o --depend ctrlboard-h7_imu\startup_stm32h723xx.d)
+F (startup_stm32h723xx.s)(0x69C0F72E)(--cpu Cortex-M7.fp.dp -g --apcs=interwork --pd "__MICROLIB SETA 1" -I ../Core/Inc -I ../Drivers/CMSIS/Include-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include--pd "__UVISION_VERSION SETA 540" --pd "STM32H723xx SETA 1" --pd "_RTE_ SETA 1"--list startup_stm32h723xx.lst --xref -o ctrlboard-h7_imu\startup_stm32h723xx.o --depend ctrlboard-h7_imu\startup_stm32h723xx.d)
 F (../Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c)(0x690DC8D6)(--c99 --gnu -c --cpu Cortex-M7.fp.dp -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/CMSIS/DSP/Include -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../User/Algorithm/EKF -I ../User/Algorithm/kalman -I ../User/Algorithm/mahony -I ../User/APP -I ../User/Bsp -I ../User/Devices/BMI088 -I ../User/Algorithm/VMC -I ../User/Controller -I ../User/Lib -I ../User/Algorithm/PID -I ../User/Devices/oled -I ../User/ROBOT -I ../User/shoot -I ../User/chassis -I ../User/gimbal -I ../User/message -I ../User/Devices/USB -I ../USB_DEVICE/App -I ../USB_DEVICE/Target -I ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -I ../User/Communication/channel -I ../User/Communication/core -I ../User/Communication/example/device -I ../User/profiler -I ../User/ui-I.\RTE\_CtrlBoard-H7_IMU-ID:\Keil5\ARM\PACK\ARM\CMSIS\6.1.0\CMSIS\Core\Include-ID:\Keil5\ARM\PACK\Keil\STM32H7xx_DFP\4.0.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include-D__UVISION_VERSION="540" -DSTM32H723xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32H723xx-o ctrlboard-h7_imu\stm32h7xx_hal_tim.o --omf_browse ctrlboard-h7_imu\stm32h7xx_hal_tim.crf --depend ctrlboard-h7_imu\stm32h7xx_hal_tim.d)
 I (../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h)(0x690DC8D6)
 I (../Core/Inc/stm32h7xx_hal_conf.h)(0x694C258D)

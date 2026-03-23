@@ -253,7 +253,15 @@ void chassis_rc_to_control_vector(fp32 *vx_set, fp32 *vy_set, chassis_move_t *ch
 	
     vx_set_channel = - vx_channel * CHASSIS_VX_RC_SEN;
     vy_set_channel = - vy_channel * CHASSIS_VY_RC_SEN;
-
+	 // 统一更新慢速模式状态
+    if (chassis_move_rc_to_vector->chassis_RC->key.v & CHASSIS_SLOW_KEY)
+    {
+        chassis_move_rc_to_vector->slowmode = 1;
+    }
+    else
+    {
+        chassis_move_rc_to_vector->slowmode = 0;
+    }
 		
     //keyboard set speed set-point
     //键盘控制
@@ -640,16 +648,21 @@ static void chassis_engineer_follow_chassis_yaw_control(fp32 *vx_set, fp32 *vy_s
     fp32 delta_angle = 0.0f;
 
     // 键盘优先级高于摇杆：有按键按下时，只使用键盘控制
+        fp32 turn_rate = CHASSIS_KEY_TURN_ANGLE_RATE;
+
+    // 慢速模式下，键盘转向也减速
+    if (chassis_move_rc_to_vector->slowmode)
+    {
+        turn_rate *= 0.5f;
+    }
+
     if (chassis_move_rc_to_vector->chassis_RC->key.v & CHASSIS_TURNLEFT_KEY)
     {
-        // 左转：正方向增量（逆时针）
-        // 增量 = 角速度(rad/s) * 控制周期(s)
-        delta_angle = CHASSIS_KEY_TURN_ANGLE_RATE * (CHASSIS_CONTROL_TIME_MS / 1000.0f);
+        delta_angle = turn_rate * (CHASSIS_CONTROL_TIME_MS / 1000.0f);
     }
     else if (chassis_move_rc_to_vector->chassis_RC->key.v & CHASSIS_TURNRIGHT_KEY)
     {
-        // 右转：负方向增量（顺时针）
-        delta_angle = -CHASSIS_KEY_TURN_ANGLE_RATE * (CHASSIS_CONTROL_TIME_MS / 1000.0f);
+        delta_angle = -turn_rate * (CHASSIS_CONTROL_TIME_MS / 1000.0f);
     }
     else
     {
@@ -657,7 +670,7 @@ static void chassis_engineer_follow_chassis_yaw_control(fp32 *vx_set, fp32 *vy_s
         int16_t wz_channel = chassis_move_rc_to_vector->chassis_RC->rc.ch[CHASSIS_WZ_CHANNEL];
         int16_t wz_processed = 0;
         rc_deadband_limit(wz_channel, wz_processed, CHASSIS_RC_DEADLINE);
-        delta_angle = wz_processed * CHASSIS_ANGLE_Z_RC_SEN;   // 符号与摇杆方向一致
+        delta_angle = - wz_processed * CHASSIS_ANGLE_Z_RC_SEN;   // 符号与摇杆方向一致
     }
 
     // 累加目标角度并归一化到 [-π, π]
@@ -694,21 +707,14 @@ static void chassis_no_follow_yaw_control(fp32 *vx_set, fp32 *vy_set, fp32 *wz_s
 	int16_t wz_processed = 0;
     fp32 wz_set_channel;
 	rc_deadband_limit(wz_channel, wz_processed, CHASSIS_RC_DEADLINE);
-	wz_set_channel = -wz_processed * CHASSIS_WZ_RC_SEN;
+	wz_set_channel = wz_processed * CHASSIS_WZ_RC_SEN;
 	if (chassis_move_rc_to_vector->chassis_RC->key.v & CHASSIS_TURNLEFT_KEY)
 	{
-		wz_set_channel = CHASSIS_WZ_MAX_SPEED;
+		wz_set_channel = -CHASSIS_WZ_MAX_SPEED;
 	}
 	if (chassis_move_rc_to_vector->chassis_RC->key.v & CHASSIS_TURNRIGHT_KEY)
 	{
-		wz_set_channel = - CHASSIS_WZ_MAX_SPEED;
-	}
-	if(chassis_move_rc_to_vector->chassis_RC->key.v & CHASSIS_SLOW_KEY)
-	{
-		chassis_move_rc_to_vector->slowmode = 1;
-	}else
-	{
-		chassis_move_rc_to_vector->slowmode = 0;
+		wz_set_channel = CHASSIS_WZ_MAX_SPEED;
 	}
 	// 慢速模式缩放
 	if (chassis_move_rc_to_vector->slowmode) 

@@ -29,18 +29,18 @@
 #define J1_ZERO_ANGLE (2.850f)
 #define J2_ZERO_ANGLE (-4.27f)
 #define J3_ZERO_ANGLE (3.14f)
-#define J4_ZERO_ANGLE (3.7f)
+#define J4_ZERO_ANGLE (2.72f)
 #define J5_ZERO_ANGLE (2.64f)
 #define J6_ZERO_ANGLE (2.4f)
 #define J7_ZERO_ANGLE (2.08f)
 //最大最小角度
 #define J0_MAX_ANGLE (J0_ZERO_ANGLE+0.75f)
 #define J1_MAX_ANGLE (J1_ZERO_ANGLE +1.0f)
-#define J2_MAX_ANGLE (J2_ZERO_ANGLE+4.0f)
+#define J2_MAX_ANGLE (J2_ZERO_ANGLE+4.2f)
 #define J3_MAX_ANGLE (J3_ZERO_ANGLE+2.1f)
 #define J4_MAX_ANGLE (J4_ZERO_ANGLE+2.4f)
 #define J5_MAX_ANGLE (J5_ZERO_ANGLE+1.6f)
-#define J6_MAX_ANGLE (3.0f)
+#define J6_MAX_ANGLE (2.95f)
 #define J7_MAX_ANGLE (J7_ZERO_ANGLE +1.0f)
 
 #define J0_MIN_ANLE (J0_ZERO_ANGLE-1.0f)
@@ -56,7 +56,7 @@
 #define J1_INIT_ANGLE (1.440f)
 #define J2_INIT_ANGLE (-0.15f)
 #define J3_INIT_ANGLE (3.14f)
-#define J4_INIT_ANGLE (3.80f)
+#define J4_INIT_ANGLE (2.72f)
 #define J5_INIT_ANGLE (2.64f)
 #define J6_INIT_ANGLE (2.45f)
 #define J7_INIT_ANGLE (2.08f)//大yaw
@@ -65,7 +65,7 @@
 #define GAR_GAIN1 1.0
 #define GAR_GAIN2 2.5
 #define GAR_GAIN3 8
-#define GAR_GAIN4 13
+#define GAR_GAIN4 10
 #define GAR_GAIN5 10
 #define GAR_GAIN6 10
 //电机PID参数
@@ -74,19 +74,19 @@
 #define J0_KP (10.0f)
 #endif
 #ifndef J1_KP
-#define J1_KP (2.0f)
+#define J1_KP (2.4f)
 #endif
 #ifndef J2_KP
-#define J2_KP (8.0f)
+#define J2_KP (5.0f)
 #endif
 #ifndef J3_KP
-#define J3_KP (2.0f)
+#define J3_KP (3.0f)
 #endif
 #ifndef J4_KP
-#define J4_KP (2.4f)
+#define J4_KP (3.4f)
 #endif
 #ifndef J5_KP
-#define J5_KP (0.9f)
+#define J5_KP (3.2f)
 #endif
 #ifndef J6_KP
 #define J6_KP (3.0f)
@@ -96,22 +96,22 @@
 #endif
 
 #ifndef J0_KD
-#define J0_KD (1.0f)
+#define J0_KD (2.0f)
 #endif
 #ifndef J1_KD
-#define J1_KD (0.40f)
+#define J1_KD (0.8f)
 #endif
 #ifndef J2_KD
-#define J2_KD (0.2f)
+#define J2_KD (0.4f)
 #endif
 #ifndef J3_KD
-#define J3_KD (0.12f)
+#define J3_KD (0.5f)
 #endif
 #ifndef J4_KD
-#define J4_KD (0.12f)
+#define J4_KD (0.5f)
 #endif
 #ifndef J5_KD
-#define J5_KD (0.1f)
+#define J5_KD (0.32f)
 #endif
 #ifndef J6_KD
 #define J6_KD (0.4f)

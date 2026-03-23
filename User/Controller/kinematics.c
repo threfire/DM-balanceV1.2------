@@ -530,3 +530,128 @@ void tool_relative_rotate_rpy(const float T_current[16], float rx, float ry, flo
 
     tool_relative_transform(T_current, T_rel, T_new);
 }
+
+/* ------------------------ 四元数辅助函数 ------------------------ */
+
+static void normalize_quat(float q[4])
+{
+    float norm = sqrtf(q[0]*q[0] + q[1]*q[1] + q[2]*q[2] + q[3]*q[3]);
+    if (norm > KIN_EPS) {
+        q[0] /= norm;
+        q[1] /= norm;
+        q[2] /= norm;
+        q[3] /= norm;
+    }
+}
+
+void mat3_to_quat(const float R[9], float q[4])
+{
+    float tr = R[0] + R[4] + R[8];
+    if (tr > 0.0f) {
+        float s = sqrtf(tr + 1.0f) * 2.0f;
+        q[0] = 0.25f * s;                         // w
+        q[1] = (R[7] - R[5]) / s;                 // x
+        q[2] = (R[2] - R[6]) / s;                 // y
+        q[3] = (R[3] - R[1]) / s;                 // z
+    } else {
+        int i = 0;
+        if (R[4] > R[0]) i = 1;
+        if (R[8] > R[i*3+i]) i = 2;
+        int j = (i+1) % 3;
+        int k = (i+2) % 3;
+
+        float s = sqrtf(R[i*3+i] - R[j*3+j] - R[k*3+k] + 1.0f) * 2.0f;
+        q[i+1] = 0.25f * s;
+        s = 0.25f / s;
+        q[0]   = (R[k*3+j] - R[j*3+k]) * s;
+        q[j+1] = (R[j*3+i] + R[i*3+j]) * s;
+        q[k+1] = (R[k*3+i] + R[i*3+k]) * s;
+    }
+    normalize_quat(q);
+}
+
+void quat_to_mat3(const float q[4], float R[9])
+{
+    float w = q[0], x = q[1], y = q[2], z = q[3];
+    float xx = x*x, yy = y*y, zz = z*z;
+    float xy = x*y, xz = x*z, yz = y*z;
+    float wx = w*x, wy = w*y, wz = w*z;
+
+    R[0] = 1 - 2*(yy + zz);
+    R[1] = 2*(xy - wz);
+    R[2] = 2*(xz + wy);
+    R[3] = 2*(xy + wz);
+    R[4] = 1 - 2*(xx + zz);
+    R[5] = 2*(yz - wx);
+    R[6] = 2*(xz - wy);
+    R[7] = 2*(yz + wx);
+    R[8] = 1 - 2*(xx + yy);
+}
+
+void quat_slerp(const float qa[4], const float qb[4], float t, float q[4])
+{
+    float q1[4] = {qa[0], qa[1], qa[2], qa[3]};
+    float q2[4] = {qb[0], qb[1], qb[2], qb[3]};
+
+    // 点积
+    float dot = q1[0]*q2[0] + q1[1]*q2[1] + q1[2]*q2[2] + q1[3]*q2[3];
+    // 如果点积为负，取反一个四元数以保证最短路径
+    if (dot < 0.0f) {
+        for (int i = 0; i < 4; i++) q2[i] = -q2[i];
+        dot = -dot;
+    }
+
+    // 防止数值问题
+    if (dot > 0.9995f) {
+        // 线性插值
+        for (int i = 0; i < 4; i++) q[i] = (1-t)*q1[i] + t*q2[i];
+        normalize_quat(q);
+        return;
+    }
+
+    float theta = acosf(dot);
+    float sin_theta = sinf(theta);
+    float w1 = sinf((1-t)*theta) / sin_theta;
+    float w2 = sinf(t*theta) / sin_theta;
+
+    for (int i = 0; i < 4; i++) {
+        q[i] = w1 * q1[i] + w2 * q2[i];
+    }
+    normalize_quat(q);
+}
+
+void pose_interpolate(const float T_start[16], const float T_end[16], float t, float T_out[16])
+{
+    // 位置线性插值
+    for (int i = 0; i < 3; i++) {
+        T_out[3 + i*4] = (1-t)*T_start[3 + i*4] + t*T_end[3 + i*4];
+    }
+
+    // 提取旋转矩阵 (3x3)
+    float R_start[9], R_end[9];
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            R_start[i*3 + j] = T_start[i*4 + j];
+            R_end[i*3 + j]   = T_end[i*4 + j];
+        }
+    }
+
+    // 转换为四元数并插值
+    float q_start[4], q_end[4], q_interp[4];
+    mat3_to_quat(R_start, q_start);
+    mat3_to_quat(R_end, q_end);
+    quat_slerp(q_start, q_end, t, q_interp);
+
+    // 转换回旋转矩阵
+    float R_interp[9];
+    quat_to_mat3(q_interp, R_interp);
+
+    // 填充输出矩阵
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            T_out[i*4 + j] = R_interp[i*3 + j];
+        }
+    }
+    // 最后一行
+    T_out[12] = 0.0f; T_out[13] = 0.0f; T_out[14] = 0.0f; T_out[15] = 1.0f;
+}

@@ -89,4 +89,39 @@ void make_rotation_y(float angle, float T_rel[16]);
  */
 void make_rotation_z(float angle, float T_rel[16]);
 
+//
+//轨迹规划
+// 在 kinematics.h 末尾添加以下声明
+
+/**
+ * 将旋转矩阵转换为四元数 (w, x, y, z)
+ * @param R 3x3 矩阵，按行主序存放，长度为9
+ * @param q 输出四元数，长度为4
+ */
+void mat3_to_quat(const float R[9], float q[4]);
+
+/**
+ * 四元数球面线性插值 (slerp)
+ * @param qa 起始四元数
+ * @param qb 目标四元数
+ * @param t  插值系数 [0,1]
+ * @param q  输出四元数
+ */
+void quat_slerp(const float qa[4], const float qb[4], float t, float q[4]);
+
+/**
+ * 四元数转换为旋转矩阵 (行主序)
+ * @param q 四元数 (w, x, y, z)
+ * @param R 输出3x3矩阵，长度为9
+ */
+void quat_to_mat3(const float q[4], float R[9]);
+
+/**
+ * 齐次矩阵线性插补（位置线性，姿态四元数slerp）
+ * @param T_start 起始位姿矩阵（16元素，行主序）
+ * @param T_end   目标位姿矩阵
+ * @param t       插值系数 [0,1]
+ * @param T_out   输出插值位姿矩阵
+ */
+void pose_interpolate(const float T_start[16], const float T_end[16], float t, float T_out[16]);
 #endif

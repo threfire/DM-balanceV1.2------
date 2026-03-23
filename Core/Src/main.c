@@ -179,7 +179,7 @@ int main(void)
 
 	//鍒濆鍖栦笂浣嶆�?鐨勫崗璁?
 	proto_init_from_main();
-	
+
 //	simple_sector6_test();            /* 浠绘剰鍦板潃�?? */
   /* USER CODE END 2 */
 

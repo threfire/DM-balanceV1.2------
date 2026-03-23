@@ -92,7 +92,7 @@ static const fp32 motor_limit_table[ARM_JOINT_NUM][3] = {
 fp32 q_angle[ARM_JOINT_NUM];
 uint8_t MOTER_InitAngleright;
 //舵机ccr
-uint16_t pwm_ccr_set = 1700;
+uint16_t pwm_ccr_set = 1400;
 uint32_t last_sec_recv, total_los;
 //重力补偿用变量
 float position_calcu[8];
@@ -601,7 +601,6 @@ __attribute__((used)) void gimbal_send_cmd(gimbal_control_t *control_send)
 				CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[1], 0.0f, 0.0f, 0.0f, 3*control_send->joint_pid[1].Kd, 0.0f);
 				CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[2], 0.0f, 0.0f, 0.0f, 6*control_send->joint_pid[2].Kd, 0.0f);
 				//上端4电机换can3
-//				RS_MOTOR_PRE(&END_CAN, arm_cmd_id_table[3]);
 //		RS_MOTOR_PRE(&END_CAN, arm_cmd_id_table[5]);
 //		RS_MOTOR_PRE(&GIMBAL_CAN, arm_cmd_id_table[7]);
 				CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[3], 0.0f, 0.0f, 0.0f, control_send->joint_pid[3].Kd, 0.0f);
@@ -735,7 +734,7 @@ void arm_update_control(gimbal_control_t *add_angle)
 		// 一阶低通滤波
 		static float filtered_pos[ARM_JOINT_NUM] = {0};
 		static uint8_t first_run = 1;
-		const float alpha = 0.6f;  // 滤波系数,越小越平滑
+		const float alpha = 0.9f;  // 滤波系数,越小越平滑
 
 		if (first_run) {
 			// 首次进入 SELF 模式时，直接用目标值初始化滤波器
@@ -773,10 +772,10 @@ void arm_update_control(gimbal_control_t *add_angle)
 			g_have_tool_goal = 1U;
 		}
 
-		/* R键上升沿：基座坐标系z轴正向单步移动，姿态保持不变 */
+				/* R键上升沿：基座坐标系 z 轴正向单步平移，姿态保持不变 */
 		{
 			static uint8_t last_r_key = 0U;
-			uint8_t r_key_now = ((add_angle->gimbal_rc_ctrl->key.v & ENDTOOL_UP_KEY) != 0U);
+			uint8_t r_key_now = ((add_angle->gimbal_rc_ctrl->key.v & ENDTOOL_ZMOVE_KEY) != 0U);
 
 			if (r_key_now && !last_r_key)
 			{
@@ -787,7 +786,7 @@ void arm_update_control(gimbal_control_t *add_angle)
 					0,0,0,1
 				};
 				float T_next[16];
-				mat_mul44(T_rel, g_T_tool_goal, T_next);   // 注意：左乘
+				mat_mul44(T_rel, g_T_tool_goal, T_next);   // 左乘：基座系平移
 				for (uint8_t i = 0; i < 16; i++)
 				{
 					g_T_tool_goal[i] = T_next[i];
@@ -797,6 +796,59 @@ void arm_update_control(gimbal_control_t *add_angle)
 			last_r_key = r_key_now;
 		}
 
+		/* F键上升沿：基座坐标系 x 轴正向单步平移，姿态保持不变 */
+		{
+			static uint8_t last_f_key = 0U;
+			uint8_t f_key_now = ((add_angle->gimbal_rc_ctrl->key.v & ENDTOOL_XMOVE_KEY) != 0U);
+
+			if (f_key_now && !last_f_key)
+			{
+				float T_rel[16] = {
+					1,0,0,0.05,
+					0,1,0,0,
+					0,0,1,0,
+					0,0,0,1
+				};
+				float T_next[16];
+				mat_mul44(T_rel, g_T_tool_goal, T_next);   // 左乘：基座系平移
+				for (uint8_t i = 0; i < 16; i++)
+				{
+					g_T_tool_goal[i] = T_next[i];
+				}
+			}
+
+			last_f_key = f_key_now;
+		}
+
+		/* G键上升沿：基座坐标系 y 轴顺时针单步旋转 */
+		{
+			static uint8_t last_g_key = 0U;
+			uint8_t g_key_now = ((add_angle->gimbal_rc_ctrl->key.v & ENDTOOL_YROT_KEY) != 0U);
+
+			if (g_key_now && !last_g_key)
+			{
+				const float ang = 0.3;
+				const float c = arm_cos_f32(ang);
+				const float s = arm_sin_f32(ang);
+
+				/* 绕基座 y 轴顺时针：等价于 Ry(-ang) */
+				float T_rel[16] = {
+					 c, 0,-s, 0,
+					 0, 1, 0, 0,
+					 s, 0, c, 0,
+					 0, 0, 0, 1
+				};
+
+				float T_next[16];
+				mat_mul44(T_rel, g_T_tool_goal, T_next);   // 左乘：基座系旋转
+				for (uint8_t i = 0; i < 16; i++)
+				{
+					g_T_tool_goal[i] = T_next[i];
+				}
+			}
+
+			last_g_key = g_key_now;
+		}
 		/* 目标工具位姿 -> 逆解关节角 */
 		g_semi_auto_ik_valid = compute_desired_joint_angles(g_T_tool_goal, g_theta_kin_cur, g_theta_kin_des);
 
