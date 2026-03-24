@@ -27,200 +27,44 @@ Project File Date:  03/23/2026
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\Keil5\ARM\ARMCC\Bin'
 Build target 'CtrlBoard-H7_IMU'
-compiling robot_param.c...
-compiling shoot.c...
-compiling chassis_behaviour.c...
-compiling UI.c...
-../User/ui/ui_g.h(24): warning:  #1295-D: Deprecated declaration ui_init_g - give arg types
-  void ui_init_g();
-../User/ui/ui_g.h(25): warning:  #1295-D: Deprecated declaration ui_update_g - give arg types
-  void ui_update_g();
-..\User\APP\UI.c(66): warning:  #550-D: variable "color"  was set but never used
-  	static uint8_t color = 0;
-..\User\APP\UI.c: 3 warnings, 0 errors
-compiling chassis_power_control.c...
-compiling Engineer.c...
-..\User\ROBOT\Engineer.c(202): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\User\ROBOT\Engineer.c(75): warning:  #177-D: function "vec_add"  was declared but never referenced
-  static void vec_add(const float a[3], const float b[3], float c[3]) {
-..\User\ROBOT\Engineer.c: 2 warnings, 0 errors
-compiling gimbal_task.c...
-..\User\APP\gimbal_task.c(537): warning:  #177-D: variable "feedforward_output"  was declared but never referenced
-      float feedforward_output = 0;
-..\User\APP\gimbal_task.c(538): warning:  #550-D: variable "last_out"  was set but never used
-      static float last_out = 0;
-..\User\APP\gimbal_task.c(591): warning:  #177-D: variable "feedforward_output"  was declared but never referenced
-  		float feedforward_output = 0;
-..\User\APP\gimbal_task.c(592): warning:  #550-D: variable "last_out"  was set but never used
-      static float last_out = 0;
-..\User\APP\gimbal_task.c: 4 warnings, 0 errors
-compiling main.c...
-../User/APP/remote_control.h(55): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed  struct
-../User/APP/calibrate_task.h(175): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef  __packed struct
-../User/APP/calibrate_task.h(186): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef  __packed struct
-../Core/Src/main.c(297): warning:  #2532-D: support for trigraphs is disabled
-  /* 鏃堕棿鍑芥暟锛堢敤浜庢椂�???/瓒呮椂锛? */
-../Core/Src/main.c(294): warning:  #177-D: function "proto_port_flush"  was declared but never referenced
-  static void proto_port_flush(void *user) { (void)user; }
-../Core/Src/main.c(295): warning:  #177-D: function "proto_port_get_mtu"  was declared but never referenced
-  static uint16_t proto_port_get_mtu(void *user) { (void)user; return 512; }
-../Core/Src/main.c: 6 warnings, 0 errors
-compiling gimbal_behaviour.c...
-compiling Balance.c...
-../User/ROBOT/Engineer.h(86): warning:  #47-D: incompatible redefinition of macro "CHASSIS_VX_RC_SEN"  (declared at line 13 of "..\User\ROBOT\Balance.h")
-  #define CHASSIS_VX_RC_SEN             0.003f
-../User/ROBOT/Engineer.h(87): warning:  #47-D: incompatible redefinition of macro "CHASSIS_VY_RC_SEN"  (declared at line 14 of "..\User\ROBOT\Balance.h")
-  #define CHASSIS_VY_RC_SEN             0.003f
-../User/ROBOT/Engineer.h(88): warning:  #47-D: incompatible redefinition of macro "CHASSIS_ANGLE_Z_RC_SEN"  (declared at line 15 of "..\User\ROBOT\Balance.h")
-  #define CHASSIS_ANGLE_Z_RC_SEN        0.000005f
-../User/ROBOT/Engineer.h(89): warning:  #47-D: incompatible redefinition of macro "CHASSIS_WZ_RC_SEN"  (declared at line 16 of "..\User\ROBOT\Balance.h")
-  #define CHASSIS_WZ_RC_SEN             0.004f
-../User/ROBOT/Engineer.h(117): warning:  #47-D: incompatible redefinition of macro "NORMAL_MAX_CHASSIS_SPEED_X"  (declared at line 35 of "..\User\ROBOT\Balance.h")
-  #define NORMAL_MAX_CHASSIS_SPEED_X    1.2f
-../User/ROBOT/Engineer.h(118): warning:  #47-D: incompatible redefinition of macro "NORMAL_MAX_CHASSIS_SPEED_Y"  (declared at line 36 of "..\User\ROBOT\Balance.h")
-  #define NORMAL_MAX_CHASSIS_SPEED_Y    1.2f
-..\User\ROBOT\Balance.c: 6 warnings, 0 errors
-compiling calibrate_task.c...
-..\User\APP\calibrate_task.c(362): warning:  #177-D: variable "GYRO_FLAG"  was declared but never referenced
-      static const uint8_t GYRO_FLAG    = 3;
-..\User\APP\calibrate_task.c(363): warning:  #177-D: variable "CHASSIS_FLAG"  was declared but never referenced
-      static const uint8_t CHASSIS_FLAG = 4;
-..\User\APP\calibrate_task.c(624): warning:  #177-D: function "cali_gyro_hook"  was declared but never referenced
-  static bool_t cali_gyro_hook(uint32_t *cali, bool_t cmd)
-..\User\APP\calibrate_task.c: 3 warnings, 0 errors
-compiling double_yaw_pitch.c...
-compiling yaw_pitch_linkage.c...
-compiling chassis_task.c...
-compiling message_task.c...
-compiling observer.c...
-compiling freertos.c...
-compiling auto_aim.c...
-../User/Lib/user_lib.h(99): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct
-../User/Lib/user_lib.h(115): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct
-..\User\APP\referee.h(34): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0001
-..\User\APP\referee.h(41): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0002
-..\User\APP\referee.h(45): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct
-..\User\APP\referee.h(62): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0101
-..\User\APP\referee.h(67): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0x0102
-..\User\APP\referee.h(76): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0x0103
-..\User\APP\referee.h(83): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct
-..\User\APP\referee.h(88): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0x0201
-..\User\APP\referee.h(103): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0x0202
-..\User\APP\referee.h(113): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0x0203
-..\User\APP\referee.h(121): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0x0204
-..\User\APP\referee.h(126): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0x0205
-..\User\APP\referee.h(132): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0x0206
-..\User\APP\referee.h(138): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0x0207
-..\User\APP\referee.h(144): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct
-..\User\APP\referee.h(148): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct //0x0301
-..\User\APP\referee.h(157): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct
-..\User\APP\referee.h(166): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct
-..\User\APP\referee.h(171): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed struct
-../User/Controller/GRAVITY.h(11): warning:  #47-D: incompatible redefinition of macro "GRAVITY"  (declared at line 8 of "../User/ROBOT/Engineer.h")
-  #define GRAVITY         9.80665f    // 使用更精确的重力加速度
-..\User\APP\auto_aim.c: 22 warnings, 0 errors
-compiling kinematics.c...
-..\User\Controller\kinematics.c(13): warning:  #177-D: variable "DH_alpha"  was declared but never referenced
-  static const float DH_alpha[6] = {
-..\User\Controller\kinematics.c: 1 warning, 0 errors
-compiling Balance_chassis.c...
-compiling yaw_pitch_direct.c...
-compiling Infantry_robot.c...
-..\User\ROBOT\Infantry_robot.h(43): warning:  #47-D: incompatible redefinition of macro "CHASSIS_VX_RC_SEN"  (declared at line 86 of "../User/ROBOT/Engineer.h")
-  #define CHASSIS_VX_RC_SEN             0.006f
-..\User\ROBOT\Infantry_robot.h(44): warning:  #47-D: incompatible redefinition of macro "CHASSIS_VY_RC_SEN"  (declared at line 87 of "../User/ROBOT/Engineer.h")
-  #define CHASSIS_VY_RC_SEN             0.005f
-..\User\ROBOT\Infantry_robot.h(45): warning:  #47-D: incompatible redefinition of macro "CHASSIS_ANGLE_Z_RC_SEN"  (declared at line 88 of "../User/ROBOT/Engineer.h")
-  #define CHASSIS_ANGLE_Z_RC_SEN        0.000002f
-..\User\ROBOT\Infantry_robot.h(46): warning:  #47-D: incompatible redefinition of macro "CHASSIS_WZ_RC_SEN"  (declared at line 89 of "../User/ROBOT/Engineer.h")
-  #define CHASSIS_WZ_RC_SEN             0.01f
-..\User\ROBOT\Infantry_robot.h(65): warning:  #47-D: incompatible redefinition of macro "NORMAL_MAX_CHASSIS_SPEED_X"  (declared at line 117 of "../User/ROBOT/Engineer.h")
-  #define NORMAL_MAX_CHASSIS_SPEED_X    2.5f
-..\User\ROBOT\Infantry_robot.h(66): warning:  #47-D: incompatible redefinition of macro "NORMAL_MAX_CHASSIS_SPEED_Y"  (declared at line 118 of "../User/ROBOT/Engineer.h")
-  #define NORMAL_MAX_CHASSIS_SPEED_Y    2.5f
-..\User\ROBOT\Infantry_robot.h(311): warning:  #47-D: incompatible redefinition of macro "POWER_LIMIT"  (declared at line 319 of "../User/ROBOT/Engineer.h")
-  #define POWER_LIMIT         90.0f
-..\User\ROBOT\Infantry_robot.c: 7 warnings, 0 errors
 compiling bsp_usart.c...
 ..\User\Bsp\bsp_usart.c(27): warning:  #177-D: variable "gimbal_data"  was declared but never referenced
   static uint8_t gimbal_data[USART_RX_BUF_LENGHT]={0};
 ..\User\Bsp\bsp_usart.c: 1 warning, 0 errors
-compiling shoot_3508.c...
-compiling shoot_double.c...
-compiling Mecanum_chassis.c...
-compiling gimbal_channel.c...
-compiling shoot_none.c...
-compiling comm_app.c...
-../User/APP/remote_control.h(55): warning:  #3108-D: attribute "__packed__" does not apply here
-  typedef __packed  struct
-..\User\Communication\example\device\comm_app.c(169): warning:  #223-D: function "usb_cdc_port_bind_uproto" declared implicitly
-      usb_cdc_port_bind_uproto(&proto_ctx);
-..\User\Communication\example\device\comm_app.c(54): warning:  #177-D: function "now_us_fallback"  was declared but never referenced
-  static uint64_t now_us_fallback(void) {
-..\User\Communication\example\device\comm_app.c: 3 warnings, 0 errors
-compiling Omni_chassis.c...
-compiling steering_chassis.c...
 compiling Multi-axis_robotic_arm.c...
-..\User\gimbal\Multi-axis_robotic_arm.c(470): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\User\gimbal\Multi-axis_robotic_arm.c(718): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   			set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
 AR_GAIN1;
-..\User\gimbal\Multi-axis_robotic_arm.c(471): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\User\gimbal\Multi-axis_robotic_arm.c(719): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   			set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
 AR_GAIN2;
-..\User\gimbal\Multi-axis_robotic_arm.c(494): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\User\gimbal\Multi-axis_robotic_arm.c(742): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   				set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
 AR_GAIN1;
-..\User\gimbal\Multi-axis_robotic_arm.c(495): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\User\gimbal\Multi-axis_robotic_arm.c(743): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   				set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
 AR_GAIN2;
-..\User\gimbal\Multi-axis_robotic_arm.c(514): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\User\gimbal\Multi-axis_robotic_arm.c(765): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   			set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
 AR_GAIN1;
-..\User\gimbal\Multi-axis_robotic_arm.c(515): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\User\gimbal\Multi-axis_robotic_arm.c(766): warning:  #1035-D: single-precision operand implicitly converted to double-precision
   			set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
 AR_GAIN2;
-..\User\gimbal\Multi-axis_robotic_arm.c(532): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\User\gimbal\Multi-axis_robotic_arm.c(785): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
 AR_GAIN1;
-..\User\gimbal\Multi-axis_robotic_arm.c(533): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\User\gimbal\Multi-axis_robotic_arm.c(786): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
 AR_GAIN2;
-..\User\gimbal\Multi-axis_robotic_arm.c(440): warning:  #177-D: variable "dt"  was declared but never referenced
-      static fp32 dt = GIMBAL_CONTROL_TIME /1000.0f;
-..\User\gimbal\Multi-axis_robotic_arm.c(676): warning:  #940-D: missing return statement at end of non-void function "cmd_cali_gimbal_hook" 
+..\User\gimbal\Multi-axis_robotic_arm.c(929): warning:  #940-D: missing return statement at end of non-void function "cmd_cali_gimbal_hook" 
   }
-..\User\gimbal\Multi-axis_robotic_arm.c(929): warning:  #177-D: variable "data_length"  was declared but never referenced
+..\User\gimbal\Multi-axis_robotic_arm.c(1157): warning:  #177-D: variable "data_length"  was declared but never referenced
       uint16_t data_length = (data[2] << 8) | data[1];
-..\User\gimbal\Multi-axis_robotic_arm.c: 11 warnings, 0 errors
+..\User\gimbal\Multi-axis_robotic_arm.c: 10 warnings, 0 errors
 linking...
-Program Size: Code=87800 RO-data=4876 RW-data=1224 ZI-data=56904  
+Program Size: Code=90764 RO-data=4748 RW-data=1240 ZI-data=57384  
 FromELF: creating hex file...
-"CtrlBoard-H7_IMU\CtrlBoard-H7_IMU.axf" - 0 Error(s), 69 Warning(s).
+"CtrlBoard-H7_IMU\CtrlBoard-H7_IMU.axf" - 0 Error(s), 11 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -242,7 +86,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE@6.1.0
-Build Time Elapsed:  00:00:53
+Build Time Elapsed:  00:00:12
 </pre>
 </body>
 </html>

@@ -44,12 +44,12 @@
 #define J7_MAX_ANGLE (J7_ZERO_ANGLE +1.0f)
 
 #define J0_MIN_ANLE (J0_ZERO_ANGLE-1.0f)
-#define J1_MIN_ANLE (J1_ZERO_ANGLE -1.4f)
+#define J1_MIN_ANLE (J1_ZERO_ANGLE -1.5f)
 #define J2_MIN_ANLE (J2_ZERO_ANGLE + 1.2f)
 #define J3_MIN_ANLE (J3_ZERO_ANGLE-2.1f)
 #define J4_MIN_ANLE (J4_ZERO_ANGLE-2.4f)
 #define J5_MIN_ANLE (J5_ZERO_ANGLE-1.6f)
-#define J6_MIN_ANLE (1.30f)
+#define J6_MIN_ANLE (1.4f)
 #define J7_MIN_ANLE (J7_ZERO_ANGLE -1.0f)
 //上电角度
 #define J0_INIT_ANGLE (0.15f)
@@ -58,12 +58,12 @@
 #define J3_INIT_ANGLE (3.14f)
 #define J4_INIT_ANGLE (2.72f)
 #define J5_INIT_ANGLE (2.64f)
-#define J6_INIT_ANGLE (2.45f)
+#define J6_INIT_ANGLE (2.0f)
 #define J7_INIT_ANGLE (2.08f)//大yaw
 
 #define GAR_GAIN0 10
 #define GAR_GAIN1 1.0
-#define GAR_GAIN2 2.5
+#define GAR_GAIN2 3.0
 #define GAR_GAIN3 8
 #define GAR_GAIN4 10
 #define GAR_GAIN5 10
@@ -74,10 +74,10 @@
 #define J0_KP (10.0f)
 #endif
 #ifndef J1_KP
-#define J1_KP (2.4f)
+#define J1_KP (3.0f)
 #endif
 #ifndef J2_KP
-#define J2_KP (5.0f)
+#define J2_KP (12.5f)
 #endif
 #ifndef J3_KP
 #define J3_KP (3.0f)
@@ -102,7 +102,7 @@
 #define J1_KD (0.8f)
 #endif
 #ifndef J2_KD
-#define J2_KD (0.4f)
+#define J2_KD (3.2f)
 #endif
 #ifndef J3_KD
 #define J3_KD (0.5f)
@@ -119,7 +119,27 @@
 #ifndef J7_KD
 #define J7_KD (1.0f)
 #endif
+#define ARM_INT_KI_TABLE    { \
+    0.0f,  /* J0 */ \
+    30.5f,  /* J1 */ \
+    50.5f,  /* J2 */ \
+    30.5f,  /* J3 */ \
+    30.5f,  /* J4，先重点测试 */ \
+    30.5f,  /* J5 */ \
+    0.0f,  /* J6 */ \
+    0.0f   /* J7 */ \
+}
 
+#define ARM_INT_LIMIT_TABLE { \
+    0.0f,  /* J0 */ \
+    1.0f,  /* J1 */ \
+    7.0f,  /* J2 */ \
+    6.0f,  /* J3 */ \
+    6.0f,  /* J4 */ \
+    6.0f,  /* J5 */ \
+    0.0f,  /* J6 */ \
+    0.0f   /* J7 */ \
+}
 //超时时间
 #define TIMEOUT 100
 //机械臂电机初始化速度
@@ -131,8 +151,14 @@
 #define VERT_CHANNEL                3
 
 #define ARM_SEMI_AUTO_ENABLE        1
-#define ARM_SEMI_AUTO_STEP_Z        0.010f   // m，按下R时工具坐标系z轴正向单步移动距离
-#define ARM_SEMI_AUTO_THETA_ALPHA   0.4f    // 半自动逆解角低通系数，越小越平滑
+#define ARM_SEMI_AUTO_STEP        0.001f   // m，单步平移距离
+#define ARM_SEMI_AUTO_STEP_ANG      0.05236f // rad，单步旋转角，约3度
+#define ARM_SEMI_AUTO_TRAJ_DS       0.06f    // 每控制周期轨迹进度增量，越小越平滑
+#define ARM_SEMI_AUTO_THETA_ALPHA   0.4f     // 半自动逆解角低通系数，越小越平滑
+
+#define ARM_SELF_ALPHA_NORMAL      0.7f    // SELF 正常跟手滤波系数
+#define ARM_SELF_ALPHA_RECONNECT   0.008f   // 切回 SELF 后前几拍更柔和
+#define ARM_SELF_RECONNECT_TICKS   400U     // 回接柔化持续周期数
 typedef enum
 {
   ARM_NONE,
@@ -154,6 +180,7 @@ typedef __packed struct
     float j0;           //YAW电机
 	uint8_t res[4];        // 包序号
 }moterMapHeader;               //电机映射数据		26字节
+
 extern moterMapHeader motor_data;
 extern void gimbal_init(gimbal_control_t *init);		
 extern void gimbal_mode_change_control_transit(gimbal_control_t *gimbal_mode_change);

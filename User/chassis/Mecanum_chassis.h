@@ -7,7 +7,7 @@
 #if ROBOT_CHASSIS == Mecanum_wheel
 
 #define MOTOR_DISTANCE_TO_CENTER      0.308904f
-
+#define CHASSIS_YAW_DEAD_BAND 0.02f
 // 麦轮底盘观测：分开计算 vx / vy
 #define MECANUM_WHEEL_NUM 4
 #define MECANUM_RADIUS    0.0603f   // 轮半径，同原函数

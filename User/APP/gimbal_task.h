@@ -148,7 +148,14 @@ typedef struct
     //电机初始位置
     fp32 zero_offset;
 }arm_joint_t;
-
+//积分器结构体
+typedef struct {
+    float integral;          // 积分累加值
+    float error_prev;        // 上一周期误差（可选，用于抗积分饱和判断）
+    float limit;             // 积分限幅（绝对值）
+    float Ki;                // 积分增益（可调）
+    float alpha;             // 积分衰减系数（可选，用于防止过饱和）
+} joint_integrator_t;
 typedef struct
 {
     //错误代码，不为0马上进无力模式
@@ -180,6 +187,7 @@ typedef struct
     // 0为角度环KP，1为速度环KD
     pid_type_def joint_pid[MOTOR_NUM];
 	uint8_t Isgrasped;
+	joint_integrator_t joint_integrator[MOTOR_NUM];
 } gimbal_control_t;
 
 #endif

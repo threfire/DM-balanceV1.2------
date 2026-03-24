@@ -653,7 +653,7 @@ static void chassis_engineer_follow_chassis_yaw_control(fp32 *vx_set, fp32 *vy_s
     // 慢速模式下，键盘转向也减速
     if (chassis_move_rc_to_vector->slowmode)
     {
-        turn_rate *= 0.5f;
+        turn_rate *= 0.3f;
     }
 
     if (chassis_move_rc_to_vector->chassis_RC->key.v & CHASSIS_TURNLEFT_KEY)

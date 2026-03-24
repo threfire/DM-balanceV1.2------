@@ -88,6 +88,8 @@ static const fp32 motor_limit_table[ARM_JOINT_NUM][3] = {
     {J6_MIN_ANLE, J6_MAX_ANGLE, J6_ZERO_ANGLE},
     {J7_MIN_ANLE, J7_MAX_ANGLE, J7_ZERO_ANGLE},
 };
+static const float arm_int_ki_table[ARM_JOINT_NUM] = ARM_INT_KI_TABLE;
+static const float arm_int_limit_table[ARM_JOINT_NUM] = ARM_INT_LIMIT_TABLE;
 
 fp32 q_angle[ARM_JOINT_NUM];
 uint8_t MOTER_InitAngleright;
@@ -98,20 +100,47 @@ uint32_t last_sec_recv, total_los;
 float position_calcu[8];
 float tauqe_calculated[6];
 float theta_calculated[6];//变换得到的计算用运动学角
+
 //运动学正逆解变量（等测试好以后换成静态）
 float g_theta_kin_cur[6];
 float g_theta_kin_des[6];
 float g_theta_kin_des_test[6];
-float test_motor_pos[6];
 float g_theta_kin_ref[6];
 float g_T_tool_cur[16];
 float g_T_tool_goal[16];
+float g_T_tool_traj_start[16];
+float g_T_tool_traj_end[16];
+float g_T_tool_traj_ref[16];
+float g_T_tool_hold_ref_r[16];
+float g_T_tool_hold_ref_f[16];
 float g_motor_pos_des[6];
+float g_semi_auto_traj_u = 1.0f;
 uint8_t g_theta_ref_initialized = 0U;
 uint8_t g_have_tool_goal = 0;
 uint8_t g_semi_auto_latched = 0;
 uint8_t g_semi_auto_ik_valid = 0;
+uint8_t g_semi_auto_traj_active = 0U;
 
+uint8_t g_r_hold_active = 0U;
+uint8_t g_f_hold_active = 0U;
+int32_t g_r_step_count = 0;
+int32_t g_f_step_count = 0;
+
+
+static float self_filtered_pos[ARM_JOINT_NUM] = {0.0f};
+static uint8_t self_filter_first_run = 1U;
+static uint16_t self_reconnect_ticks = 0U;
+
+static void reset_self_filter_state(void)
+{
+    self_filter_first_run = 1U;
+    self_reconnect_ticks = ARM_SELF_RECONNECT_TICKS;
+
+    for (uint8_t i = 0; i < ARM_JOINT_NUM; i++)
+    {
+        self_filtered_pos[i] = 0.0f;
+    }
+}
 
 static inline float clampf(float v, float lo, float hi)
 {
@@ -128,6 +157,173 @@ static void kin_theta_to_motor_pos(const float theta_kin[6], float motor_pos[6])
     motor_pos[3] = J3_ZERO_ANGLE - theta_kin[3];
     motor_pos[4] = J4_ZERO_ANGLE - theta_kin[4];
     motor_pos[5] = J5_ZERO_ANGLE + theta_kin[5];
+}
+static void semi_auto_start_traj_to(const float T_target[16])
+{
+    /* 新轨迹从“当前实际末端位姿”起步，而不是从旧 goal 起步 */
+    for (uint8_t i = 0; i < 16; i++)
+    {
+        g_T_tool_traj_start[i] = g_T_tool_cur[i];
+        g_T_tool_traj_end[i]   = T_target[i];
+        g_T_tool_goal[i]       = T_target[i];
+    }
+
+    /* 关节参考也回到当前实际关节，避免沿用上一段轨迹的旧低通参考 */
+    for (uint8_t i = 0; i < 6; i++)
+    {
+        g_theta_kin_ref[i] = g_theta_kin_cur[i];
+    }
+    g_theta_ref_initialized = 1U;
+
+    g_semi_auto_traj_u = 0.0f;
+    g_semi_auto_traj_active = 1U;
+}
+static void semi_auto_handle_r_key(gimbal_control_t *add_angle)
+{
+    static uint8_t last_r_key = 0U;
+    uint8_t r_key_now = ((add_angle->gimbal_rc_ctrl->key.v & ENDTOOL_ZMOVE_KEY) != 0U);
+
+    if (r_key_now && !last_r_key)
+	{
+		/* 冻结“按下瞬间的当前实际末端位姿” */
+		for (uint8_t i = 0; i < 16; i++)
+		{
+			g_T_tool_hold_ref_r[i] = g_T_tool_cur[i];
+		}
+		g_r_hold_active = 1U;
+		g_r_step_count = 0;
+	}
+    else if (!r_key_now && last_r_key)
+	{
+		g_r_hold_active = 0U;
+		g_r_step_count = 0;
+
+		/* 松手立即停止当前轨迹，不再把剩余那一段跑完 */
+		g_semi_auto_traj_active = 0U;
+		g_semi_auto_traj_u = 1.0f;
+
+		for (uint8_t i = 0; i < 16; i++)
+		{
+			g_T_tool_goal[i]       = g_T_tool_cur[i];
+			g_T_tool_traj_start[i] = g_T_tool_cur[i];
+			g_T_tool_traj_end[i]   = g_T_tool_cur[i];
+			g_T_tool_traj_ref[i]   = g_T_tool_cur[i];
+		}
+
+		for (uint8_t i = 0; i < 6; i++)
+		{
+			g_theta_kin_ref[i] = g_theta_kin_cur[i];
+		}
+		g_theta_ref_initialized = 1U;
+	}
+
+    if (g_r_hold_active && r_key_now && !g_semi_auto_traj_active)
+	{
+		float T_rel[16];
+		float T_target[16];
+
+		g_r_step_count++;
+
+		make_translation_matrix(0.0f,
+								0.0f,
+								g_r_step_count * ARM_SEMI_AUTO_STEP,
+								T_rel);
+		mat_mul44(g_T_tool_hold_ref_r, T_rel, T_target);   // 右乘：冻结工具系 z 轴
+
+		semi_auto_start_traj_to(T_target);
+	}
+
+    last_r_key = r_key_now;
+}
+static void semi_auto_handle_f_key(gimbal_control_t *add_angle)
+{
+    static uint8_t last_f_key = 0U;
+    uint8_t f_key_now = ((add_angle->gimbal_rc_ctrl->key.v & ENDTOOL_XMOVE_KEY) != 0U);
+
+    if (f_key_now && !last_f_key)
+	{
+		/* 冻结“按下瞬间的当前实际末端位姿” */
+		for (uint8_t i = 0; i < 16; i++)
+		{
+			g_T_tool_hold_ref_f[i] = g_T_tool_cur[i];
+		}
+		g_f_hold_active = 1U;
+		g_f_step_count = 0;
+	}
+    else if (!f_key_now && last_f_key)
+	{
+		g_f_hold_active = 0U;
+		g_f_step_count = 0;
+
+		/* 松手立即停止当前轨迹 */
+		g_semi_auto_traj_active = 0U;
+		g_semi_auto_traj_u = 1.0f;
+
+		for (uint8_t i = 0; i < 16; i++)
+		{
+			g_T_tool_goal[i]       = g_T_tool_cur[i];
+			g_T_tool_traj_start[i] = g_T_tool_cur[i];
+			g_T_tool_traj_end[i]   = g_T_tool_cur[i];
+			g_T_tool_traj_ref[i]   = g_T_tool_cur[i];
+		}
+
+		for (uint8_t i = 0; i < 6; i++)
+		{
+			g_theta_kin_ref[i] = g_theta_kin_cur[i];
+		}
+		g_theta_ref_initialized = 1U;
+	}
+
+    if (g_f_hold_active && f_key_now && !g_semi_auto_traj_active)
+	{
+		float T_rel[16];
+		float T_target[16];
+
+		g_f_step_count++;
+
+		make_translation_matrix(g_f_step_count * ARM_SEMI_AUTO_STEP,
+								0.0f,
+								0.0f,
+								T_rel);
+		mat_mul44(g_T_tool_hold_ref_f, T_rel, T_target);   // 右乘：冻结工具系 x 轴
+
+		semi_auto_start_traj_to(T_target);
+	}
+
+    last_f_key = f_key_now;
+}
+
+//积分器初始化
+void integrator_init(joint_integrator_t *integrator, float Ki, float limit) {
+    integrator->integral = 0.0f;
+    integrator->error_prev = 0.0f;
+    integrator->Ki = Ki;
+    integrator->limit = limit;
+}
+float integrator_update(joint_integrator_t *integrator, float error, float dt, float output_limit) {
+    // 简单的抗积分饱和：如果输出（前馈力矩）已经达到限幅，则不再累积极分
+    // 这里用 output_limit 可选，也可以单独用 integrator->limit 做积分限幅
+
+    // 累加前先判断是否已经饱和
+    float new_integral = integrator->integral + integrator->Ki * error * dt;
+    if (new_integral > integrator->limit) {
+        new_integral = integrator->limit;
+    } else if (new_integral < -integrator->limit) {
+        new_integral = -integrator->limit;
+    }
+    integrator->integral = new_integral;
+
+    // 返回积分值（可直接加到前馈力矩）
+    return integrator->integral;
+}
+void integrator_apply_all(gimbal_control_t *ctrl, const float dt) {
+    for (uint8_t i = 0; i < ARM_JOINT_NUM; i++) {
+//		if (i != 4) continue;
+		if (i < 1 || i > 5) continue;//暂时不管0,6,7号电机
+        float error = ctrl->multi_arm_cmd[i][0] - ctrl->joint_motor[i].motor_measure->pos;
+        float integral_out = integrator_update(&ctrl->joint_integrator[i], error, dt, 0.0f);
+        ctrl->multi_arm_cmd[i][2] += integral_out;
+    }
 }
 
 //自定义遥控器或DT7输入的数据
@@ -279,6 +475,12 @@ __attribute__((used)) void gimbal_init(gimbal_control_t *init)
         init->multi_arm_set[i][0] = init->multi_arm_set[i][1] = init->multi_arm_set[i][2] = 0.0f;
 				init->multi_arm_cmd[i][0] = init->multi_arm_cmd[i][1] = init->multi_arm_cmd[i][2] = 0.0f;
     }
+	// 为每个关节初始化积分器参数（Ki / limit 从参数表读取）
+	for (uint8_t i = 0; i < ARM_JOINT_NUM; i++) {
+		integrator_init(&init->joint_integrator[i],
+						arm_int_ki_table[i],
+						arm_int_limit_table[i]);
+	}
 	//检测电机上电位置有无突变
 	MOTER_InitAngleright = 1;
 	Initial_position_safety_check(init);
@@ -375,6 +577,9 @@ __attribute__((used)) void gimbal_mode_change_control_transit(gimbal_control_t *
             //角度设为0.0,速度也是0
             gimbal_mode_change->multi_arm_set[i][0] = 0.0f;
             gimbal_mode_change->multi_arm_set[i][1] = 0.0f;
+			// 重置积分器
+			gimbal_mode_change->joint_integrator[i].integral = 0.0f;
+			gimbal_mode_change->joint_integrator[i].error_prev = 0.0f;
         }
     }
     if(last_ARM_JOINT_BEHAVIOUR != ARM_RC && ARM_JOINT_BEHAVIOUR == ARM_RC)
@@ -384,15 +589,22 @@ __attribute__((used)) void gimbal_mode_change_control_transit(gimbal_control_t *
             //角度设为0.0,速度也是0
             gimbal_mode_change->multi_arm_set[i][0] = 0.0f;
             gimbal_mode_change->multi_arm_set[i][1] = 0.0f;
+			// 重置积分器
+			gimbal_mode_change->joint_integrator[i].integral = 0.0f;
+			gimbal_mode_change->joint_integrator[i].error_prev = 0.0f;
         }
     }
     if(last_ARM_JOINT_BEHAVIOUR != ARM_SELF && ARM_JOINT_BEHAVIOUR == ARM_SELF)
     {
+		 reset_self_filter_state();   // 先复位 SELF 滤波器
         for(uint8_t i = 0; i < ARM_JOINT_NUM; i++)
         {
             //角度设为0.0,速度也是0
             gimbal_mode_change->multi_arm_set[i][0] = 0.0f;
             gimbal_mode_change->multi_arm_set[i][1] = 0.0f;
+			// 重置积分器
+			gimbal_mode_change->joint_integrator[i].integral = 0.0f;
+			gimbal_mode_change->joint_integrator[i].error_prev = 0.0f;
         }
     }
 	if(last_ARM_JOINT_BEHAVIOUR != ARM_SEMI_AUTO && ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)
@@ -401,20 +613,38 @@ __attribute__((used)) void gimbal_mode_change_control_transit(gimbal_control_t *
 		{
 			gimbal_mode_change->multi_arm_set[i][0] = gimbal_mode_change->joint_motor[i].motor_measure->pos;
 			gimbal_mode_change->multi_arm_set[i][1] = 0.0f;
+			// 重置积分器
+			gimbal_mode_change->joint_integrator[i].integral = 0.0f;
+			gimbal_mode_change->joint_integrator[i].error_prev = 0.0f;
 		}
 		gimbal_mode_change->multi_arm_set[6][0] = gimbal_mode_change->joint_motor[6].motor_measure->pos;
 		gimbal_mode_change->multi_arm_set[6][1] = 0.0f;
 		gimbal_mode_change->multi_arm_set[7][0] = J7_ZERO_ANGLE;
 		gimbal_mode_change->multi_arm_set[7][1] = 0.0f;
 
-        /* 进入半自动时，锁存当前工具位姿为目标位姿 */
+        /* 进入半自动时，锁存当前工具位姿，并初始化轨迹状态 */
         for (uint8_t i = 0; i < 16; i++)
         {
-            g_T_tool_goal[i] = g_T_tool_cur[i];
+            g_T_tool_goal[i]       = g_T_tool_cur[i];
+            g_T_tool_traj_start[i] = g_T_tool_cur[i];
+            g_T_tool_traj_end[i]   = g_T_tool_cur[i];
+            g_T_tool_traj_ref[i]   = g_T_tool_cur[i];
         }
         g_have_tool_goal = 1U;
-        g_semi_auto_ik_valid = 0U;
-		//滤波器复位
+		g_semi_auto_ik_valid = 0U;
+		g_semi_auto_traj_u = 1.0f;
+		g_semi_auto_traj_active = 0U;
+		g_r_hold_active = 0U;
+		g_f_hold_active = 0U;
+		g_r_step_count = 0;
+		g_f_step_count = 0;
+		for (uint8_t i = 0; i < 16; i++)
+		{
+			g_T_tool_hold_ref_r[i] = g_T_tool_cur[i];
+			g_T_tool_hold_ref_f[i] = g_T_tool_cur[i];
+		}
+
+		/* 关节参考复位到当前角 */
 		for (uint8_t i = 0; i < 6; i++)
 		{
 			g_theta_kin_ref[i] = g_theta_kin_cur[i];
@@ -426,6 +656,17 @@ __attribute__((used)) void gimbal_mode_change_control_transit(gimbal_control_t *
 		g_have_tool_goal = 0U;
 		g_semi_auto_ik_valid = 0U;
 		g_theta_ref_initialized = 0U;
+		g_semi_auto_traj_active = 0U;
+		g_semi_auto_traj_u = 1.0f;
+		g_r_hold_active = 0U;
+		g_f_hold_active = 0U;
+		g_r_step_count = 0;
+		g_f_step_count = 0;
+		// 重置积分器
+		for (uint8_t i = 0; i < ARM_JOINT_NUM; i++) {
+			gimbal_mode_change->joint_integrator[i].integral = 0.0f;
+			gimbal_mode_change->joint_integrator[i].error_prev = 0.0f;
+		}
 	}
 	
 	last_ARM_JOINT_BEHAVIOUR = ARM_JOINT_BEHAVIOUR;
@@ -438,6 +679,13 @@ __attribute__((used)) void gimbal_set_control(gimbal_control_t *set_control)
     (void)set_control;
     //任务执行周期
     static fp32 dt = GIMBAL_CONTROL_TIME /1000.0f;
+	
+	for (uint8_t i = 0; i < ARM_JOINT_NUM; i++) //先清零前馈项
+	{
+    set_control->multi_arm_cmd[i][2] = 0.0f;
+	}
+	
+	
     if(ARM_JOINT_BEHAVIOUR == ARM_NONE)
     {
         return;
@@ -499,6 +747,8 @@ __attribute__((used)) void gimbal_set_control(gimbal_control_t *set_control)
 			#endif
 			set_control->multi_arm_cmd[7][1] = set_control->multi_arm_set[7][1];
 			set_control->multi_arm_cmd[7][0] = clampf(set_control->multi_arm_set[7][0], set_control->joint_motor[7].min_angle, set_control->joint_motor[7].max_angle);
+			// 在计算完 multi_arm_cmd 之后，调用位置误差积分
+			integrator_apply_all(set_control, dt);
 		}
 		else
 		{
@@ -509,6 +759,7 @@ __attribute__((used)) void gimbal_set_control(gimbal_control_t *set_control)
 				set_control->multi_arm_cmd[i][1] = set_control->multi_arm_set[i][1];
 				set_control->multi_arm_cmd[i][0] = clampf(set_control->multi_arm_set[i][0], set_control->joint_motor[i].min_angle, set_control->joint_motor[i].max_angle);
 			}
+		
 			#if GRAVITY_COMPENSATION_ENABLE
 			//重力补偿增益
 			set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * GAR_GAIN1;
@@ -516,6 +767,8 @@ __attribute__((used)) void gimbal_set_control(gimbal_control_t *set_control)
 			set_control->multi_arm_cmd[3][2] = tauqe_calculated[3] * GAR_GAIN3;
 			set_control->multi_arm_cmd[4][2] = tauqe_calculated[4] * GAR_GAIN4;
 			#endif
+			// 在计算完 multi_arm_cmd 之后，调用位置误差积分
+			integrator_apply_all(set_control, dt);
 		}
     }
 	else if(ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)
@@ -732,31 +985,45 @@ void arm_update_control(gimbal_control_t *add_angle)
 		target_pos[6] = motor_data.claw ? J6_MIN_ANLE : J6_MAX_ANGLE;  // 夹爪
 
 		// 一阶低通滤波
-		static float filtered_pos[ARM_JOINT_NUM] = {0};
-		static uint8_t first_run = 1;
-		const float alpha = 0.9f;  // 滤波系数,越小越平滑
+		float alpha;
+		if (self_reconnect_ticks > 0U)
+		{
+			alpha = ARM_SELF_ALPHA_RECONNECT;// 滤波系数,越小越平滑
+		}
+		else
+		{
+			alpha = ARM_SELF_ALPHA_NORMAL;
+		}  
 
-		if (first_run) {
-			// 首次进入 SELF 模式时，直接用目标值初始化滤波器
-			for (int i = 0; i < ARM_JOINT_NUM; i++) {
-				filtered_pos[i] = target_pos[i];
+		if (self_filter_first_run)
+		{
+			for (uint8_t i = 0; i < ARM_JOINT_NUM; i++)
+			{
+				self_filtered_pos[i] = add_angle->joint_motor[i].motor_measure->pos;
 			}
-			first_run = 0;
-		} else {
+			self_filter_first_run = 0U;
+		}
+		else
+		{
 			// 正常滤波：新滤波值 = alpha * 新目标 + (1-alpha) * 旧滤波值
-			for (int i = 0; i < ARM_JOINT_NUM; i++) {
-				filtered_pos[i] = alpha * target_pos[i] + (1 - alpha) * filtered_pos[i];
+			for (uint8_t i = 0; i < ARM_JOINT_NUM; i++)
+			{
+				self_filtered_pos[i] = alpha * target_pos[i] + (1.0f - alpha) * self_filtered_pos[i];
 			}
 		}
 
 		// 将滤波后的值写入 multi_arm_set
-		for (int i = 0; i < ARM_JOINT_NUM; i++) {
-			add_angle->multi_arm_set[i][0] = filtered_pos[i];
+		for (uint8_t i = 0; i < ARM_JOINT_NUM; i++)
+		{
+			add_angle->multi_arm_set[i][0] = self_filtered_pos[i];
 		}
-
+		if (self_reconnect_ticks > 0U)
+		{
+			self_reconnect_ticks--;
+		}
 		return;
 	}
-	else if(ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)//半自动模式
+		else if(ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)//半自动模式
 	{
 		for(uint8_t i = 0; i < ARM_JOINT_NUM; i++)
 		{
@@ -767,94 +1034,55 @@ void arm_update_control(gimbal_control_t *add_angle)
 		{
 			for (uint8_t i = 0; i < 16; i++)
 			{
-				g_T_tool_goal[i] = g_T_tool_cur[i];
+				g_T_tool_goal[i]       = g_T_tool_cur[i];
+				g_T_tool_traj_start[i] = g_T_tool_cur[i];
+				g_T_tool_traj_end[i]   = g_T_tool_cur[i];
+				g_T_tool_traj_ref[i]   = g_T_tool_cur[i];
 			}
 			g_have_tool_goal = 1U;
+			g_semi_auto_traj_u = 1.0f;
+			g_semi_auto_traj_active = 0U;
 		}
 
-				/* R键上升沿：基座坐标系 z 轴正向单步平移，姿态保持不变 */
-		{
-			static uint8_t last_r_key = 0U;
-			uint8_t r_key_now = ((add_angle->gimbal_rc_ctrl->key.v & ENDTOOL_ZMOVE_KEY) != 0U);
+		 /* 各按键独立处理 */
+        semi_auto_handle_r_key(add_angle);
+        semi_auto_handle_f_key(add_angle);
 
-			if (r_key_now && !last_r_key)
+		/* 生成当前时刻的笛卡尔参考位姿 */
+		if (g_semi_auto_traj_active)
+		{
+			g_semi_auto_traj_u += ARM_SEMI_AUTO_TRAJ_DS;
+			if (g_semi_auto_traj_u >= 1.0f)
 			{
-				float T_rel[16] = {
-					1,0,0,0,
-					0,1,0,0,
-					0,0,1,0.05,
-					0,0,0,1
-				};
-				float T_next[16];
-				mat_mul44(T_rel, g_T_tool_goal, T_next);   // 左乘：基座系平移
-				for (uint8_t i = 0; i < 16; i++)
-				{
-					g_T_tool_goal[i] = T_next[i];
-				}
+				g_semi_auto_traj_u = 1.0f;
 			}
 
-			last_r_key = r_key_now;
-		}
+			pose_interpolate(g_T_tool_traj_start,
+							 g_T_tool_traj_end,
+							 g_semi_auto_traj_u,
+							 g_T_tool_traj_ref);
 
-		/* F键上升沿：基座坐标系 x 轴正向单步平移，姿态保持不变 */
-		{
-			static uint8_t last_f_key = 0U;
-			uint8_t f_key_now = ((add_angle->gimbal_rc_ctrl->key.v & ENDTOOL_XMOVE_KEY) != 0U);
-
-			if (f_key_now && !last_f_key)
+			if (g_semi_auto_traj_u >= 1.0f)
 			{
-				float T_rel[16] = {
-					1,0,0,0.05,
-					0,1,0,0,
-					0,0,1,0,
-					0,0,0,1
-				};
-				float T_next[16];
-				mat_mul44(T_rel, g_T_tool_goal, T_next);   // 左乘：基座系平移
-				for (uint8_t i = 0; i < 16; i++)
-				{
-					g_T_tool_goal[i] = T_next[i];
-				}
+				g_semi_auto_traj_active = 0U;
 			}
-
-			last_f_key = f_key_now;
 		}
-
-		/* G键上升沿：基座坐标系 y 轴顺时针单步旋转 */
+		else
 		{
-			static uint8_t last_g_key = 0U;
-			uint8_t g_key_now = ((add_angle->gimbal_rc_ctrl->key.v & ENDTOOL_YROT_KEY) != 0U);
-
-			if (g_key_now && !last_g_key)
+			for (uint8_t i = 0; i < 16; i++)
 			{
-				const float ang = 0.3;
-				const float c = arm_cos_f32(ang);
-				const float s = arm_sin_f32(ang);
-
-				/* 绕基座 y 轴顺时针：等价于 Ry(-ang) */
-				float T_rel[16] = {
-					 c, 0,-s, 0,
-					 0, 1, 0, 0,
-					 s, 0, c, 0,
-					 0, 0, 0, 1
-				};
-
-				float T_next[16];
-				mat_mul44(T_rel, g_T_tool_goal, T_next);   // 左乘：基座系旋转
-				for (uint8_t i = 0; i < 16; i++)
-				{
-					g_T_tool_goal[i] = T_next[i];
-				}
+				g_T_tool_traj_ref[i] = g_T_tool_goal[i];
 			}
-
-			last_g_key = g_key_now;
 		}
-		/* 目标工具位姿 -> 逆解关节角 */
-		g_semi_auto_ik_valid = compute_desired_joint_angles(g_T_tool_goal, g_theta_kin_cur, g_theta_kin_des);
+
+		/* 当前轨迹参考位姿 -> 逆解关节角 */
+		g_semi_auto_ik_valid = compute_desired_joint_angles(g_T_tool_traj_ref,
+															g_theta_kin_cur,
+															g_theta_kin_des);
 
 		if (g_semi_auto_ik_valid)
 		{
-			/* 逆解结果出来后，立即在关节角空间做低通 */
+			/* 逆解结果出来后，在关节角空间做轻度低通 */
 			if (!g_theta_ref_initialized)
 			{
 				for (uint8_t i = 0; i < 6; i++)
@@ -972,7 +1200,7 @@ void Initial_position_safety_check(gimbal_control_t *position)
 	{
 //		if(position->joint_motor[i].motor_measure->pos == 0){MOTER_InitAngleright = 2;return;}
 		abs_pos[i] =  fabsf(position->joint_motor[i].motor_measure->pos - moter_init_angle[i]);
-		if(abs_pos[i]>0.88f)
+		if(abs_pos[i]>1.08f)
 		{
 			MOTER_InitAngleright = 0;
 			return;
@@ -989,5 +1217,7 @@ void gra_theta_calcu(gimbal_control_t *pos_angle, float *position_calcu)
 		position_calcu[4] = -pos_angle->joint_motor[4].motor_measure->pos + J4_ZERO_ANGLE;  // J4关节
 		position_calcu[5] = pos_angle->joint_motor[5].motor_measure->pos - J5_ZERO_ANGLE;  // J5关节
 }
+
+
 
 #endif  // ROBOT_GIMBAL == multi_axis_robotic_arm
