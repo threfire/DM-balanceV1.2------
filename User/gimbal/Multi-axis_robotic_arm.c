@@ -363,7 +363,7 @@ __attribute__((used)) void gimbal_feedback_update(gimbal_control_t *feedback_upd
     /* 正运动学：当前工具末端位姿 */
     compute_tool_pose(g_theta_kin_cur, g_T_tool_cur);
 	//是否夹取能量单元判断
-	if(motor_data.claw & (feedback_update->joint_motor[6].motor_measure->tor <= -15.0f)  )
+	if(motor_data.claw & (feedback_update->joint_motor[6].motor_measure->tor <= -15.0f)& feedback_update->joint_motor[6].motor_measure->pos > J6_MIN_ANLE )
 	{
 		feedback_update->Isgrasped = 1;
 	}else
@@ -737,6 +737,7 @@ __attribute__((used)) void gimbal_set_control(gimbal_control_t *set_control)
 				set_control->multi_arm_cmd[i][1] = set_control->multi_arm_set[i][1];
 				set_control->multi_arm_cmd[i][0] = clampf(set_control->joint_motor[i].motor_measure->pos, set_control->joint_motor[i].min_angle, set_control->joint_motor[i].max_angle);
 			}
+			set_control->multi_arm_cmd[6][2] = 0;
 			#if GRAVITY_COMPENSATION_ENABLE
 			//重力补偿增益
 				set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * GAR_GAIN1;
@@ -759,7 +760,7 @@ __attribute__((used)) void gimbal_set_control(gimbal_control_t *set_control)
 				set_control->multi_arm_cmd[i][1] = set_control->multi_arm_set[i][1];
 				set_control->multi_arm_cmd[i][0] = clampf(set_control->multi_arm_set[i][0], set_control->joint_motor[i].min_angle, set_control->joint_motor[i].max_angle);
 			}
-		
+			set_control->multi_arm_cmd[6][2] = set_control->multi_arm_set[6][2];
 			#if GRAVITY_COMPENSATION_ENABLE
 			//重力补偿增益
 			set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * GAR_GAIN1;
@@ -982,8 +983,51 @@ void arm_update_control(gimbal_control_t *add_angle)
 		target_pos[3] = motor_data.j3 + J3_ZERO_ANGLE;  // J3关节
 		target_pos[4] = -motor_data.j4 + J4_ZERO_ANGLE;  // J4关节
 		target_pos[5] = motor_data.j5 + J5_ZERO_ANGLE;  // J5关节
-		target_pos[6] = motor_data.claw ? J6_MIN_ANLE : J6_MAX_ANGLE;  // 夹爪
+		/*夹爪的力控代码*/
+		{
+		static uint8_t claw_init = 0U;
+		static uint8_t claw_last = 0U;
+		static float claw_tau_cmd = 6.0f;
+		const float alpha = 0.1f;   // 衰减系数，越小衰减越慢,太慢就改大
+		float tau_start = 0.0f;
+		float tau_target = 0.0f;
 
+		/* 根据 claw 状态确定起始力矩和目标力矩 */
+		if (motor_data.claw){
+			tau_start = -26.0f;
+			tau_target = -20.0f;
+		}
+		else{
+			tau_start = 20.0f;
+			tau_target = 6.0f;
+		}
+		/* 第一次进入时，直接给稳态目标值 */
+		if (!claw_init){
+			claw_tau_cmd = tau_target;
+			claw_last = motor_data.claw;
+			claw_init = 1U;
+		}
+		/* claw 状态发生变化时，先给起始力矩 */
+		else if (motor_data.claw != claw_last){
+			claw_tau_cmd = tau_start;
+			claw_last = motor_data.claw;
+		}
+		/* 状态不变时，向目标力矩衰减 */
+		else{
+			claw_tau_cmd += alpha * (tau_target - claw_tau_cmd);
+		}
+
+		/* 限幅到 [-28, 28] */
+		if (claw_tau_cmd > 28.0f){
+			claw_tau_cmd = 28.0f;
+		}
+		else if (claw_tau_cmd < -28.0f){
+			claw_tau_cmd = -28.0f;
+		}
+		add_angle->multi_arm_set[6][2] = claw_tau_cmd;
+		}
+		
+		/*滤波部分*/
 		// 一阶低通滤波
 		float alpha;
 		if (self_reconnect_ticks > 0U)
@@ -1200,7 +1244,7 @@ void Initial_position_safety_check(gimbal_control_t *position)
 	{
 //		if(position->joint_motor[i].motor_measure->pos == 0){MOTER_InitAngleright = 2;return;}
 		abs_pos[i] =  fabsf(position->joint_motor[i].motor_measure->pos - moter_init_angle[i]);
-		if(abs_pos[i]>1.08f)
+		if(abs_pos[i]>1.3f)
 		{
 			MOTER_InitAngleright = 0;
 			return;

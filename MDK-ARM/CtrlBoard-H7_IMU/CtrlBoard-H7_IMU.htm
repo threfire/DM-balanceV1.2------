@@ -3,7 +3,7 @@
 <title>Static Call Graph - [CtrlBoard-H7_IMU\CtrlBoard-H7_IMU.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image CtrlBoard-H7_IMU\CtrlBoard-H7_IMU.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Mar 24 19:53:32 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Wed Mar 25 01:40:09 2026
 <BR><P>
 <H3>Maximum Stack Usage =       1092 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -3891,7 +3891,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_PID_Calc
 </UL>
 
-<P><STRONG><a name="[28e]"></a>arm_update_control</STRONG> (Thumb, 1218 bytes, Stack size 104 bytes, multi-axis_robotic_arm.o(i.arm_update_control))
+<P><STRONG><a name="[28e]"></a>arm_update_control</STRONG> (Thumb, 1310 bytes, Stack size 104 bytes, multi-axis_robotic_arm.o(i.arm_update_control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 764<LI>Call Chain = arm_update_control &rArr; compute_desired_joint_angles &rArr; inverse_kinematics_puma &rArr; calc_R03_from_theta123 &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
 <BR>[Calls]<UL><LI><a href="#[291]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;pose_interpolate
@@ -4441,7 +4441,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_task
 </UL>
 
-<P><STRONG><a name="[e4]"></a>gimbal_feedback_update</STRONG> (Thumb, 388 bytes, Stack size 24 bytes, multi-axis_robotic_arm.o(i.gimbal_feedback_update))
+<P><STRONG><a name="[e4]"></a>gimbal_feedback_update</STRONG> (Thumb, 404 bytes, Stack size 24 bytes, multi-axis_robotic_arm.o(i.gimbal_feedback_update))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1092<LI>Call Chain = gimbal_feedback_update &rArr; gravity_compensation &rArr; compute_transforms &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
 <BR>[Calls]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
@@ -4495,7 +4495,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_task
 </UL>
 
-<P><STRONG><a name="[e8]"></a>gimbal_set_control</STRONG> (Thumb, 656 bytes, Stack size 40 bytes, multi-axis_robotic_arm.o(i.gimbal_set_control))
+<P><STRONG><a name="[e8]"></a>gimbal_set_control</STRONG> (Thumb, 668 bytes, Stack size 40 bytes, multi-axis_robotic_arm.o(i.gimbal_set_control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = gimbal_set_control &rArr; integrator_apply_all
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;integrator_apply_all

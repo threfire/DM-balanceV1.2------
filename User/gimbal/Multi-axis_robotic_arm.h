@@ -49,7 +49,7 @@
 #define J3_MIN_ANLE (J3_ZERO_ANGLE-2.1f)
 #define J4_MIN_ANLE (J4_ZERO_ANGLE-2.4f)
 #define J5_MIN_ANLE (J5_ZERO_ANGLE-1.6f)
-#define J6_MIN_ANLE (1.4f)
+#define J6_MIN_ANLE (0.52f)
 #define J7_MIN_ANLE (J7_ZERO_ANGLE -1.0f)
 //上电角度
 #define J0_INIT_ANGLE (0.15f)
@@ -58,7 +58,7 @@
 #define J3_INIT_ANGLE (3.14f)
 #define J4_INIT_ANGLE (2.72f)
 #define J5_INIT_ANGLE (2.64f)
-#define J6_INIT_ANGLE (2.0f)
+#define J6_INIT_ANGLE ((J6_MAX_ANGLE+J6_MIN_ANLE)/2)
 #define J7_INIT_ANGLE (2.08f)//大yaw
 
 #define GAR_GAIN0 10
@@ -71,10 +71,10 @@
 //电机PID参数
 //注意：在电机设置的POS不为0时，KD也应不为0.否则会导致电机震荡
 #ifndef J0_KP
-#define J0_KP (10.0f)
+#define J0_KP (12.0f)
 #endif
 #ifndef J1_KP
-#define J1_KP (3.0f)
+#define J1_KP (10.0f)
 #endif
 #ifndef J2_KP
 #define J2_KP (12.5f)
@@ -83,13 +83,13 @@
 #define J3_KP (3.0f)
 #endif
 #ifndef J4_KP
-#define J4_KP (3.4f)
+#define J4_KP (4.4f)
 #endif
 #ifndef J5_KP
 #define J5_KP (3.2f)
 #endif
 #ifndef J6_KP
-#define J6_KP (3.0f)
+#define J6_KP (0.0f)
 #endif
 #ifndef J7_KP
 #define J7_KP (10.0f)
@@ -99,7 +99,7 @@
 #define J0_KD (2.0f)
 #endif
 #ifndef J1_KD
-#define J1_KD (0.8f)
+#define J1_KD (2.8f)
 #endif
 #ifndef J2_KD
 #define J2_KD (3.2f)
@@ -108,16 +108,16 @@
 #define J3_KD (0.5f)
 #endif
 #ifndef J4_KD
-#define J4_KD (0.5f)
+#define J4_KD (0.6f)
 #endif
 #ifndef J5_KD
 #define J5_KD (0.32f)
 #endif
 #ifndef J6_KD
-#define J6_KD (0.4f)
+#define J6_KD (0.1f)
 #endif
 #ifndef J7_KD
-#define J7_KD (1.0f)
+#define J7_KD (3.0f)
 #endif
 #define ARM_INT_KI_TABLE    { \
     0.0f,  /* J0 */ \
@@ -156,7 +156,7 @@
 #define ARM_SEMI_AUTO_TRAJ_DS       0.06f    // 每控制周期轨迹进度增量，越小越平滑
 #define ARM_SEMI_AUTO_THETA_ALPHA   0.4f     // 半自动逆解角低通系数，越小越平滑
 
-#define ARM_SELF_ALPHA_NORMAL      0.7f    // SELF 正常跟手滤波系数
+#define ARM_SELF_ALPHA_NORMAL      0.01f    // SELF 正常跟手滤波系数
 #define ARM_SELF_ALPHA_RECONNECT   0.008f   // 切回 SELF 后前几拍更柔和
 #define ARM_SELF_RECONNECT_TICKS   400U     // 回接柔化持续周期数
 typedef enum

@@ -27,7 +27,44 @@ Project File Date:  03/23/2026
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\Keil5\ARM\ARMCC\Bin'
 Build target 'CtrlBoard-H7_IMU'
-"CtrlBoard-H7_IMU\CtrlBoard-H7_IMU.axf" - 0 Error(s), 0 Warning(s).
+compiling bsp_usart.c...
+..\User\Bsp\bsp_usart.c(27): warning:  #177-D: variable "gimbal_data"  was declared but never referenced
+  static uint8_t gimbal_data[USART_RX_BUF_LENGHT]={0};
+..\User\Bsp\bsp_usart.c: 1 warning, 0 errors
+compiling Multi-axis_robotic_arm.c...
+..\User\gimbal\Multi-axis_robotic_arm.c(718): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
+AR_GAIN1;
+..\User\gimbal\Multi-axis_robotic_arm.c(719): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
+AR_GAIN2;
+..\User\gimbal\Multi-axis_robotic_arm.c(743): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
+AR_GAIN1;
+..\User\gimbal\Multi-axis_robotic_arm.c(744): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
+AR_GAIN2;
+..\User\gimbal\Multi-axis_robotic_arm.c(766): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
+AR_GAIN1;
+..\User\gimbal\Multi-axis_robotic_arm.c(767): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
+AR_GAIN2;
+..\User\gimbal\Multi-axis_robotic_arm.c(786): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
+AR_GAIN1;
+..\User\gimbal\Multi-axis_robotic_arm.c(787): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
+AR_GAIN2;
+..\User\gimbal\Multi-axis_robotic_arm.c(930): warning:  #940-D: missing return statement at end of non-void function "cmd_cali_gimbal_hook" 
+  }
+..\User\gimbal\Multi-axis_robotic_arm.c(1201): warning:  #177-D: variable "data_length"  was declared but never referenced
+      uint16_t data_length = (data[2] << 8) | data[1];
+..\User\gimbal\Multi-axis_robotic_arm.c: 10 warnings, 0 errors
+linking...
+Program Size: Code=90888 RO-data=4748 RW-data=1248 ZI-data=57384  
+FromELF: creating hex file...
+"CtrlBoard-H7_IMU\CtrlBoard-H7_IMU.axf" - 0 Error(s), 11 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -49,7 +86,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE@6.1.0
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:10
 </pre>
 </body>
 </html>
