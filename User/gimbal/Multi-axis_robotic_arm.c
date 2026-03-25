@@ -983,38 +983,45 @@ void arm_update_control(gimbal_control_t *add_angle)
 		target_pos[3] = motor_data.j3 + J3_ZERO_ANGLE;  // J3关节
 		target_pos[4] = -motor_data.j4 + J4_ZERO_ANGLE;  // J4关节
 		target_pos[5] = motor_data.j5 + J5_ZERO_ANGLE;  // J5关节
-		/*夹爪的力控代码*/
-		{
+	/*夹爪的力控代码*/
+	{
 		static uint8_t claw_init = 0U;
 		static uint8_t claw_last = 0U;
 		static float claw_tau_cmd = 6.0f;
-		const float alpha = 0.1f;   // 衰减系数，越小衰减越慢,太慢就改大
-		float tau_start = 0.0f;
-		float tau_target = 0.0f;
 
-		/* 根据 claw 状态确定起始力矩和目标力矩 */
-		if (motor_data.claw){
-			tau_start = -26.0f;
-			tau_target = -20.0f;
-		}
-		else{
-			tau_start = 20.0f;
-			tau_target = 6.0f;
-		}
-		/* 第一次进入时，直接给稳态目标值 */
+		const float alpha_close = 0.10f;   // 夹(1)时的衰减系数
+		const float alpha_open  = 0.01f;   // 送(0)时的衰减系数
+
+		/* 第一次进入时，直接给当前状态对应的稳态目标值 */
 		if (!claw_init){
-			claw_tau_cmd = tau_target;
+			if (motor_data.claw){
+				claw_tau_cmd = -20.0f;   // 夹(1)稳态力矩
+			}
+			else{
+				claw_tau_cmd = 6.0f;     // 送(0)稳态力矩
+			}
 			claw_last = motor_data.claw;
 			claw_init = 1U;
 		}
-		/* claw 状态发生变化时，先给起始力矩 */
+		/* claw 状态发生变化时，分别给各自的起始力矩 */
 		else if (motor_data.claw != claw_last){
-			claw_tau_cmd = tau_start;
 			claw_last = motor_data.claw;
+
+			if (motor_data.claw){
+				claw_tau_cmd = -26.0f;   // 切到夹(1)
+			}
+			else{
+				claw_tau_cmd = 20.0f;    // 切到送(0)
+			}
 		}
-		/* 状态不变时，向目标力矩衰减 */
+		/* 状态不变时，分别向各自目标力矩衰减 */
 		else{
-			claw_tau_cmd += alpha * (tau_target - claw_tau_cmd);
+			if (motor_data.claw){
+				claw_tau_cmd += alpha_close * (-20.0f - claw_tau_cmd);  // 夹(1): -26 -> -20
+			}
+			else{
+				claw_tau_cmd += alpha_open * (6.0f - claw_tau_cmd);     // 送(0): 20 -> 6
+			}
 		}
 
 		/* 限幅到 [-28, 28] */
@@ -1024,9 +1031,9 @@ void arm_update_control(gimbal_control_t *add_angle)
 		else if (claw_tau_cmd < -28.0f){
 			claw_tau_cmd = -28.0f;
 		}
+
 		add_angle->multi_arm_set[6][2] = claw_tau_cmd;
-		}
-		
+	}
 		/*滤波部分*/
 		// 一阶低通滤波
 		float alpha;
