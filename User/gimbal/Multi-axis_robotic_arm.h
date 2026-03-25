@@ -156,7 +156,7 @@
 #define ARM_SEMI_AUTO_TRAJ_DS       0.06f    // 每控制周期轨迹进度增量，越小越平滑
 #define ARM_SEMI_AUTO_THETA_ALPHA   0.4f     // 半自动逆解角低通系数，越小越平滑
 
-#define ARM_SELF_ALPHA_NORMAL      0.010f    // SELF 正常跟手滤波系数
+#define ARM_SELF_ALPHA_NORMAL      0.008f    // SELF 正常跟手滤波系数
 #define ARM_SELF_ALPHA_RECONNECT   0.008f   // 切回 SELF 后前几拍更柔和
 #define ARM_SELF_RECONNECT_TICKS   400U     // 回接柔化持续周期数
 typedef enum
