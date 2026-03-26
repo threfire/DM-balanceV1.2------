@@ -3,7 +3,7 @@
 <title>Static Call Graph - [CtrlBoard-H7_IMU\CtrlBoard-H7_IMU.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image CtrlBoard-H7_IMU\CtrlBoard-H7_IMU.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Wed Mar 25 04:48:21 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Thu Mar 26 18:21:38 2026
 <BR><P>
 <H3>Maximum Stack Usage =       1092 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -681,23 +681,23 @@ Global Symbols
 <P><STRONG><a name="[1f8]"></a>__aeabi_memcpy</STRONG> (Thumb, 36 bytes, Stack size 0 bytes, memcpya.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[29f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;flash_read
 <LI><a href="#[2a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cali_data_write
+<LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Unpack_CustomController_Frame_Simple
 <LI><a href="#[2af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mux_encode
 <LI><a href="#[2f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mux_decode
 <LI><a href="#[2ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ch_uproto_queue_notify
 <LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_RxEventCallback
 <LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data
-<LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Unpack_CustomController_Frame_Simple
 </UL>
 
 <P><STRONG><a name="[162]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[161]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FDCAN_Init
-<LI><a href="#[2d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;compute_transforms
-<LI><a href="#[220]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kalman_Filter_Update
+<LI><a href="#[1ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_Init
 <LI><a href="#[2ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uproto_init
 <LI><a href="#[22b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_FREERTOS_Init
+<LI><a href="#[2d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;compute_transforms
+<LI><a href="#[220]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kalman_Filter_Update
 <LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data
 <LI><a href="#[2df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_channel_publish
-<LI><a href="#[1ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_Init
 <LI><a href="#[2d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forward_kinematics
 <LI><a href="#[218]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kalman_Filter_Measure
 <LI><a href="#[20e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;H_K_R_Adjustment
@@ -777,8 +777,8 @@ Global Symbols
 <P><STRONG><a name="[339]"></a>__decompress1</STRONG> (Thumb, 86 bytes, Stack size unknown bytes, __dczerorl2.o(.text), UNUSED)
 
 <P><STRONG><a name="[2c8]"></a>arm_cos_f32</STRONG> (Thumb, 144 bytes, Stack size 0 bytes, arm_cos_f32.o(.text.arm_cos_f32), UNUSED, KEPT)
-<BR><BR>[Called By]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;observer
-<LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_set_contorl
+<BR><BR>[Called By]<UL><LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_set_contorl
+<LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;observer
 </UL>
 
 <P><STRONG><a name="[21e]"></a>arm_mat_add_f32</STRONG> (Thumb, 190 bytes, Stack size 16 bytes, arm_mat_add_f32.o(.text.arm_mat_add_f32), UNUSED, KEPT)
@@ -823,9 +823,9 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[2be]"></a>arm_sin_f32</STRONG> (Thumb, 140 bytes, Stack size 0 bytes, arm_sin_f32.o(.text.arm_sin_f32), UNUSED, KEPT)
-<BR><BR>[Called By]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;observer
-<LI><a href="#[2b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_infantry_follow_gimbal_yaw_control
+<BR><BR>[Called By]<UL><LI><a href="#[2b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_infantry_follow_gimbal_yaw_control
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_set_contorl
+<LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;observer
 </UL>
 
 <P><STRONG><a name="[100]"></a>ADC_ConfigureBoostMode</STRONG> (Thumb, 204 bytes, Stack size 8 bytes, stm32h7xx_hal_adc.o(i.ADC_ConfigureBoostMode))
@@ -1558,9 +1558,8 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[1cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RNG_Init
 <LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_OSPI_Init
 <LI><a href="#[161]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FDCAN_Init
-<LI><a href="#[293]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_apply_delta_udeg
-<LI><a href="#[294]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_control_tick_internal
-<LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_feedback_update
+<LI><a href="#[1c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLL3_Config
+<LI><a href="#[1c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLL2_Config
 <LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_DMA_Init
 <LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;comm_app_task
 <LI><a href="#[1ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_OscConfig
@@ -1569,12 +1568,13 @@ Global Symbols
 <LI><a href="#[1c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PWREx_ConfigSupply
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;proto_time_now
 <LI><a href="#[1fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sbus_to_rc
+<LI><a href="#[293]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_apply_delta_udeg
+<LI><a href="#[294]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_control_tick_internal
+<LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_feedback_update
 <LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
 <LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data
 <LI><a href="#[155]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FDCAN_RxFifo1Callback
 <LI><a href="#[154]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FDCAN_RxFifo0Callback
-<LI><a href="#[1c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLL3_Config
-<LI><a href="#[1c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLL2_Config
 <LI><a href="#[17e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_OSPI_Transmit
 <LI><a href="#[17d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_OSPI_Receive
 <LI><a href="#[178]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_OSPI_Command
@@ -2031,9 +2031,9 @@ Global Symbols
 <P><STRONG><a name="[17c]"></a>HAL_RCCEx_PeriphCLKConfig</STRONG> (Thumb, 2362 bytes, Stack size 48 bytes, stm32h7xx_hal_rcc_ex.o(i.HAL_RCCEx_PeriphCLKConfig))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
 </UL>
-<BR>[Calls]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
-<LI><a href="#[1c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLL3_Config
+<BR>[Calls]<UL><LI><a href="#[1c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLL3_Config
 <LI><a href="#[1c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCCEx_PLL2_Config
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
 <BR>[Called By]<UL><LI><a href="#[208]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_MspInit
 <LI><a href="#[1d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_MspInit
@@ -2047,8 +2047,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = HAL_RCC_ClockConfig &rArr; HAL_InitTick &rArr; HAL_TIM_Base_Init &rArr; TIM_Base_SetConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[16d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_InitTick
-<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 <LI><a href="#[16c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetSysClockFreq
+<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
 <BR>[Called By]<UL><LI><a href="#[24f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 </UL>
@@ -2092,9 +2092,9 @@ Global Symbols
 <P><STRONG><a name="[16c]"></a>HAL_RCC_GetSysClockFreq</STRONG> (Thumb, 278 bytes, Stack size 16 bytes, stm32h7xx_hal_rcc.o(i.HAL_RCC_GetSysClockFreq))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = HAL_RCC_GetSysClockFreq
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_ClockConfig
+<BR>[Called By]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetHCLKFreq
+<LI><a href="#[1c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_ClockConfig
 <LI><a href="#[16a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
-<LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_GetHCLKFreq
 </UL>
 
 <P><STRONG><a name="[1ca]"></a>HAL_RCC_OscConfig</STRONG> (Thumb, 1318 bytes, Stack size 40 bytes, stm32h7xx_hal_rcc.o(i.HAL_RCC_OscConfig))
@@ -2329,8 +2329,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_CCxChannelCmd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_init
-<LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INS_task
+<BR>[Called By]<UL><LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INS_task
+<LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_init
 </UL>
 
 <P><STRONG><a name="[1e3]"></a>HAL_TIM_PeriodElapsedCallback</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, main.o(i.HAL_TIM_PeriodElapsedCallback))
@@ -2950,9 +2950,9 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h723xx.o(RESET)
 </UL>
 <P><STRONG><a name="[2bb]"></a>PID_Calc</STRONG> (Thumb, 322 bytes, Stack size 0 bytes, pid.o(i.PID_Calc), UNUSED, KEPT)
-<BR><BR>[Called By]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_motor_absolute_angle_control
-<LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_set_contorl
+<BR><BR>[Called By]<UL><LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_set_contorl
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_control_loop
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_motor_absolute_angle_control
 </UL>
 
 <P><STRONG><a name="[2ba]"></a>PID_clear</STRONG> (Thumb, 58 bytes, Stack size 0 bytes, pid.o(i.PID_clear), UNUSED, KEPT)
@@ -2961,8 +2961,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[2c3]"></a>PID_init</STRONG> (Thumb, 88 bytes, Stack size 0 bytes, pid.o(i.PID_init))
-<BR><BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_init
-<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_init
+<BR><BR>[Called By]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_init
+<LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_init
 </UL>
 
 <P><STRONG><a name="[249]"></a>PeriphCommonClock_Config</STRONG> (Thumb, 68 bytes, Stack size 200 bytes, main.o(i.PeriphCommonClock_Config))
@@ -3380,10 +3380,10 @@ Global Symbols
 <P><STRONG><a name="[268]"></a>USBD_LL_Init</STRONG> (Thumb, 96 bytes, Stack size 16 bytes, usbd_conf.o(i.USBD_LL_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 360<LI>Call Chain = USBD_LL_Init &rArr; HAL_PCD_Init &rArr; HAL_PCD_MspInit &rArr; HAL_RCCEx_PeriphCLKConfig &rArr; RCCEx_PLL3_Config
 </UL>
-<BR>[Calls]<UL><LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
-<LI><a href="#[26d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCDEx_SetTxFiFo
+<BR>[Calls]<UL><LI><a href="#[26d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCDEx_SetTxFiFo
 <LI><a href="#[26c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCDEx_SetRxFiFo
 <LI><a href="#[1ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_PCD_Init
+<LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
 </UL>
 <BR>[Called By]<UL><LI><a href="#[23d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USBD_Init
 </UL>
@@ -3913,8 +3913,8 @@ Global Symbols
 <P><STRONG><a name="[297]"></a>auto_aim_feedback_update</STRONG> (Thumb, 84 bytes, Stack size 8 bytes, auto_aim.o(i.auto_aim_feedback_update))
 <BR><BR>[Stack]<UL><LI>Max Depth = 140<LI>Call Chain = auto_aim_feedback_update &rArr; uproto_tick &rArr; uproto_send_request &rArr; uproto_encode_frame &rArr; platform_memcpy
 </UL>
-<BR>[Calls]<UL><LI><a href="#[299]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uproto_tick
-<LI><a href="#[298]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_robot_id
+<BR>[Calls]<UL><LI><a href="#[298]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_robot_id
+<LI><a href="#[299]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uproto_tick
 </UL>
 <BR>[Called By]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_task
 </UL>
@@ -3934,11 +3934,11 @@ Global Symbols
 <P><STRONG><a name="[cb]"></a>auto_aim_task</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, auto_aim.o(i.auto_aim_task))
 <BR><BR>[Stack]<UL><LI>Max Depth = 140<LI>Call Chain = auto_aim_task &rArr; auto_aim_feedback_update &rArr; uproto_tick &rArr; uproto_send_request &rArr; uproto_encode_frame &rArr; platform_memcpy
 </UL>
-<BR>[Calls]<UL><LI><a href="#[29c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_set
+<BR>[Calls]<UL><LI><a href="#[216]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[29c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_set
 <LI><a href="#[29a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_init
 <LI><a href="#[297]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_feedback_update
 <LI><a href="#[294]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_control_tick_internal
-<LI><a href="#[216]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(.constdata)
 </UL>
@@ -3987,10 +3987,10 @@ Global Symbols
 <P><STRONG><a name="[ca]"></a>calibrate_task</STRONG> (Thumb, 132 bytes, Stack size 0 bytes, calibrate_task.o(i.calibrate_task))
 <BR><BR>[Stack]<UL><LI>Max Depth = 364<LI>Call Chain = calibrate_task &rArr; cali_data_write &rArr; flash_write_single_address &rArr; OSPI_W25Qxx_WriteBuffer &rArr; OSPI_W25Qxx_WritePage &rArr; OSPI_W25Qxx_WriteEnable &rArr; HAL_OSPI_Command &rArr; OSPI_ConfigCmd
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cali_data_write
-<LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RC_cmd_to_calibrate
-<LI><a href="#[216]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<BR>[Calls]<UL><LI><a href="#[216]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[29b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_remote_control_point
+<LI><a href="#[2a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;cali_data_write
+<LI><a href="#[24a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RC_cmd_to_calibrate
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(.constdata)
 </UL>
@@ -4126,10 +4126,10 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = chassis_init &rArr; chassis_feedback_update
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_INS_angle_point
-<LI><a href="#[2c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_yaw_motor_point
-<LI><a href="#[2c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_pitch_motor_point
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_feedback_update
 <LI><a href="#[29b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_remote_control_point
+<LI><a href="#[2c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_yaw_motor_point
+<LI><a href="#[2c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_pitch_motor_point
 <LI><a href="#[2c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_chassis_motor_measure_point
 <LI><a href="#[2c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;first_order_filter_init
 <LI><a href="#[2c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_init
@@ -4236,9 +4236,9 @@ Global Symbols
 <P><STRONG><a name="[cc]"></a>comm_app_task</STRONG> (Thumb, 104 bytes, Stack size 0 bytes, comm_app.o(i.comm_app_task))
 <BR><BR>[Stack]<UL><LI>Max Depth = 932<LI>Call Chain = comm_app_task &rArr; ch_uproto_arbiter_tick &rArr; uproto_send_notify &rArr; uproto_send_frame &rArr; uproto_encode_frame &rArr; platform_memcpy
 </UL>
-<BR>[Calls]<UL><LI><a href="#[299]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uproto_tick
-<LI><a href="#[216]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<BR>[Calls]<UL><LI><a href="#[216]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
+<LI><a href="#[299]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uproto_tick
 <LI><a href="#[2cf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usb_cdc_port_bind_uproto
 <LI><a href="#[2ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;camera_channel_tick
 <LI><a href="#[2d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setup_channels
@@ -4335,10 +4335,10 @@ Global Symbols
 <P><STRONG><a name="[27f]"></a>get_CRC16_check_sum</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, crc8_crc16.o(i.get_CRC16_check_sum))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = get_CRC16_check_sum
 </UL>
-<BR>[Called By]<UL><LI><a href="#[2d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crc16_ccitt
+<BR>[Called By]<UL><LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Unpack_CustomController_Frame_Simple
+<LI><a href="#[2d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;crc16_ccitt
 <LI><a href="#[2af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mux_encode
 <LI><a href="#[2f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mux_decode
-<LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Unpack_CustomController_Frame_Simple
 </UL>
 
 <P><STRONG><a name="[27e]"></a>get_CRC8_check_sum</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, crc8_crc16.o(i.get_CRC8_check_sum))
@@ -4348,8 +4348,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[2bf]"></a>get_INS_angle_point</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, ins_task.o(i.get_INS_angle_point))
-<BR><BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_init
-<LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_init
+<BR><BR>[Called By]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_init
+<LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_init
 </UL>
 
 <P><STRONG><a name="[2c2]"></a>get_chassis_motor_measure_point</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, can_bsp.o(i.get_chassis_motor_measure_point), UNUSED, KEPT)
@@ -4375,15 +4375,15 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[29b]"></a>get_remote_control_point</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, remote_control.o(i.get_remote_control_point))
-<BR><BR>[Called By]<UL><LI><a href="#[29a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_init
-<LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_init
-<LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calibrate_task
+<BR><BR>[Called By]<UL><LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calibrate_task
 <LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_init
+<LI><a href="#[29a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_init
+<LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_init
 </UL>
 
 <P><STRONG><a name="[298]"></a>get_robot_id</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, referee.o(i.get_robot_id))
-<BR><BR>[Called By]<UL><LI><a href="#[297]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_feedback_update
-<LI><a href="#[2bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_power_control
+<BR><BR>[Called By]<UL><LI><a href="#[2bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_power_control
+<LI><a href="#[297]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_feedback_update
 </UL>
 
 <P><STRONG><a name="[2a3]"></a>get_temprate</STRONG> (Thumb, 70 bytes, Stack size 8 bytes, adc.o(i.get_temprate))
@@ -4402,8 +4402,8 @@ Global Symbols
 <P><STRONG><a name="[2db]"></a>gimbal_PID_Calc</STRONG> (Thumb, 156 bytes, Stack size 16 bytes, gimbal_task.o(i.gimbal_PID_Calc), UNUSED, KEPT)
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = gimbal_PID_Calc
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;abs_limit
-<LI><a href="#[2bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loop_float_constrain
+<BR>[Calls]<UL><LI><a href="#[2bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loop_float_constrain
+<LI><a href="#[2dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;abs_limit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_motor_absolute_angle_control
 </UL>
@@ -4482,9 +4482,9 @@ Global Symbols
 <P><STRONG><a name="[d8]"></a>gimbal_motor_absolute_angle_control</STRONG> (Thumb, 178 bytes, Stack size 16 bytes, gimbal_task.o(i.gimbal_motor_absolute_angle_control), UNUSED, KEPT)
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = gimbal_motor_absolute_angle_control &rArr; gimbal_PID_Calc
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_PID_Calc
-<LI><a href="#[2bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loop_float_constrain
+<BR>[Calls]<UL><LI><a href="#[2bd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;loop_float_constrain
 <LI><a href="#[2bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_Calc
+<LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_PID_Calc
 </UL>
 
 <P><STRONG><a name="[e7]"></a>gimbal_send_cmd</STRONG> (Thumb, 528 bytes, Stack size 24 bytes, multi-axis_robotic_arm.o(i.gimbal_send_cmd))
@@ -4495,7 +4495,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_task
 </UL>
 
-<P><STRONG><a name="[e8]"></a>gimbal_set_control</STRONG> (Thumb, 668 bytes, Stack size 40 bytes, multi-axis_robotic_arm.o(i.gimbal_set_control))
+<P><STRONG><a name="[e8]"></a>gimbal_set_control</STRONG> (Thumb, 690 bytes, Stack size 40 bytes, multi-axis_robotic_arm.o(i.gimbal_set_control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = gimbal_set_control &rArr; integrator_apply_all
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;integrator_apply_all
@@ -4515,7 +4515,8 @@ Global Symbols
 <P><STRONG><a name="[c9]"></a>gimbal_task</STRONG> (Thumb, 60 bytes, Stack size 0 bytes, gimbal_task.o(i.gimbal_task))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1092<LI>Call Chain = gimbal_task &rArr; gimbal_feedback_update &rArr; gravity_compensation &rArr; compute_transforms &rArr; __hardfp_sinf &rArr; __mathlib_rredf2
 </UL>
-<BR>[Calls]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_set_mode
+<BR>[Calls]<UL><LI><a href="#[2ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelay
+<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_set_mode
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_set_control
 <LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_send_cmd
 <LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_mode_change_control_transit
@@ -4523,7 +4524,6 @@ Global Symbols
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_feedback_update
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_control_loop
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_init
-<LI><a href="#[2ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelay
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(.constdata)
 </UL>
@@ -4570,11 +4570,11 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[2bd]"></a>loop_float_constrain</STRONG> (Thumb, 72 bytes, Stack size 0 bytes, user_lib.o(i.loop_float_constrain), UNUSED, KEPT)
-<BR><BR>[Called By]<UL><LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_motor_absolute_angle_control
-<LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_PID_Calc
-<LI><a href="#[2b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_engineer_follow_chassis_yaw_control
+<BR><BR>[Called By]<UL><LI><a href="#[2b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_engineer_follow_chassis_yaw_control
 <LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_set_contorl
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_feedback_update
+<LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_motor_absolute_angle_control
+<LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_PID_Calc
 </UL>
 
 <P><STRONG><a name="[214]"></a>mahony_calibrate_gyro_bias</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, mahony_filter.o(i.mahony_calibrate_gyro_bias))
@@ -4707,8 +4707,8 @@ Global Symbols
 <P><STRONG><a name="[e1]"></a>observer</STRONG> (Thumb, 498 bytes, Stack size 120 bytes, mecanum_chassis.o(i.observer), UNUSED, KEPT)
 <BR><BR>[Stack]<UL><LI>Max Depth = 264<LI>Call Chain = observer &rArr; xvEstimateKF_Update &rArr; Kalman_Filter_Update &rArr; Kalman_Filter_SetK &rArr; arm_mat_inverse_f32
 </UL>
-<BR>[Calls]<UL><LI><a href="#[2f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xvEstimateKF_Update
-<LI><a href="#[2be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_sin_f32
+<BR>[Calls]<UL><LI><a href="#[2be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_sin_f32
+<LI><a href="#[2f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;xvEstimateKF_Update
 <LI><a href="#[2c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_cos_f32
 <LI><a href="#[2ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabsf
 </UL>
@@ -4718,12 +4718,12 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;vTaskDelay
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_init
-<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;comm_app_task
+<BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;comm_app_task
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;calibrate_task
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_task
 <LI><a href="#[ce]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INS_task
 <LI><a href="#[c8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartDefaultTask
+<LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_init
 <LI><a href="#[217]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Initial_position_safety_check
 </UL>
 
@@ -4927,8 +4927,8 @@ Global Symbols
 <LI><a href="#[31f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uproto_fire_event
 <LI><a href="#[320]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;uproto_complete_transaction
 </UL>
-<BR>[Called By]<UL><LI><a href="#[297]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_feedback_update
-<LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;comm_app_task
+<BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;comm_app_task
+<LI><a href="#[297]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_feedback_update
 </UL>
 
 <P><STRONG><a name="[2cf]"></a>usb_cdc_port_bind_uproto</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, usb_cdc_port.o(i.usb_cdc_port_bind_uproto))
@@ -5133,9 +5133,9 @@ Local Symbols
 <P><STRONG><a name="[294]"></a>auto_aim_control_tick_internal</STRONG> (Thumb, 564 bytes, Stack size 88 bytes, auto_aim.o(i.auto_aim_control_tick_internal))
 <BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = auto_aim_control_tick_internal
 </UL>
-<BR>[Calls]<UL><LI><a href="#[296]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabsf
+<BR>[Calls]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
+<LI><a href="#[296]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fabsf
 <LI><a href="#[295]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;aa_clamp
-<LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 </UL>
 <BR>[Called By]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_task
 </UL>
@@ -5200,8 +5200,8 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[2ca]"></a>fabsf</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, mecanum_chassis.o(i.fabsf), UNUSED, KEPT)
-<BR><BR>[Called By]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;observer
-<LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_set_contorl
+<BR><BR>[Called By]<UL><LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_set_contorl
+<LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;observer
 </UL>
 
 <P><STRONG><a name="[2e8]"></a>clampf</STRONG> (Thumb, 32 bytes, Stack size 0 bytes, multi-axis_robotic_arm.o(i.clampf))

@@ -39,7 +39,7 @@
 #define J2_MAX_ANGLE (J2_ZERO_ANGLE+4.2f)
 #define J3_MAX_ANGLE (J3_ZERO_ANGLE+2.1f)
 #define J4_MAX_ANGLE (J4_ZERO_ANGLE+2.4f)
-#define J5_MAX_ANGLE (J5_ZERO_ANGLE+1.6f)
+#define J5_MAX_ANGLE (J5_ZERO_ANGLE+2.35f)
 #define J6_MAX_ANGLE (2.85f)
 #define J7_MAX_ANGLE (J7_ZERO_ANGLE +1.0f)
 
@@ -48,7 +48,7 @@
 #define J2_MIN_ANLE (J2_ZERO_ANGLE + 1.2f)
 #define J3_MIN_ANLE (J3_ZERO_ANGLE-2.1f)
 #define J4_MIN_ANLE (J4_ZERO_ANGLE-2.4f)
-#define J5_MIN_ANLE (J5_ZERO_ANGLE-1.6f)
+#define J5_MIN_ANLE (J5_ZERO_ANGLE-2.35f)
 #define J6_MIN_ANLE (0.45f)
 #define J7_MIN_ANLE (J7_ZERO_ANGLE -1.0f)
 //上电角度

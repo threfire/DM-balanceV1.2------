@@ -284,8 +284,8 @@ void chassis_rc_to_control_vector(fp32 *vx_set, fp32 *vy_set, chassis_move_t *ch
     }
 	// 慢速模式缩放
 	if (chassis_move_rc_to_vector->slowmode) {
-		vx_set_channel *= 0.1f;  // 根据实际需要调整系数
-		vy_set_channel *= 0.15f;
+		vx_set_channel *= 0.2f;  // 根据实际需要调整系数
+		vy_set_channel *= 0.25f;
 	}	
     //first order low-pass replace ramp function, calculate chassis speed set-point to improve control performance
     //一阶低通滤波代替斜波作为底盘速度输入
@@ -653,7 +653,7 @@ static void chassis_engineer_follow_chassis_yaw_control(fp32 *vx_set, fp32 *vy_s
     // 慢速模式下，键盘转向也减速
     if (chassis_move_rc_to_vector->slowmode)
     {
-        turn_rate *= 0.3f;
+        turn_rate *= 0.08f;
     }
 
     if (chassis_move_rc_to_vector->chassis_RC->key.v & CHASSIS_TURNLEFT_KEY)

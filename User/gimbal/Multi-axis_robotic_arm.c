@@ -94,7 +94,7 @@ static const float arm_int_limit_table[ARM_JOINT_NUM] = ARM_INT_LIMIT_TABLE;
 fp32 q_angle[ARM_JOINT_NUM];
 uint8_t MOTER_InitAngleright;
 //舵机ccr
-uint16_t pwm_ccr_set = 1400;
+uint16_t pwm_ccr_set = 1600;
 uint32_t last_sec_recv, total_los;
 //重力补偿用变量
 float position_calcu[8];
@@ -797,7 +797,7 @@ __attribute__((used)) void gimbal_set_control(gimbal_control_t *set_control)
 	}
 	else if(set_control->gimbal_rc_ctrl->key.v & KEY_PRESSED_OFFSET_B)
 	{
-		pwm_ccr_set -= 1;
+		pwm_ccr_set -= 0.8;
 		if(pwm_ccr_set >= 2300)pwm_ccr_set = 2300;
 		if(pwm_ccr_set <= 900)pwm_ccr_set = 900;
 	}
@@ -990,7 +990,7 @@ void arm_update_control(gimbal_control_t *add_angle)
 		static float claw_tau_cmd = 6.0f;
 
 		const float alpha_close = 0.10f;   // 夹(1)时的衰减系数
-		const float alpha_open  = 0.01f;   // 送(0)时的衰减系数
+		const float alpha_open  = 0.001f;   // 送(0)时的衰减系数
 
 		/* 第一次进入时，直接给当前状态对应的稳态目标值 */
 		if (!claw_init){
@@ -1251,7 +1251,7 @@ void Initial_position_safety_check(gimbal_control_t *position)
 	{
 //		if(position->joint_motor[i].motor_measure->pos == 0){MOTER_InitAngleright = 2;return;}
 		abs_pos[i] =  fabsf(position->joint_motor[i].motor_measure->pos - moter_init_angle[i]);
-		if(abs_pos[i]>1.3f)
+		if(abs_pos[i]>1.4f)
 		{
 			MOTER_InitAngleright = 0;
 			return;
