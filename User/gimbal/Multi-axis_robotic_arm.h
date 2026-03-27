@@ -32,7 +32,7 @@
 #define J4_ZERO_ANGLE (2.72f)
 #define J5_ZERO_ANGLE (2.64f)
 #define J6_ZERO_ANGLE (2.4f)
-#define J7_ZERO_ANGLE (2.08f)
+#define J7_ZERO_ANGLE (2.114f)
 //最大最小角度
 #define J0_MAX_ANGLE (J0_ZERO_ANGLE+0.75f)
 #define J1_MAX_ANGLE (J1_ZERO_ANGLE +1.0f)
@@ -59,7 +59,7 @@
 #define J4_INIT_ANGLE (2.72f)
 #define J5_INIT_ANGLE (2.64f)
 #define J6_INIT_ANGLE ((J6_MAX_ANGLE+J6_MIN_ANLE)/2)
-#define J7_INIT_ANGLE (2.08f)//大yaw
+#define J7_INIT_ANGLE (2.114f)//大yaw
 
 #define GAR_GAIN0 10
 #define GAR_GAIN1 1.0
@@ -156,7 +156,7 @@
 #define ARM_SEMI_AUTO_TRAJ_DS       0.06f    // 每控制周期轨迹进度增量，越小越平滑
 #define ARM_SEMI_AUTO_THETA_ALPHA   0.4f     // 半自动逆解角低通系数，越小越平滑
 
-#define ARM_SELF_ALPHA_NORMAL      0.008f    // SELF 正常跟手滤波系数
+#define ARM_SELF_ALPHA_NORMAL      0.012f    // SELF 正常跟手滤波系数
 #define ARM_SELF_ALPHA_RECONNECT   0.008f   // 切回 SELF 后前几拍更柔和
 #define ARM_SELF_RECONNECT_TICKS   400U     // 回接柔化持续周期数
 typedef enum

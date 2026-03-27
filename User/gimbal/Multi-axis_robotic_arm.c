@@ -497,11 +497,7 @@ __attribute__((used)) void gimbal_set_mode(gimbal_control_t *set_mode)
         ARM_JOINT_BEHAVIOUR = ARM_NONE;
         return;
     }
-	if(!MOTER_InitAngleright)
-	{
-        ARM_JOINT_BEHAVIOUR = ARM_NONE;
-        return;
-    }
+	
     //开关控制 云台状态
     if (switch_is_mid(set_mode->gimbal_rc_ctrl->rc.s[GIMBAL_MODE_CHANNEL]) )
     {
@@ -509,6 +505,11 @@ __attribute__((used)) void gimbal_set_mode(gimbal_control_t *set_mode)
     }
 	else if(switch_is_down(set_mode->gimbal_rc_ctrl->rc.s[GIMBAL_MODE_CHANNEL]))
 	{
+			if(!MOTER_InitAngleright)
+		{
+			ARM_JOINT_BEHAVIOUR = ARM_NONE;
+			return;
+		}
 		ARM_JOINT_BEHAVIOUR = ARM_SELF;
 	}
     else if (switch_is_up(set_mode->gimbal_rc_ctrl->rc.s[GIMBAL_MODE_CHANNEL]))
@@ -1017,7 +1018,7 @@ void arm_update_control(gimbal_control_t *add_angle)
 		/* 状态不变时，分别向各自目标力矩衰减 */
 		else{
 			if (motor_data.claw){
-				claw_tau_cmd += alpha_close * (-20.0f - claw_tau_cmd);  // 夹(1): -26 -> -20
+				claw_tau_cmd += alpha_close * (-18.0f - claw_tau_cmd);  // 夹(1): -26 -> -20
 			}
 			else{
 				claw_tau_cmd += alpha_open * (6.0f - claw_tau_cmd);     // 送(0): 20 -> 6
@@ -1251,7 +1252,7 @@ void Initial_position_safety_check(gimbal_control_t *position)
 	{
 //		if(position->joint_motor[i].motor_measure->pos == 0){MOTER_InitAngleright = 2;return;}
 		abs_pos[i] =  fabsf(position->joint_motor[i].motor_measure->pos - moter_init_angle[i]);
-		if(abs_pos[i]>1.4f)
+		if(abs_pos[i]>3.24f)
 		{
 			MOTER_InitAngleright = 0;
 			return;
