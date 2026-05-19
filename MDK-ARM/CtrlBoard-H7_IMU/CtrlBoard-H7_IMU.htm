@@ -3,7 +3,7 @@
 <title>Static Call Graph - [CtrlBoard-H7_IMU\CtrlBoard-H7_IMU.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image CtrlBoard-H7_IMU\CtrlBoard-H7_IMU.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Fri Mar 27 06:31:10 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Apr 21 21:52:11 2026
 <BR><P>
 <H3>Maximum Stack Usage =       1092 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -686,7 +686,7 @@ Global Symbols
 <LI><a href="#[2f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mux_decode
 <LI><a href="#[2ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ch_uproto_queue_notify
 <LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_RxEventCallback
-<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data
+<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data_nomal
 </UL>
 
 <P><STRONG><a name="[162]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, memcpya.o(.text))
@@ -696,7 +696,7 @@ Global Symbols
 <LI><a href="#[22b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_FREERTOS_Init
 <LI><a href="#[2d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;compute_transforms
 <LI><a href="#[220]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kalman_Filter_Update
-<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data
+<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data_nomal
 <LI><a href="#[2df]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_channel_publish
 <LI><a href="#[2d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;forward_kinematics
 <LI><a href="#[218]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Kalman_Filter_Measure
@@ -1572,7 +1572,7 @@ Global Symbols
 <LI><a href="#[294]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;auto_aim_control_tick_internal
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_feedback_update
 <LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data
+<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data_nomal
 <LI><a href="#[155]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FDCAN_RxFifo1Callback
 <LI><a href="#[154]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FDCAN_RxFifo0Callback
 <LI><a href="#[17e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_OSPI_Transmit
@@ -2367,13 +2367,13 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[1f7]"></a>HAL_UARTEx_RxEventCallback</STRONG> (Thumb, 164 bytes, Stack size 48 bytes, bsp_usart.o(i.HAL_UARTEx_RxEventCallback))
-<BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = HAL_UARTEx_RxEventCallback &rArr; parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<BR><BR>[Stack]<UL><LI>Max Depth = 264<LI>Call Chain = HAL_UARTEx_RxEventCallback &rArr; parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_ReceiveToIdle_DMA
 <LI><a href="#[1fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sbus_to_rc
 <LI><a href="#[1fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_GetRxEventType
 <LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_to_gimbal
-<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data
+<LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data_nomal
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memclr4
 <LI><a href="#[1f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
 </UL>
@@ -2434,7 +2434,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[201]"></a>HAL_UART_IRQHandler</STRONG> (Thumb, 878 bytes, Stack size 24 bytes, stm32h7xx_hal_uart.o(i.HAL_UART_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = HAL_UART_IRQHandler &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = HAL_UART_IRQHandler &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[204]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_TxCpltCallback
 <LI><a href="#[200]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_ErrorCallback
@@ -3048,14 +3048,14 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[57]"></a>UART5_IRQHandler</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32h7xx_it.o(i.UART5_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = UART5_IRQHandler &rArr; HAL_UART_IRQHandler &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = UART5_IRQHandler &rArr; HAL_UART_IRQHandler &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_IRQHandler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h723xx.o(RESET)
 </UL>
 <P><STRONG><a name="[6f]"></a>UART7_IRQHandler</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32h7xx_it.o(i.UART7_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = UART7_IRQHandler &rArr; HAL_UART_IRQHandler &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = UART7_IRQHandler &rArr; HAL_UART_IRQHandler &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_IRQHandler
 </UL>
@@ -3111,14 +3111,14 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[a5]"></a>USART10_IRQHandler</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32h7xx_it.o(i.USART10_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = USART10_IRQHandler &rArr; HAL_UART_IRQHandler &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = USART10_IRQHandler &rArr; HAL_UART_IRQHandler &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_IRQHandler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32h723xx.o(RESET)
 </UL>
 <P><STRONG><a name="[48]"></a>USART1_IRQHandler</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32h7xx_it.o(i.USART1_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = USART1_IRQHandler &rArr; HAL_UART_IRQHandler &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = USART1_IRQHandler &rArr; HAL_UART_IRQHandler &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[201]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_IRQHandler
 </UL>
@@ -3739,7 +3739,7 @@ Global Symbols
 <LI><a href="#[27f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_CRC16_check_sum
 <LI><a href="#[1f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy
 </UL>
-<BR>[Called By]<UL><LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data
+<BR>[Called By]<UL><LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;parse_data_nomal
 </UL>
 
 <P><STRONG><a name="[1e]"></a>UsageFault_Handler</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, stm32h7xx_it.o(i.UsageFault_Handler))
@@ -5499,8 +5499,8 @@ Local Symbols
 <LI><a href="#[154]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_FDCAN_RxFifo0Callback
 </UL>
 
-<P><STRONG><a name="[1fc]"></a>parse_data</STRONG> (Thumb, 266 bytes, Stack size 216 bytes, bsp_usart.o(i.parse_data))
-<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<P><STRONG><a name="[1fc]"></a>parse_data_nomal</STRONG> (Thumb, 214 bytes, Stack size 192 bytes, bsp_usart.o(i.parse_data_nomal))
+<BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[108]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GetTick
 <LI><a href="#[27d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Unpack_CustomController_Frame_Simple
@@ -5777,7 +5777,7 @@ Local Symbols
 <BR>[Address Reference Count : 1]<UL><LI> stm32h7xx_hal_uart.o(i.UART_Start_Receive_DMA)
 </UL>
 <P><STRONG><a name="[b6]"></a>UART_DMAReceiveCplt</STRONG> (Thumb, 130 bytes, Stack size 8 bytes, stm32h7xx_hal_uart.o(i.UART_DMAReceiveCplt))
-<BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = UART_DMAReceiveCplt &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<BR><BR>[Stack]<UL><LI>Max Depth = 272<LI>Call Chain = UART_DMAReceiveCplt &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_RxEventCallback
 <LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_RxCpltCallback
@@ -5785,7 +5785,7 @@ Local Symbols
 <BR>[Address Reference Count : 1]<UL><LI> stm32h7xx_hal_uart.o(i.UART_Start_Receive_DMA)
 </UL>
 <P><STRONG><a name="[b7]"></a>UART_DMARxHalfCplt</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, stm32h7xx_hal_uart.o(i.UART_DMARxHalfCplt))
-<BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = UART_DMARxHalfCplt &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<BR><BR>[Stack]<UL><LI>Max Depth = 272<LI>Call Chain = UART_DMARxHalfCplt &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_RxEventCallback
 <LI><a href="#[253]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_RxHalfCpltCallback
@@ -5808,7 +5808,7 @@ Local Symbols
 </UL>
 
 <P><STRONG><a name="[b4]"></a>UART_RxISR_16BIT</STRONG> (Thumb, 196 bytes, Stack size 8 bytes, stm32h7xx_hal_uart.o(i.UART_RxISR_16BIT))
-<BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = UART_RxISR_16BIT &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<BR><BR>[Stack]<UL><LI>Max Depth = 272<LI>Call Chain = UART_RxISR_16BIT &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_RxEventCallback
 <LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_RxCpltCallback
@@ -5817,7 +5817,7 @@ Local Symbols
 <LI> stm32h7xx_hal_uart.o(i.UART_Start_Receive_IT)
 </UL>
 <P><STRONG><a name="[ba]"></a>UART_RxISR_16BIT_FIFOEN</STRONG> (Thumb, 404 bytes, Stack size 32 bytes, stm32h7xx_hal_uart.o(i.UART_RxISR_16BIT_FIFOEN))
-<BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = UART_RxISR_16BIT_FIFOEN &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = UART_RxISR_16BIT_FIFOEN &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[200]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_ErrorCallback
 <LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_RxEventCallback
@@ -5826,7 +5826,7 @@ Local Symbols
 <BR>[Address Reference Count : 1]<UL><LI> stm32h7xx_hal_uart.o(i.UART_Start_Receive_IT)
 </UL>
 <P><STRONG><a name="[b5]"></a>UART_RxISR_8BIT</STRONG> (Thumb, 196 bytes, Stack size 8 bytes, stm32h7xx_hal_uart.o(i.UART_RxISR_8BIT))
-<BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = UART_RxISR_8BIT &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<BR><BR>[Stack]<UL><LI>Max Depth = 272<LI>Call Chain = UART_RxISR_8BIT &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_RxEventCallback
 <LI><a href="#[252]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_RxCpltCallback
@@ -5835,7 +5835,7 @@ Local Symbols
 <LI> stm32h7xx_hal_uart.o(i.UART_Start_Receive_IT)
 </UL>
 <P><STRONG><a name="[b9]"></a>UART_RxISR_8BIT_FIFOEN</STRONG> (Thumb, 404 bytes, Stack size 32 bytes, stm32h7xx_hal_uart.o(i.UART_RxISR_8BIT_FIFOEN))
-<BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = UART_RxISR_8BIT_FIFOEN &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
+<BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = UART_RxISR_8BIT_FIFOEN &rArr; HAL_UARTEx_RxEventCallback &rArr; parse_data_nomal &rArr; Unpack_CustomController_Frame_Simple &rArr; get_CRC8_check_sum
 </UL>
 <BR>[Calls]<UL><LI><a href="#[200]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UART_ErrorCallback
 <LI><a href="#[1f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_UARTEx_RxEventCallback

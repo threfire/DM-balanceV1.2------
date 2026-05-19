@@ -192,7 +192,8 @@ static void parse_data(const uint8_t *data, uint16_t len)
     memcpy(buf + s_rem_len, data, len);		// 将新接收的数据紧接着复制到临时缓冲区，形成连续的数据块
 
     uint16_t i = 0;
-    while (i + PACKET_MIN_LEN <= total) {
+    while (i + PACKET_MIN_LEN <= total) 
+		{
         // 查找帧头1
         if (buf[i] == FRAME1_HEAD1 && buf[i+1] == FRAME1_HEAD2) {
             // 检查空数据帧1情况
@@ -217,20 +218,66 @@ static void parse_data(const uint8_t *data, uint16_t len)
 					{
 						fps_num ++;
 						my_fps = fps_count *1000/(now - last_time);
-						if(fps_num > 4){
-						fps_sum += my_fps;
-						fps_average = (float)fps_sum / (fps_num-4); 
+						if(fps_num > 4)
+						{
+							fps_sum += my_fps;
+							fps_average = (float)fps_sum / (fps_num-4); 
 						}
 						last_time = now;
 						fps_count = 0;
 					}
 
 				}
-                i += PACKET_MAX_LEN;            // 60字节
-                continue;
+        i += PACKET_MAX_LEN;            // 60字节
+        continue;
             }
         }
         // 未找到有效包，跳过当前字节继续搜索
+        i++;
+    }
+
+    // 保存剩余未处理字节
+    s_rem_len = total - i;
+    if (s_rem_len > 0) {
+        memcpy(s_rem, &buf[i], s_rem_len);
+    }
+}
+/*平时*/
+static void parse_data_nomal(const uint8_t *data, uint16_t len)
+{
+    uint8_t buf[USART10_RX_BUF_LENGHT + 39];      // 创建临时拼接缓冲区
+    uint16_t total = s_rem_len + len;		//计算拼接缓冲区总长
+    memcpy(buf, s_rem, s_rem_len);		// 将上次未处理完的剩余数据复制到临时缓冲区开头
+    memcpy(buf + s_rem_len, data, len);		// 将新接收的数据紧接着复制到临时缓冲区，形成连续的数据块
+
+    uint16_t i = 0;
+    while (i + 39 <= total) 
+		{
+        // 查找帧头1
+        if (buf[i] == 0XA5 && buf[i+1] == 0X1E)
+				{  
+					memcpy(prame, &buf[i], 39);
+					if (Unpack_CustomController_Frame_Simple(prame, &motor_data) == 0) 
+					{
+						fps_count ++;
+						now = HAL_GetTick();
+						if(now - last_time >=1000)
+						{
+							fps_num ++;
+							my_fps = fps_count *1000/(now - last_time);
+							if(fps_num > 4)
+							{
+								fps_sum += my_fps;
+								fps_average = (float)fps_sum / (fps_num-4); 
+							}
+							last_time = now;
+							fps_count = 0;
+						}
+					}
+          i += 39;            // 60字节
+          continue;
+        }
+				// 未找到有效包，跳过当前字节继续搜索
         i++;
     }
 
@@ -306,7 +353,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef * huart, uint16_t Size)
 			test_size = Size;
 		if (evt == HAL_UART_RXEVENT_IDLE)
 		{
-			parse_data(usart10_buf, Size);   // 处理接收到的数据
+			parse_data_nomal(usart10_buf, Size);   // 处理接收到的数据
 			HAL_UARTEx_ReceiveToIdle_DMA(&huart10, usart10_buf, USART10_RX_BUF_LENGHT);
 		}
 	}
