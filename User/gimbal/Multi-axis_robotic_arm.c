@@ -91,6 +91,7 @@ static const fp32 motor_limit_table[ARM_JOINT_NUM][3] = {
 };
 static const float arm_int_ki_table[ARM_JOINT_NUM] = ARM_INT_KI_TABLE;
 static const float arm_int_limit_table[ARM_JOINT_NUM] = ARM_INT_LIMIT_TABLE;
+static const float arm_semi_auto_joint_vel_limit[6] = ARM_SEMI_AUTO_JOINT_VEL_LIMIT_TABLE;
 
 fp32 q_angle[ARM_JOINT_NUM];
 uint8_t MOTER_InitAngleright;
@@ -115,7 +116,11 @@ float g_T_tool_traj_ref[16];
 float g_T_tool_hold_ref_r[16];
 float g_T_tool_hold_ref_f[16];
 float g_motor_pos_des[6];
+float g_motor_vel_des[6];
+float g_theta_kin_vel[6];
 float g_semi_auto_traj_u = 1.0f;
+float g_semi_auto_traj_time = 0.0f;
+float g_semi_auto_traj_duration = ARM_SEMI_AUTO_MIN_TIME;
 uint8_t g_theta_ref_initialized = 0U;
 uint8_t g_have_tool_goal = 0;
 uint8_t g_semi_auto_latched = 0;
@@ -166,6 +171,117 @@ static void kin_theta_to_motor_pos(const float theta_kin[6], float motor_pos[6])
     motor_pos[4] = J4_ZERO_ANGLE - theta_kin[4];
     motor_pos[5] = J5_ZERO_ANGLE + theta_kin[5];
 }
+static void kin_theta_to_motor_vel(const float theta_vel[6], float motor_vel[6])
+{
+    motor_vel[0] = theta_vel[0];
+    motor_vel[1] = -theta_vel[1];
+    motor_vel[2] = -1.4446f * theta_vel[2];
+    motor_vel[3] = -theta_vel[3];
+    motor_vel[4] = -theta_vel[4];
+    motor_vel[5] = theta_vel[5];
+}
+
+static void motor_pos_to_kin_theta(const float motor_pos[6], float theta_kin[6])
+{
+    theta_kin[0] = PI / 2.0f + motor_pos[0] - J0_ZERO_ANGLE;
+    theta_kin[1] = -(PI / 2.0f + motor_pos[1] - J1_ZERO_ANGLE);
+    theta_kin[2] = -PI / 2.0f - (motor_pos[2] - J2_ZERO_ANGLE) / 1.4446f;
+    theta_kin[3] = -(motor_pos[3] - J3_ZERO_ANGLE);
+    theta_kin[4] = -motor_pos[4] + J4_ZERO_ANGLE;
+    theta_kin[5] = motor_pos[5] - J5_ZERO_ANGLE;
+}
+
+static void get_kin_theta_limits(const gimbal_control_t *ctrl, float theta_min[6], float theta_max[6])
+{
+    float motor_min[6];
+    float motor_max[6];
+    float theta_a[6];
+    float theta_b[6];
+
+    for (uint8_t i = 0; i < 6; i++)
+    {
+        motor_min[i] = ctrl->joint_motor[i].min_angle;
+        motor_max[i] = ctrl->joint_motor[i].max_angle;
+    }
+
+    motor_pos_to_kin_theta(motor_min, theta_a);
+    motor_pos_to_kin_theta(motor_max, theta_b);
+
+    for (uint8_t i = 0; i < 6; i++)
+    {
+        if (theta_a[i] < theta_b[i])
+        {
+            theta_min[i] = theta_a[i];
+            theta_max[i] = theta_b[i];
+        }
+        else
+        {
+            theta_min[i] = theta_b[i];
+            theta_max[i] = theta_a[i];
+        }
+    }
+}
+
+static float smoothstep5(float u)
+{
+    u = clampf(u, 0.0f, 1.0f);
+    return u * u * u * (10.0f + u * (-15.0f + 6.0f * u));
+}
+
+static float pose_rotation_angle(const float T_start[16], const float T_end[16])
+{
+    float R_start[9];
+    float R_end[9];
+    float q_start[4];
+    float q_end[4];
+
+    for (uint8_t r = 0; r < 3; r++)
+    {
+        for (uint8_t c = 0; c < 3; c++)
+        {
+            R_start[r * 3 + c] = T_start[r * 4 + c];
+            R_end[r * 3 + c] = T_end[r * 4 + c];
+        }
+    }
+
+    mat3_to_quat(R_start, q_start);
+    mat3_to_quat(R_end, q_end);
+
+    float dot = q_start[0] * q_end[0] + q_start[1] * q_end[1] + q_start[2] * q_end[2] + q_start[3] * q_end[3];
+    dot = fabsf(dot);
+    dot = clampf(dot, 0.0f, 1.0f);
+
+    return 2.0f * acosf(dot);
+}
+
+static float semi_auto_estimate_duration(const float T_start[16], const float T_end[16])
+{
+    float dx = T_end[3] - T_start[3];
+    float dy = T_end[7] - T_start[7];
+    float dz = T_end[11] - T_start[11];
+    float dist = sqrtf(dx * dx + dy * dy + dz * dz);
+    float angle = pose_rotation_angle(T_start, T_end);
+    float t_lin = dist / ARM_SEMI_AUTO_MAX_LIN_VEL;
+    float t_ang = angle / ARM_SEMI_AUTO_MAX_ANG_VEL;
+    float duration = (t_lin > t_ang) ? t_lin : t_ang;
+
+    if (duration < ARM_SEMI_AUTO_MIN_TIME)
+    {
+        duration = ARM_SEMI_AUTO_MIN_TIME;
+    }
+
+    return duration;
+}
+
+static void semi_auto_zero_motion_ref(void)
+{
+    for (uint8_t i = 0; i < 6; i++)
+    {
+        g_theta_kin_vel[i] = 0.0f;
+        g_motor_vel_des[i] = 0.0f;
+    }
+}
+
 static void semi_auto_start_traj_to(const float T_target[16])
 {
     /* 新轨迹从“当前实际末端位姿”起步，而不是从旧 goal 起步 */
@@ -184,6 +300,9 @@ static void semi_auto_start_traj_to(const float T_target[16])
     g_theta_ref_initialized = 1U;
 
     g_semi_auto_traj_u = 0.0f;
+    g_semi_auto_traj_time = 0.0f;
+    g_semi_auto_traj_duration = semi_auto_estimate_duration(g_T_tool_traj_start, g_T_tool_traj_end);
+    semi_auto_zero_motion_ref();
     g_semi_auto_traj_active = 1U;
 }
 static void semi_auto_handle_r_key(gimbal_control_t *add_angle)
@@ -1140,12 +1259,9 @@ void arm_update_control(gimbal_control_t *add_angle)
 		}
 		return;
 	}
-		else if(ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)//半自动模式
+		else if(ARM_JOINT_BEHAVIOUR == ARM_SEMI_AUTO)
 	{
-		for(uint8_t i = 0; i < ARM_JOINT_NUM; i++)
-		{
-			add_angle->multi_arm_set[i][1] = 0.0f;   // 速度指令清零
-		}
+		const float control_dt = GIMBAL_CONTROL_TIME / 1000.0f;
 
 		if (!g_have_tool_goal)
 		{
@@ -1158,31 +1274,35 @@ void arm_update_control(gimbal_control_t *add_angle)
 			}
 			g_have_tool_goal = 1U;
 			g_semi_auto_traj_u = 1.0f;
+			g_semi_auto_traj_time = 0.0f;
+			g_semi_auto_traj_duration = ARM_SEMI_AUTO_MIN_TIME;
 			g_semi_auto_traj_active = 0U;
+			semi_auto_zero_motion_ref();
 		}
 
-		 /* 各按键独立处理 */
-        semi_auto_handle_r_key(add_angle);
-        semi_auto_handle_f_key(add_angle);
+		semi_auto_handle_r_key(add_angle);
+		semi_auto_handle_f_key(add_angle);
 
-		/* 生成当前时刻的笛卡尔参考位姿 */
 		if (g_semi_auto_traj_active)
 		{
-			g_semi_auto_traj_u += ARM_SEMI_AUTO_TRAJ_DS;
-			if (g_semi_auto_traj_u >= 1.0f)
+			g_semi_auto_traj_time += control_dt;
+			if (g_semi_auto_traj_duration < ARM_SEMI_AUTO_MIN_TIME)
 			{
-				g_semi_auto_traj_u = 1.0f;
+				g_semi_auto_traj_duration = ARM_SEMI_AUTO_MIN_TIME;
 			}
 
+			float u_linear = g_semi_auto_traj_time / g_semi_auto_traj_duration;
+			if (u_linear >= 1.0f)
+			{
+				u_linear = 1.0f;
+				g_semi_auto_traj_active = 0U;
+			}
+
+			g_semi_auto_traj_u = smoothstep5(u_linear);
 			pose_interpolate(g_T_tool_traj_start,
 							 g_T_tool_traj_end,
 							 g_semi_auto_traj_u,
 							 g_T_tool_traj_ref);
-
-			if (g_semi_auto_traj_u >= 1.0f)
-			{
-				g_semi_auto_traj_active = 0U;
-			}
 		}
 		else
 		{
@@ -1192,52 +1312,70 @@ void arm_update_control(gimbal_control_t *add_angle)
 			}
 		}
 
-		/* 当前轨迹参考位姿 -> 逆解关节角 */
-		g_semi_auto_ik_valid = compute_desired_joint_angles(g_T_tool_traj_ref,
-															g_theta_kin_cur,
-															g_theta_kin_des);
+		float theta_min[6];
+		float theta_max[6];
+		get_kin_theta_limits(add_angle, theta_min, theta_max);
+
+		g_semi_auto_ik_valid = compute_desired_joint_angles_limited(g_T_tool_traj_ref,
+											g_theta_kin_cur,
+											theta_min,
+											theta_max,
+											g_theta_kin_des);
 
 		if (g_semi_auto_ik_valid)
 		{
-			/* 逆解结果出来后，在关节角空间做轻度低通 */
 			if (!g_theta_ref_initialized)
 			{
 				for (uint8_t i = 0; i < 6; i++)
 				{
-					g_theta_kin_ref[i] = g_theta_kin_des[i];
+					g_theta_kin_ref[i] = g_theta_kin_cur[i];
+					g_theta_kin_vel[i] = 0.0f;
 				}
 				g_theta_ref_initialized = 1U;
 			}
-			else
+
+			for (uint8_t i = 0; i < 6; i++)
 			{
-				for (uint8_t i = 0; i < 6; i++)
+				float prev = g_theta_kin_ref[i];
+				float delta = g_theta_kin_des[i] - prev;
+				float max_step = arm_semi_auto_joint_vel_limit[i] * control_dt;
+
+				if (delta > max_step)
 				{
-					g_theta_kin_ref[i] =
-						g_theta_kin_ref[i] +
-						ARM_SEMI_AUTO_THETA_ALPHA * (g_theta_kin_des[i] - g_theta_kin_ref[i]);
+					delta = max_step;
 				}
+				else if (delta < -max_step)
+				{
+					delta = -max_step;
+				}
+
+				g_theta_kin_ref[i] = prev + delta;
+				g_theta_kin_vel[i] = delta / control_dt;
 			}
 
-			/* 滤波后的关节角 -> 电机位置 */
 			kin_theta_to_motor_pos(g_theta_kin_ref, g_motor_pos_des);
+			kin_theta_to_motor_vel(g_theta_kin_vel, g_motor_vel_des);
 
 			for (uint8_t i = 0; i < 6; i++)
 			{
 				add_angle->multi_arm_set[i][0] = g_motor_pos_des[i];
+				add_angle->multi_arm_set[i][1] = g_motor_vel_des[i];
 			}
 		}
 		else
 		{
-			/* 逆解失败时保持当前关节，避免乱跳 */
 			for (uint8_t i = 0; i < 6; i++)
 			{
 				add_angle->multi_arm_set[i][0] = add_angle->joint_motor[i].motor_measure->pos;
+				add_angle->multi_arm_set[i][1] = 0.0f;
 			}
+			semi_auto_zero_motion_ref();
 		}
 
-		/* 附加轴保持 */
 		add_angle->multi_arm_set[6][0] = add_angle->joint_motor[6].motor_measure->pos;
+		add_angle->multi_arm_set[6][1] = 0.0f;
 		add_angle->multi_arm_set[7][0] = J7_ZERO_ANGLE;
+		add_angle->multi_arm_set[7][1] = 0.0f;
 
 		return;
 	}

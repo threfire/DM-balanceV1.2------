@@ -246,6 +246,46 @@ void forward_kinematics(const float theta[6], int joint, float T[16])
 
 /* ------------------------ 解析逆运动学 ------------------------ */
 
+static const float *g_ik_theta_min = 0;
+static const float *g_ik_theta_max = 0;
+static int g_ik_use_limits = 0;
+
+static int ik_angle_in_limit(float angle, int joint)
+{
+    if (!g_ik_use_limits || g_ik_theta_min == 0 || g_ik_theta_max == 0) {
+        return 1;
+    }
+
+    return (angle >= g_ik_theta_min[joint] - 1e-4f &&
+            angle <= g_ik_theta_max[joint] + 1e-4f);
+}
+
+static float ik_limit_cost(float angle, int joint)
+{
+    if (!g_ik_use_limits || g_ik_theta_min == 0 || g_ik_theta_max == 0) {
+        return 0.0f;
+    }
+
+    float span = g_ik_theta_max[joint] - g_ik_theta_min[joint];
+    if (span < KIN_EPS) {
+        return 1e6f;
+    }
+
+    float center = 0.5f * (g_ik_theta_min[joint] + g_ik_theta_max[joint]);
+    float center_bias = fabsf(angle - center) / span;
+    float margin_a = angle - g_ik_theta_min[joint];
+    float margin_b = g_ik_theta_max[joint] - angle;
+    float margin = (margin_a < margin_b) ? margin_a : margin_b;
+    float guard = 0.08f;
+    float guard_cost = 0.0f;
+
+    if (margin < guard) {
+        guard_cost = (guard - margin) * 10.0f;
+    }
+
+    return 0.05f * center_bias + guard_cost;
+}
+
 int inverse_kinematics_puma(const float T_target[16], const float theta_cur[6], float theta_out[6])
 {
     const float px = T_target[3];
@@ -443,37 +483,99 @@ int inverse_kinematics_puma(const float T_target[16], const float theta_cur[6], 
     }
 
     /* 选与当前关节角最接近的那组：按当前所在 2pi 分支比较 */
-    int best_idx = 0;
+    const float move_weight[6] = {1.0f, 1.4f, 1.3f, 0.7f, 0.7f, 0.5f};
+    int best_idx = -1;
+    float best_theta[6] = {0.0f};
     float min_cost = 1e30f;
 
     for (int i = 0; i < sol_count; i++) {
+        float cand_theta[6];
         float cost = 0.0f;
+        int valid = 1;
+
         for (int j = 0; j < 6; j++) {
-            float cand = nearest_equiv(solutions[i][j], theta_cur[j]);
-            float d = cand - theta_cur[j];
-            cost += fabsf(d);
+            cand_theta[j] = nearest_equiv(solutions[i][j], theta_cur[j]);
+            if (!ik_angle_in_limit(cand_theta[j], j)) {
+                valid = 0;
+                break;
+            }
+
+            float d = cand_theta[j] - theta_cur[j];
+            cost += move_weight[j] * fabsf(d);
+            cost += ik_limit_cost(cand_theta[j], j);
         }
+
+        if (!valid) {
+            continue;
+        }
+
+        float s5 = fabsf(sinf(cand_theta[4]));
+        if (s5 < 0.10f) {
+            cost += (0.10f - s5) * 20.0f;
+        }
+
         if (cost < min_cost) {
             min_cost = cost;
             best_idx = i;
+            for (int j = 0; j < 6; j++) {
+                best_theta[j] = cand_theta[j];
+            }
         }
     }
 
-    /* 输出时也贴到当前分支，不强行压回 [-pi, pi] */
-    for (int j = 0; j < 6; j++) {
-        theta_out[j] = nearest_equiv(solutions[best_idx][j], theta_cur[j]);
+    if (best_idx < 0) {
+        return 0;
     }
+
+    for (int j = 0; j < 6; j++) {
+        theta_out[j] = best_theta[j];
+    }
+
 
     return 1;
 }
 
 /* ------------------------ 封装接口 ------------------------ */
 
+int inverse_kinematics_puma_limited(const float T_target[16],
+                                    const float theta_cur[6],
+                                    const float theta_min[6],
+                                    const float theta_max[6],
+                                    float theta_out[6])
+{
+    const float *old_min = g_ik_theta_min;
+    const float *old_max = g_ik_theta_max;
+    int old_use = g_ik_use_limits;
+
+    g_ik_theta_min = theta_min;
+    g_ik_theta_max = theta_max;
+    g_ik_use_limits = 1;
+
+    int ret = inverse_kinematics_puma(T_target, theta_cur, theta_out);
+
+    g_ik_theta_min = old_min;
+    g_ik_theta_max = old_max;
+    g_ik_use_limits = old_use;
+
+    return ret;
+}
+
 int compute_desired_joint_angles(const float T_tool_des[16], const float theta_cur[6], float theta_des[6])
 {
     float T_wrist_des[16];
     tool_to_wrist(T_tool_des, T_wrist_des);
     return inverse_kinematics_puma(T_wrist_des, theta_cur, theta_des);
+}
+
+int compute_desired_joint_angles_limited(const float T_tool_des[16],
+                                         const float theta_cur[6],
+                                         const float theta_min[6],
+                                         const float theta_max[6],
+                                         float theta_des[6])
+{
+    float T_wrist_des[16];
+    tool_to_wrist(T_tool_des, T_wrist_des);
+    return inverse_kinematics_puma_limited(T_wrist_des, theta_cur, theta_min, theta_max, theta_des);
 }
 
 void compute_tool_pose(const float theta[6], float T_tool[16])

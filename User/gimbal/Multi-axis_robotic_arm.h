@@ -154,7 +154,11 @@
 #define ARM_SEMI_AUTO_STEP        0.001f   // m，单步平移距离
 #define ARM_SEMI_AUTO_STEP_ANG      0.05236f // rad，单步旋转角，约3度
 #define ARM_SEMI_AUTO_TRAJ_DS       0.06f    // 每控制周期轨迹进度增量，越小越平滑
-#define ARM_SEMI_AUTO_THETA_ALPHA   0.4f     // 半自动逆解角低通系数，越小越平滑
+#define ARM_SEMI_AUTO_THETA_ALPHA   0.4f
+#define ARM_SEMI_AUTO_MIN_TIME      0.08f
+#define ARM_SEMI_AUTO_MAX_LIN_VEL   0.05f
+#define ARM_SEMI_AUTO_MAX_ANG_VEL   1.2f
+#define ARM_SEMI_AUTO_JOINT_VEL_LIMIT_TABLE {1.2f, 1.0f, 1.2f, 1.6f, 1.6f, 1.6f}
 
 #define ARM_SELF_ALPHA_NORMAL      0.012f    // SELF 正常跟手滤波系数
 #define ARM_SELF_ALPHA_RECONNECT   0.008f   // 切回 SELF 后前几拍更柔和

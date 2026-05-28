@@ -26,6 +26,12 @@ void forward_kinematics(const float theta[6], int joint, float T[16]);
  */
 int inverse_kinematics_puma(const float T_target[16], const float theta_cur[6], float theta_out[6]);
 
+int inverse_kinematics_puma_limited(const float T_target[16],
+                                    const float theta_cur[6],
+                                    const float theta_min[6],
+                                    const float theta_max[6],
+                                    float theta_out[6]);
+
 /**
  * 根据期望的工具末端位姿，计算目标关节角度（自动处理工具偏移）
  * @param T_tool_des  期望的工具末端位姿（16个元素，按行主序）
@@ -34,6 +40,12 @@ int inverse_kinematics_puma(const float T_target[16], const float theta_cur[6], 
  * @return 1 表示成功，0 表示无解
  */
 int compute_desired_joint_angles(const float T_tool_des[16], const float theta_cur[6], float theta_des[6]);
+
+int compute_desired_joint_angles_limited(const float T_tool_des[16],
+                                         const float theta_cur[6],
+                                         const float theta_min[6],
+                                         const float theta_max[6],
+                                         float theta_des[6]);
 
 /**
  * 根据当前关节角度，计算工具末端位姿（正运动学+工具偏移）
