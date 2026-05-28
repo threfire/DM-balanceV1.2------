@@ -76,6 +76,7 @@ ctrlboard-h7_imu\multi-axis_robotic_arm.o: ../User/Algorithm/EKF/QuaternionEKF.h
 ctrlboard-h7_imu\multi-axis_robotic_arm.o: ../User/Algorithm/kalman/kalman_filter.h
 ctrlboard-h7_imu\multi-axis_robotic_arm.o: ../Drivers/CMSIS/DSP/Include/arm_math.h
 ctrlboard-h7_imu\multi-axis_robotic_arm.o: D:\Keil5\ARM\ARMCC\Bin\..\include\float.h
+ctrlboard-h7_imu\multi-axis_robotic_arm.o: ..\User\gimbal\arm_teach.h
 ctrlboard-h7_imu\multi-axis_robotic_arm.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 ctrlboard-h7_imu\multi-axis_robotic_arm.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 ctrlboard-h7_imu\multi-axis_robotic_arm.o: ../Core/Inc/FreeRTOSConfig.h

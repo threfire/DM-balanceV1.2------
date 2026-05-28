@@ -145,6 +145,10 @@ int main(void)
 	
 	MX_USB_DEVICE_Init();
 	DWT_Init(480);
+	if (flash_init() != 0)
+	{
+		Error_Handler();
+	}
 	cali_param_init();
     /* BMI088锟斤拷始锟斤�? *///之前锟窖撅拷锟皆斤拷锟劫度和硷拷锟劫度碉拷锟斤拷飘校准锟斤拷锟剿ｏ拷锟斤拷锟斤拷之锟斤拷锟较碉拷筒锟斤拷锟斤�??校准锟斤拷锟斤拷锟接诧拷锟斤拷璞革拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤�??锟斤拷锟斤拷校准锟斤�?
   while (BMI088_init(&hspi2, 0) != BMI088_NO_ERROR)

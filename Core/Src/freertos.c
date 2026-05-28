@@ -40,6 +40,7 @@
 #include "UI.h"
 #include "auto_aim.h"
 #include "comm_app.h"
+#include "light_task.h"
 #include "task_profiler_sampling.h"
 #include "robot_param.h"
 /* USER CODE END Includes */
@@ -190,6 +191,8 @@ void MX_FREERTOS_Init(void) {
 		
 		osThreadDef(message, message_task, osPriorityNormal, 0, 128);
 		message_task_handle = osThreadCreate(osThread(message), NULL);
+
+		LightTask_Init();
 		
     osThreadDef(imuTask, INS_task, osPriorityRealtime, 0, 1024);
     imuTaskHandle = osThreadCreate(osThread(imuTask), NULL);

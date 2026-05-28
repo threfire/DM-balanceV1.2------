@@ -1,4 +1,5 @@
 #include "Multi-axis_robotic_arm.h"
+#include "arm_teach.h"
 #include "cmsis_os.h"
 #include "crc8_crc16.h"
 #if ROBOT_GIMBAL == multi_axis_robotic_arm
@@ -140,6 +141,13 @@ static void reset_self_filter_state(void)
     {
         self_filtered_pos[i] = 0.0f;
     }
+}
+
+static uint8_t arm_mode_is_teach(arm_joint_e mode)
+{
+    return (mode == ARM_TEACH_DRAG ||
+            mode == ARM_TEACH_RECORD ||
+            mode == ARM_TEACH_PLAY);
 }
 
 static inline float clampf(float v, float lo, float hi)
@@ -484,6 +492,7 @@ __attribute__((used)) void gimbal_init(gimbal_control_t *init)
 	//检测电机上电位置有无突变
 	MOTER_InitAngleright = 1;
 	Initial_position_safety_check(init);
+	arm_teach_init();
 	//打开舵机pwm
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
     //gimbal_feedback_update(init);
@@ -563,6 +572,7 @@ __attribute__((used)) void gimbal_set_mode(gimbal_control_t *set_mode)
     }
 	#endif
     //获取不同模式的控制值
+    ARM_JOINT_BEHAVIOUR = arm_teach_update(set_mode, ARM_JOINT_BEHAVIOUR);
     arm_update_control(set_mode);
 }
 //切换状态机
@@ -665,6 +675,26 @@ __attribute__((used)) void gimbal_mode_change_control_transit(gimbal_control_t *
 		g_f_step_count = 0;
 		// 重置积分器
 		for (uint8_t i = 0; i < ARM_JOINT_NUM; i++) {
+			gimbal_mode_change->joint_integrator[i].integral = 0.0f;
+			gimbal_mode_change->joint_integrator[i].error_prev = 0.0f;
+		}
+	}
+	if(!arm_mode_is_teach(last_ARM_JOINT_BEHAVIOUR) && arm_mode_is_teach(ARM_JOINT_BEHAVIOUR))
+	{
+		for (uint8_t i = 0; i < ARM_JOINT_NUM; i++)
+		{
+			gimbal_mode_change->multi_arm_set[i][0] = gimbal_mode_change->joint_motor[i].motor_measure->pos;
+			gimbal_mode_change->multi_arm_set[i][1] = 0.0f;
+			gimbal_mode_change->joint_integrator[i].integral = 0.0f;
+			gimbal_mode_change->joint_integrator[i].error_prev = 0.0f;
+		}
+	}
+	if(arm_mode_is_teach(last_ARM_JOINT_BEHAVIOUR) && !arm_mode_is_teach(ARM_JOINT_BEHAVIOUR))
+	{
+		for (uint8_t i = 0; i < ARM_JOINT_NUM; i++)
+		{
+			gimbal_mode_change->multi_arm_set[i][0] = gimbal_mode_change->joint_motor[i].motor_measure->pos;
+			gimbal_mode_change->multi_arm_set[i][1] = 0.0f;
 			gimbal_mode_change->joint_integrator[i].integral = 0.0f;
 			gimbal_mode_change->joint_integrator[i].error_prev = 0.0f;
 		}
@@ -790,6 +820,23 @@ __attribute__((used)) void gimbal_set_control(gimbal_control_t *set_control)
         set_control->multi_arm_cmd[4][2] = tauqe_calculated[4] * GAR_GAIN4;
 		#endif
     }
+	else if(arm_mode_is_teach(ARM_JOINT_BEHAVIOUR))
+    {
+        for(uint8_t i = 0; i < ARM_JOINT_NUM; i++)
+        {
+            set_control->multi_arm_cmd[i][1] = set_control->multi_arm_set[i][1];
+            set_control->multi_arm_cmd[i][0] = clampf(set_control->multi_arm_set[i][0],
+                                                      set_control->joint_motor[i].min_angle,
+                                                      set_control->joint_motor[i].max_angle);
+        }
+		#if GRAVITY_COMPENSATION_ENABLE
+        set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * GAR_GAIN1;
+        set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * GAR_GAIN2;
+        set_control->multi_arm_cmd[3][2] = tauqe_calculated[3] * GAR_GAIN3;
+        set_control->multi_arm_cmd[4][2] = tauqe_calculated[4] * GAR_GAIN4;
+		#endif
+		set_control->multi_arm_cmd[6][2] = set_control->multi_arm_set[6][2];
+    }
 	if(set_control->gimbal_rc_ctrl->key.v & KEY_PRESSED_OFFSET_V)
 	{
 		pwm_ccr_set += 1;
@@ -862,6 +909,19 @@ __attribute__((used)) void gimbal_send_cmd(gimbal_control_t *control_send)
 				CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[4], 0.0f, 0.0f, 0.0f, 4*control_send->joint_pid[4].Kd, 0.0f);
 				CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[5], 0.0f, 0.0f, 0.0f, control_send->joint_pid[5].Kd, 0.0f);
 				CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[6], 0.0f, 0.0f, 0.0f, control_send->joint_pid[6].Kd, 0.0f);
+	}
+	else if(arm_mode_is_teach(ARM_JOINT_BEHAVIOUR))
+    {
+			float kp_scale = (ARM_JOINT_BEHAVIOUR == ARM_TEACH_PLAY) ? 1.0f : 0.0f;
+			CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[7], control_send->multi_arm_cmd[7][0], control_send->multi_arm_cmd[7][1], kp_scale * control_send->joint_pid[7].Kp, control_send->joint_pid[7].Kd, control_send->multi_arm_cmd[7][2]);
+			CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[0], control_send->multi_arm_cmd[0][0], control_send->multi_arm_cmd[0][1], kp_scale * control_send->joint_pid[0].Kp, control_send->joint_pid[0].Kd, control_send->multi_arm_cmd[0][2]);
+			CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[1], control_send->multi_arm_cmd[1][0], control_send->multi_arm_cmd[1][1], kp_scale * control_send->joint_pid[1].Kp, control_send->joint_pid[1].Kd, control_send->multi_arm_cmd[1][2]);
+            CAN_cmd_MIT(&GIMBAL_CAN, arm_cmd_id_table[2], control_send->multi_arm_cmd[2][0], control_send->multi_arm_cmd[2][1], kp_scale * control_send->joint_pid[2].Kp, control_send->joint_pid[2].Kd, control_send->multi_arm_cmd[2][2]);
+			
+			CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[3], control_send->multi_arm_cmd[3][0], control_send->multi_arm_cmd[3][1], kp_scale * control_send->joint_pid[3].Kp, control_send->joint_pid[3].Kd, control_send->multi_arm_cmd[3][2]);
+			CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[4], control_send->multi_arm_cmd[4][0], control_send->multi_arm_cmd[4][1], kp_scale * control_send->joint_pid[4].Kp, control_send->joint_pid[4].Kd, control_send->multi_arm_cmd[4][2]);
+			CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[5], control_send->multi_arm_cmd[5][0], control_send->multi_arm_cmd[5][1], kp_scale * control_send->joint_pid[5].Kp, control_send->joint_pid[5].Kd, control_send->multi_arm_cmd[5][2]);
+			CAN_cmd_MIT(&END_CAN, arm_cmd_id_table[6], control_send->multi_arm_cmd[6][0], control_send->multi_arm_cmd[6][1], kp_scale * control_send->joint_pid[6].Kp, control_send->joint_pid[6].Kd, control_send->multi_arm_cmd[6][2]);
 	}
 
 		else if(ARM_JOINT_BEHAVIOUR == ARM_RC)
@@ -938,6 +998,11 @@ void arm_update_control(gimbal_control_t *add_angle)
             //add角度设为0.0,速度也是0
             add_angle->multi_arm_set[i][0] = 0.0f;
         }
+        return;
+    }
+    else if(arm_mode_is_teach(ARM_JOINT_BEHAVIOUR))
+    {
+        arm_teach_apply_control(add_angle);
         return;
     }
     else if(ARM_JOINT_BEHAVIOUR == ARM_RC)

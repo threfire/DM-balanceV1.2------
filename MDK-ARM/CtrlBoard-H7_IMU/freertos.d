@@ -107,5 +107,7 @@ ctrlboard-h7_imu\freertos.o: ../User/APP/gimbal_behaviour.h
 ctrlboard-h7_imu\freertos.o: ../User/APP/shoot.h
 ctrlboard-h7_imu\freertos.o: ../User/Communication/example/device/comm_app.h
 ctrlboard-h7_imu\freertos.o: ../User/Communication/example/device/comm_app_config.h
+ctrlboard-h7_imu\freertos.o: ../User/APP/light_task.h
+ctrlboard-h7_imu\freertos.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 ctrlboard-h7_imu\freertos.o: ../User/profiler/task_profiler_sampling.h
 ctrlboard-h7_imu\freertos.o: ../Core/Inc/tim.h

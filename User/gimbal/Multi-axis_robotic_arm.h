@@ -166,6 +166,9 @@ typedef enum
   ARM_RC,
   ARM_SELF,
   ARM_SEMI_AUTO,
+  ARM_TEACH_DRAG,
+  ARM_TEACH_RECORD,
+  ARM_TEACH_PLAY,
   ARM_INIT
 }arm_joint_e;
 typedef __packed struct 

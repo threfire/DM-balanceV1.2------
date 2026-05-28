@@ -1019,6 +1019,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\APP\UI.c</FilePath>
             </File>
+            <File>
+              <FileName>light_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\APP\light_task.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1098,6 +1103,11 @@
               <FileName>Multi-axis_robotic_arm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\gimbal\Multi-axis_robotic_arm.c</FilePath>
+            </File>
+            <File>
+              <FileName>arm_teach.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\gimbal\arm_teach.c</FilePath>
             </File>
           </Files>
         </Group>

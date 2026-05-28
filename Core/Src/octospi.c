@@ -37,6 +37,15 @@ void MX_OCTOSPI2_Init(void)
   OSPIM_CfgTypeDef sOspiManagerCfg = {0};
 
   /* USER CODE BEGIN OCTOSPI2_Init 1 */
+  uint32_t i;
+  char *p = (char *)&hospi2;
+
+  for (i = 0; i < sizeof(hospi2); i++)
+  {
+    *p++ = 0;
+  }
+  hospi2.Instance = OCTOSPI1;
+  HAL_OSPI_DeInit(&hospi2);
 
   /* USER CODE END OCTOSPI2_Init 1 */
   hospi2.Instance = OCTOSPI2;
