@@ -184,6 +184,40 @@ uint16_t fps_sum;
 uint16_t fps_num;
 static uint8_t s_rem[PACKET_MAX_LEN - 1];  // 剩余字节缓冲区
 static uint8_t s_rem_len = 0;
+static uint16_t usart10_dma_last_pos = 0;
+static void parse_data_nomal(const uint8_t *data, uint16_t len);
+
+static void usart10_reset_rx_state(void)
+{
+    usart10_dma_last_pos = 0;
+    s_rem_len = 0;
+}
+
+static void usart10_process_dma_rx(uint16_t pos)
+{
+    if (pos > USART10_RX_BUF_LENGHT) {
+        usart10_reset_rx_state();
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart10, usart10_buf, USART10_RX_BUF_LENGHT);
+        return;
+    }
+
+    if (pos == usart10_dma_last_pos) {
+        return;
+    }
+
+    if (pos > usart10_dma_last_pos) {
+        parse_data_nomal(&usart10_buf[usart10_dma_last_pos], pos - usart10_dma_last_pos);
+    } else {
+        if (usart10_dma_last_pos < USART10_RX_BUF_LENGHT) {
+            parse_data_nomal(&usart10_buf[usart10_dma_last_pos], USART10_RX_BUF_LENGHT - usart10_dma_last_pos);
+        }
+        if (pos > 0U) {
+            parse_data_nomal(usart10_buf, pos);
+        }
+    }
+
+    usart10_dma_last_pos = pos;
+}
 static void parse_data(const uint8_t *data, uint16_t len)
 {
     uint8_t buf[USART10_RX_BUF_LENGHT + PACKET_MAX_LEN];      // 创建临时拼接缓冲区
@@ -351,11 +385,8 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef * huart, uint16_t Size)
 		 HAL_UART_RxEventTypeTypeDef evt = HAL_UARTEx_GetRxEventType(huart);
 			test_evt = evt;
 			test_size = Size;
-		if (evt == HAL_UART_RXEVENT_IDLE)
-		{
-			parse_data_nomal(usart10_buf, Size);   // 处理接收到的数据
-			HAL_UARTEx_ReceiveToIdle_DMA(&huart10, usart10_buf, USART10_RX_BUF_LENGHT);
-		}
+		usart10_process_dma_rx(Size);
+		return;
 	}
 	
 }
@@ -375,6 +406,7 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef * huart)
 
 	}
 	if(huart->Instance == USART10){
+		usart10_reset_rx_state();
 		HAL_UARTEx_ReceiveToIdle_DMA(&huart10, usart10_buf, USART10_RX_BUF_LENGHT);
 		memset(usart10_buf, 0, USART10_RX_BUF_LENGHT);
 	}
