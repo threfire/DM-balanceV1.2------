@@ -25,14 +25,14 @@
 
 //关节角度定义
 //零位偏移
-#define J0_ZERO_ANGLE (0.150f)
-#define J1_ZERO_ANGLE (2.850f)
+#define J0_ZERO_ANGLE (5.55)
+#define J1_ZERO_ANGLE (2.350f)
 #define J2_ZERO_ANGLE (-4.27f)
 #define J3_ZERO_ANGLE (3.14f)
 #define J4_ZERO_ANGLE (2.72f)
 #define J5_ZERO_ANGLE (2.64f)
 #define J6_ZERO_ANGLE (2.4f)
-#define J7_ZERO_ANGLE (2.114f)
+#define J7_ZERO_ANGLE (2.770f)
 //最大最小角度
 #define J0_MAX_ANGLE (J0_ZERO_ANGLE+0.75f)
 #define J1_MAX_ANGLE (J1_ZERO_ANGLE +1.0f)
@@ -52,14 +52,14 @@
 #define J6_MIN_ANLE (0.45f)
 #define J7_MIN_ANLE (J7_ZERO_ANGLE -1.0f)
 //上电角度
-#define J0_INIT_ANGLE (0.15f)
-#define J1_INIT_ANGLE (1.440f)
+#define J0_INIT_ANGLE (5.55f)
+#define J1_INIT_ANGLE (0.840f)
 #define J2_INIT_ANGLE (-0.15f)
 #define J3_INIT_ANGLE (3.14f)
 #define J4_INIT_ANGLE (2.72f)
 #define J5_INIT_ANGLE (2.64f)
 #define J6_INIT_ANGLE ((J6_MAX_ANGLE+J6_MIN_ANLE)/2)
-#define J7_INIT_ANGLE (2.114f)//大yaw
+#define J7_INIT_ANGLE (2.77f)//大yaw
 
 #define GAR_GAIN0 10
 #define GAR_GAIN1 1.0

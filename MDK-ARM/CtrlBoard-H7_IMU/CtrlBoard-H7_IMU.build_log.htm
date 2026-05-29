@@ -27,11 +27,69 @@ Project File Date:  05/28/2026
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\Keil5\ARM\ARMCC\Bin'
 Build target 'CtrlBoard-H7_IMU'
+compiling bsp_usart.c...
+..\User\Bsp\bsp_usart.c(27): warning:  #177-D: variable "gimbal_data"  was declared but never referenced
+  static uint8_t gimbal_data[USART_RX_BUF_LENGHT]={0};
+..\User\Bsp\bsp_usart.c(221): warning:  #177-D: function "parse_data"  was declared but never referenced
+  static void parse_data(const uint8_t *data, uint16_t len)
+..\User\Bsp\bsp_usart.c: 2 warnings, 0 errors
 compiling light_task.c...
+compiling Multi-axis_robotic_arm.c...
+..\User\gimbal\Multi-axis_robotic_arm.c(83): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      {
+..\User\gimbal\Multi-axis_robotic_arm.c(83): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      {
+..\User\gimbal\Multi-axis_robotic_arm.c(167): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      motor_pos[0] = theta_kin[0] - 
+I / 2.0f + 
+..\User\gimbal\Multi-axis_robotic_arm.c(186): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      theta_kin[0] = 
+I / 2.0f + motor_pos[0] - 
+..\User\gimbal\Multi-axis_robotic_arm.c(868): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
+AR_GAIN1;
+..\User\gimbal\Multi-axis_robotic_arm.c(869): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
+AR_GAIN2;
+..\User\gimbal\Multi-axis_robotic_arm.c(893): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
+AR_GAIN1;
+..\User\gimbal\Multi-axis_robotic_arm.c(894): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  				set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
+AR_GAIN2;
+..\User\gimbal\Multi-axis_robotic_arm.c(916): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
+AR_GAIN1;
+..\User\gimbal\Multi-axis_robotic_arm.c(917): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
+AR_GAIN2;
+..\User\gimbal\Multi-axis_robotic_arm.c(936): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
+AR_GAIN1;
+..\User\gimbal\Multi-axis_robotic_arm.c(937): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
+AR_GAIN2;
+..\User\gimbal\Multi-axis_robotic_arm.c(952): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          set_control->multi_arm_cmd[1][2] = tauqe_calculated[1] * 
+AR_GAIN1;
+..\User\gimbal\Multi-axis_robotic_arm.c(953): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          set_control->multi_arm_cmd[2][2] = tauqe_calculated[2] * 
+AR_GAIN2;
+..\User\gimbal\Multi-axis_robotic_arm.c(1110): warning:  #940-D: missing return statement at end of non-void function "cmd_cali_gimbal_hook" 
+  }
+..\User\gimbal\Multi-axis_robotic_arm.c(1163): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  			target_pos[0] = motor_data.j0 + 
+..\User\gimbal\Multi-axis_robotic_arm.c(1412): warning:  #177-D: variable "data_length"  was declared but never referenced
+      uint16_t data_length = (data[2] << 8) | data[1];
+..\User\gimbal\Multi-axis_robotic_arm.c(1468): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+  		position_calcu[0] = 
+I/2 + pos_angle->joint_motor[0].motor_measure->pos - 
+..\User\gimbal\Multi-axis_robotic_arm.c: 18 warnings, 0 errors
+compiling arm_teach.c...
 linking...
-Program Size: Code=95848 RO-data=4852 RW-data=1288 ZI-data=201592  
+Program Size: Code=97364 RO-data=4900 RW-data=1308 ZI-data=201768  
 FromELF: creating hex file...
-"CtrlBoard-H7_IMU\CtrlBoard-H7_IMU.axf" - 0 Error(s), 0 Warning(s).
+"CtrlBoard-H7_IMU\CtrlBoard-H7_IMU.axf" - 0 Error(s), 20 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -53,7 +111,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE@6.1.0
-Build Time Elapsed:  00:00:08
+Build Time Elapsed:  00:00:10
 </pre>
 </body>
 </html>
